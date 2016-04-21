@@ -2,9 +2,11 @@
 #include "OpenGL/gl3.h"
 #include "window.h"
 #include "shader.h"
+#include "mesh.h"
 
 bool quit = false;
 
+/*
 void loadTriangle()
 {
     GLuint VertexArrayID;
@@ -42,19 +44,20 @@ void loadTriangle()
     glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
     glDisableVertexAttribArray(0);
 }
+*/
 
 int main()
 {
     auto win = Window(640, 480);
     auto shaders = Shader("shader");
+    auto mesh = Mesh(shaders.getProgram());
 
     shaders.draw();
 
     while (!win.close())
     {
         win.clear(0.2, 0.5, 0.8, 1.0);
-        loadTriangle();
-        
+        mesh.draw();
         glfwSwapBuffers(win.getWindow());
         glfwPollEvents();
     }

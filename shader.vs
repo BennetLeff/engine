@@ -1,8 +1,12 @@
-#version 330 core
-layout(location = 0) in vec3 vertPos;
+#version 330
+
+in vec2 position;
+in vec3 color;
+
+out vec3 Color;
 
 void main()
 {
-    gl_Position.xyz = vertPos;
-    gl_Position.w = 1.0;
+    Color = color;
+    gl_Position = vec4(position, 0.0, 1.0);
 }

@@ -14,10 +14,9 @@ public:
     void checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::string errorMessage);
     void draw();
     std::string load(std::string file);
+    GLuint getProgram();
 private:
     static const short NUMSHADERS = 2;
-    GLuint VertexShaderID;
-    GLuint FragmentShaderID;
 
     GLuint shaders[NUMSHADERS];
     GLuint program;

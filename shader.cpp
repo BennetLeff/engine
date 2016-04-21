@@ -16,7 +16,7 @@ Shader::Shader(std::string file)
     glValidateProgram(program);
     checkShaderError(program, GL_VALIDATE_STATUS, true, "Error invalid shader.\n");
 
-    if (glGetError())
+    if (!glGetError())
     {
         printf("Error in shader class: ");
         printf("%u\n", glGetError());
@@ -68,14 +68,19 @@ void Shader::checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::s
 
     glGetShaderiv(shader, flag, &success);
 
-    if (success == GL_FALSE)
-    {
-        glGetProgramInfoLog(shader, sizeof(error), NULL, error);
-        printf("%s%s\n", errorMessage.c_str(), error);
-    }
+    // if (success)
+    // {
+    //     glGetProgramInfoLog(shader, sizeof(error), NULL, error);
+    //     printf("%s%s\n", errorMessage.c_str(), error);
+    // }
 }
 
 void Shader::draw()
 {
     glUseProgram(program);
+}
+
+GLuint Shader::getProgram()
+{
+    return program;
 }
