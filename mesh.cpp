@@ -11,31 +11,49 @@ Mesh::Mesh(GLuint shaderProg)
     // generate 1 vertex buffer
     glGenBuffers(1, &vbo); 
 
-    float vertices[] = {
-        0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // Vertex 1: Red
-        0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Vertex 2: Green
-        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Vertex 3: Blue
+    GLuint elements[] = {
+        0, 1, 2,
+        2, 3, 0
     };
-    
-    // Bind the buffer
+
+    GLfloat vertices[] = {
+        -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top-left
+         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
+         0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
+        -0.5f, -0.5f, 1.0f, 1.0f, 1.0f  // Bottom-left
+    };
+
+    // Bind the vertex buffer object. 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    // pass in to BufferData
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    // get position attribute in shader
+
+    // The element buffer object.
+    GLuint ebo;
+    // Generate 1 element buffer object.
+    glGenBuffers(1, &ebo);
+
+    // Bind the element buffer object. 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                 sizeof(elements), elements, GL_STATIC_DRAW);
+
+    // Assign position attribute to GLint. 
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
-    // glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    //glEnableVertexAttribArray(posAttrib);
     glEnableVertexAttribArray(posAttrib);
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
                           5*sizeof(float), 0);
 
+    // Assign color attribute to GLint. 
     GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
     glEnableVertexAttribArray(colAttrib);
     glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
                           5*sizeof(float), (void*)(2*sizeof(float)));
 }
 
+
+
 void Mesh::draw()
 {
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    // glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

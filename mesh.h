@@ -9,4 +9,5 @@ private:
     GLuint shaderProgram;
     GLuint vao;
     GLuint vbo;
+    GLuint ebo;
 };
