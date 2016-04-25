@@ -1,59 +1,43 @@
 #include "mesh.h"
+#include "transform.h"
 
-// Currently defaults to drawing a triangle
-Mesh::Mesh(GLuint shaderProg)
+
+Mesh::Mesh(ModelData modelData)
 {
-    shaderProgram = shaderProg;
+	drawCount_ = modelData.indices_.size();
 
-    // generate vertex array object
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-    // generate 1 vertex buffer
-    glGenBuffers(1, &vbo); 
+    glGenVertexArrays(1, &vertexArrayObject_);
+   	glBindVertexArray(vertexArrayObject_);
 
-    GLuint elements[] = {
-        0, 1, 2,
-        2, 3, 0
-    };
+   	glGenBuffers(NUMBUFFERS, vertexBufferObject_);
 
-    GLfloat vertices[] = {
-        -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top-left
-         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
-         0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
-        -0.5f, -0.5f, 1.0f, 1.0f, 1.0f  // Bottom-left
-    };
+   	// Position Attrib
+   	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject_[POSITION_VB]);
+   	glBufferData(GL_ARRAY_BUFFER, sizeof(modelData.vertices_[0]) * modelData.vertices_.size(), modelData.vertices_.data(), GL_STATIC_DRAW);
+   	glEnableVertexAttribArray(1);
+   	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-    // Bind the vertex buffer object. 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+   	// Texture Attrib
+   	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject_[TEXCOORD_VB]);
+   	glBufferData(GL_ARRAY_BUFFER, sizeof(modelData.texCoords_[0]) * modelData.texCoords_.size(), modelData.texCoords_.data(), GL_STATIC_DRAW);
+   	glEnableVertexAttribArray(0);
+   	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-    // The element buffer object.
-    GLuint ebo;
-    // Generate 1 element buffer object.
-    glGenBuffers(1, &ebo);
 
-    // Bind the element buffer object. 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                 sizeof(elements), elements, GL_STATIC_DRAW);
+   	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexBufferObject_[INDEX_VB]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(modelData.indices_[0]) * modelData.indices_.size(), modelData.indices_.data(), GL_STATIC_DRAW);
 
-    // Assign position attribute to GLint. 
-    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
-    glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
-                          5*sizeof(float), 0);
-
-    // Assign color attribute to GLint. 
-    GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
-    glEnableVertexAttribArray(colAttrib);
-    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
-                          5*sizeof(float), (void*)(2*sizeof(float)));
+   	glBindVertexArray(0);
 }
 
-
+Mesh::~Mesh()
+{
+	glDeleteVertexArrays(1, &vertexArrayObject_);
+}
 
 void Mesh::draw()
 {
-    // glDrawArrays(GL_TRIANGLES, 0, 3);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(vertexArrayObject_);
+	glDrawElements(GL_TRIANGLES, drawCount_, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
 }

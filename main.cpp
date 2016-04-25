@@ -1,64 +1,68 @@
 #include <stdio.h>
+#include <vector>
 #include "OpenGL/gl3.h"
 #include "window.h"
 #include "shader.h"
 #include "mesh.h"
+#include "texture.h"
+#include "camera.h"
+
+#define WIDTH 800
+#define HEIGHT 600
 
 bool quit = false;
 
-/*
-void loadTriangle()
-{
-    GLuint VertexArrayID;
-    glGenVertexArrays(1, &VertexArrayID);
-    glBindVertexArray(VertexArrayID);
-
-    // An array of 3 vectors which represents 3 vertices
-    static const GLfloat g_vertex_buffer_data[] = {
-       -1.0f, -1.0f, 0.0f,
-       1.0f, -1.0f, 0.0f,
-       0.0f,  1.0f, 0.0f,
-    };
-
-    // This will identify our vertex buffer
-    GLuint vertexbuffer;
-    // Generate 1 buffer, put the resulting identifier in vertexbuffer
-    glGenBuffers(1, &vertexbuffer);
-    // The following commands will talk about our 'vertexbuffer' buffer
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    // Give our vertices to OpenGL.
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
-    // 1rst attribute buffer : vertices
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    glVertexAttribPointer(
-       0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-       3,                  // size
-       GL_FLOAT,           // type
-       GL_FALSE,           // normalized?
-       0,                  // stride
-       (void*)0            // array buffer offset
-    );
-    // Draw the triangle !
-    glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
-    glDisableVertexAttribArray(0);
-}
-*/
-
 int main()
 {
-    auto win = Window(640, 480);
-    auto shaders = Shader("shader");
-    auto mesh = Mesh(shaders.getProgram());
+	/////// Mesh data
+	std::vector<GLuint> elements =  {
+	        0, 1, 2,
+	        2, 3, 0
+	    };
 
-    shaders.draw();
+	std::vector<float> vertices =  {
+			-0.5f,  0.5f, 0.0f,  	// Top-left
+			 0.5f,  0.5f, 0.0f,  // Top-right
+			 0.5f, -0.5f, 0.0f, 	// Bottom-right
+			-0.5f, -0.5f, 0.0f	// Bottom-left
+	};
+
+
+	std::vector<float> texCoords =  {
+			0.0f, 0.0f,
+			1.0f, 0.0f,
+			1.0f, 1.0f,
+			0.0f, 1.0f
+	};
+
+	//////////////////
+    auto win = Window(640, 480);
+    auto shaders = Shader("./res/shaders/shader");
+
+    // test ModelData
+    struct ModelData mData(vertices, texCoords, elements);
+
+
+    auto mesh = Mesh(mData);
+    auto tex = Texture();
+    auto trans = Transform();
+    auto cam = Camera(glm::vec3(0, 0, -3), 70.0f, (float) WIDTH / (float) HEIGHT, 0.01f, 1000.0f);
+
+    float counter = 0.0f;
 
     while (!win.close())
     {
         win.clear(0.2, 0.5, 0.8, 1.0);
+
+        // trans.getPosition()->x = sinf(counter);
+        // trans.getRotation()->z = cosf(counter * 50);
+
+        shaders.draw();
+        shaders.update(trans, cam);
         mesh.draw();
         glfwSwapBuffers(win.getWindow());
         glfwPollEvents();
+
+        counter += 0.01f;
     }
 }

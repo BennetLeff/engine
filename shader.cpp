@@ -1,5 +1,7 @@
 #include "shader.h"
 
+#include <stdio.h>
+
 Shader::Shader(std::string file)
 {
     program = glCreateProgram();
@@ -21,6 +23,9 @@ Shader::Shader(std::string file)
         printf("Error in shader class: ");
         printf("%u\n", glGetError());
     }
+
+    // Assign the transform uniform to the location of its attribute.
+    uniforms[TRANSFORM_U] = glGetUniformLocation(program, "trans");
 }
 
 std::string Shader::load(std::string file)
@@ -48,13 +53,13 @@ std::string Shader::load(std::string file)
 GLuint Shader::createShader(std::string text, GLenum shaderType)
 {
     GLuint shader = glCreateShader(shaderType);
-
+    // The array to store the shader in.
     const GLchar* shaderSource[1];
     GLint shaderSourceLenghts[1];
-
+    // Store the shader and get its length.
     shaderSource[0] = text.c_str();
     shaderSourceLenghts[0] = (int) text.length();
-
+    // Compile the shader.
     glShaderSource(shader, 1, shaderSource, shaderSourceLenghts);
     glCompileShader(shader);
 
@@ -68,19 +73,26 @@ void Shader::checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::s
 
     glGetShaderiv(shader, flag, &success);
 
-    // if (success)
-    // {
-    //     glGetProgramInfoLog(shader, sizeof(error), NULL, error);
-    //     printf("%s%s\n", errorMessage.c_str(), error);
-    // }
+    /*
+    if (success)
+    {
+         glGetProgramInfoLog(shader, sizeof(error), NULL, error);
+         printf("%s%s\n", errorMessage.c_str(), error);
+    }
+    */
+}
+
+void Shader::update(const Transform& trans, const Camera& cam)
+{
+	// Multiply the camera projection matrix by the
+	// transform matrix to apply a camera.
+	glm::mat4 model = cam.getProjection() * trans.getModel();
+
+	// Transformation attribute set here.
+	glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GL_FALSE, &model[0][0]);
 }
 
 void Shader::draw()
 {
     glUseProgram(program);
-}
-
-GLuint Shader::getProgram()
-{
-    return program;
 }
