@@ -21,7 +21,7 @@ Texture::Texture()
 
     glGenerateMipmap(GL_TEXTURE_2D);
 
-    image = stbi_load("./res/brick.jpg", &width, &height, &comp, STBI_rgb);
+    image = stbi_load("./res/deer-obj/deer texture.tga", &width, &height, &comp, STBI_rgb);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
                  GL_UNSIGNED_BYTE, image);
