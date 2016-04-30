@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <vector>
 #include "OpenGL/gl3.h"
-#include "window.h"
-#include "shader.h"
-#include "mesh.h"
-#include "texture.h"
-#include "camera.h"
+#include "Camera.h"
+#include "Mesh.h"
 #include "Model.h"
+#include "Shader.h"
+#include "Texture.h"
+#include "Window.h"
 
 #define WIDTH 800
 #define HEIGHT 600

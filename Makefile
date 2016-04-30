@@ -5,7 +5,7 @@ flags = -lglfw3 -std=c++11 -o game -g
 assimp = /usr/local/lib/libassimp.3.2.0.dylib
 
 all:	
-	g++ -c window.cpp shader.cpp mesh.cpp \
-			texture.cpp transform.cpp camera.cpp Model.cpp	${LIB_I} -std=c++11
-	g++ main.cpp window.o shader.o mesh.o texture.o \
-			transform.o	camera.o Model.o ${LIB_I} ${LIB_L} ${flags} ${GL} ${assimp}
+	g++ -c Window.cpp Shader.cpp Mesh.cpp \
+			Texture.cpp Transform.cpp Camera.cpp Model.cpp	${LIB_I} -std=c++11
+	g++ main.cpp Window.o Shader.o Mesh.o Texture.o \
+			Transform.o	Camera.o Model.o ${LIB_I} ${LIB_L} ${flags} ${GL} ${assimp}
