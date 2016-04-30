@@ -82,11 +82,11 @@ void Shader::checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::s
     */
 }
 
-void Shader::update(const Transform& trans, const Camera& cam)
+void Shader::update(const Transform* trans, const Camera& cam)
 {
 	// Multiply the camera projection matrix by the
 	// transform matrix to apply a camera.
-	glm::mat4 model = cam.getProjection() * trans.getModel();
+	glm::mat4 model = cam.getProjection() * trans->getModel();
 
 	// Transformation attribute set here.
 	glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GL_FALSE, &model[0][0]);

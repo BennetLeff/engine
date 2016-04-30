@@ -13,17 +13,26 @@
 #include <assimp/postprocess.h>
 
 #include "Mesh.h"
+#include "Texture.h"
+#include "Shader.h"
+#include "Transform.h"
+#include "Camera.h"
 
 class Model {
 public:
 	Model(std::string path);
+	Model(std::string path, std::string texture);
 	Mesh* loadModel();
-	void draw();
+	void draw(Camera cam);
+	Transform* transform;
 private:
 	Mesh* processMesh(aiMesh* mesh, const aiScene* scene);
 	std::string path;
 	std::string directory;
+	std::vector<Mesh*> meshes;
 	Mesh* modelMesh_;
+	Texture* tex;
+	Shader* shader;
 };
 
 #endif /* MODEL_H_ */

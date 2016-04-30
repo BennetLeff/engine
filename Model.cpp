@@ -9,7 +9,15 @@
 
 Model::Model(std::string path) {
 	this->path = path;
-	modelMesh_ = loadModel();
+	this->modelMesh_ = loadModel();
+}
+
+Model::Model(std::string path, std::string texture) {
+	this->path = path;
+	this->modelMesh_ = loadModel();
+	this->tex = new Texture(texture);
+	this->shader = new Shader("./res/shaders/shader");
+	this->transform = new Transform();
 }
 
 Mesh* Model::loadModel()
@@ -66,7 +74,10 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene)
 	return new Mesh(vertices, textures, indices);
 }
 
-void Model::draw()
+void Model::draw(Camera cam)
 {
+	shader->draw();
+	shader->update(transform, cam);
+	tex->bind(0);
 	modelMesh_->draw();
 }
