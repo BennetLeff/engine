@@ -22,25 +22,24 @@ int main()
     float counter = 0.0f;
 
     Model model = Model("./res/deer-obj/deer-obj.obj", "./res/deer-obj/deer texture.tga");    
-    Model model2 = Model("./res/deer-obj/deer-obj.obj", "./res/brick.jpg");
+    // Model model2 = Model("./res/deer-obj/deer-obj.obj", "./res/brick.jpg");
 
-    model.transform->getRotation()->y = 225;
-    model2.transform->getRotation()->y = 235;
+    // model2.transform->getRotation()->y = 235;
 
     model.transform->getPosition()->x = -5;
-    model2.transform->getPosition()->x = 5;
+    // model2.transform->getPosition()->x = 5;
 
     while (!win.close())
     {
         win.clear(0.2, 0.5, 0.8, 1.0);
 
-
         model.draw(cam);
-        model2.draw(cam);
+        // model2.draw(cam);
+        model.transform->getRotation()->y = counter * 2;
 
         glfwSwapBuffers(win.getWindow());
         glfwPollEvents();
 
-        counter += 0.1f;
+        counter += 0.01f;
     }
 }

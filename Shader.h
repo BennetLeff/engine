@@ -22,7 +22,9 @@ private:
     static const short NUMSHADERS = 2;
 
     enum {
-    	TRANSFORM_U,
+    	MODEL_U,
+        VIEW_U,
+        LIGHT_U,
 		NUMUNIFORMS
     };
 

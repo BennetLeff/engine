@@ -1,6 +1,7 @@
 #include "Shader.h"
 
 #include <stdio.h>
+#include <glm/vec3.hpp>
 
 Shader::Shader(std::string file)
 {
@@ -25,7 +26,9 @@ Shader::Shader(std::string file)
     }
 
     // Assign the transform uniform to the location of its attribute.
-    uniforms[TRANSFORM_U] = glGetUniformLocation(program, "trans");
+    uniforms[MODEL_U] = glGetUniformLocation(program, "model");
+    uniforms[VIEW_U] = glGetUniformLocation(program, "view");
+    uniforms[LIGHT_U] = glGetUniformLocation(program, "lightPosition");
 }
 
 std::string Shader::load(std::string file)
@@ -87,9 +90,8 @@ void Shader::update(const Transform* trans, const Camera& cam)
 	// Multiply the camera projection matrix by the
 	// transform matrix to apply a camera.
 	glm::mat4 model = cam.getProjection() * trans->getModel();
-
-	// Transformation attribute set here.
-	glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GL_FALSE, &model[0][0]);
+	// Model attribute set here.
+	glUniformMatrix4fv(uniforms[MODEL_U], 1, GL_FALSE, &model[0][0]);
 }
 
 void Shader::draw()

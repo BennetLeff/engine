@@ -10,12 +10,14 @@
 Model::Model(std::string path) {
 	this->path = path;
 	this->modelMesh_ = loadModel();
+	this->shader = new Shader("./res/shaders/shader");
+	this->transform = new Transform();
 }
 
 Model::Model(std::string path, std::string texture) {
 	this->path = path;
 	this->modelMesh_ = loadModel();
-	this->tex = new Texture(texture);
+	this->tex_ = new Texture(texture);
 	this->shader = new Shader("./res/shaders/shader");
 	this->transform = new Transform();
 }
@@ -71,13 +73,18 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene)
 			indices.push_back(face.mIndices[j]);
 	}
 
-	return new Mesh(vertices, textures, indices);
+	return new Mesh(vertices, normals, textures, indices);
 }
 
 void Model::draw(Camera cam)
 {
 	shader->draw();
 	shader->update(transform, cam);
-	tex->bind(0);
+	tex_->bind(0);
 	modelMesh_->draw();
+}
+
+void Model::bindTexture(Texture* tex)
+{
+	this->tex_ = tex;
 }
