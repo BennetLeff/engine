@@ -76,7 +76,7 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene)
 	return new Mesh(vertices, normals, textures, indices);
 }
 
-void Model::draw(Camera cam)
+void Model::draw(Camera* cam)
 {
 	shader->draw();
 	shader->update(transform, cam);

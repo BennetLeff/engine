@@ -21,6 +21,16 @@ glm::mat4 Camera::getProjection() const
 	return perspective_ * glm::lookAt(position_, position_ + forward_, up_);
 }
 
+glm::mat4 Camera::getView() const
+{
+    return glm::lookAt(position_, position_ + forward_, up_);
+}
+
+glm::mat4 Camera::getPerspective() const
+{
+    return perspective_;
+}
+
 glm::vec3* Camera::getPosition()
 {
     return &position_;

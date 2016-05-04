@@ -28,7 +28,7 @@ Shader::Shader(std::string file)
     // Assign the transform uniform to the location of its attribute.
     uniforms[MODEL_U] = glGetUniformLocation(program, "model");
     uniforms[VIEW_U] = glGetUniformLocation(program, "view");
-    uniforms[LIGHT_U] = glGetUniformLocation(program, "lightPosition");
+    uniforms[PERSPECTIVE_U] = glGetUniformLocation(program, "persp");
 }
 
 std::string Shader::load(std::string file)
@@ -85,13 +85,19 @@ void Shader::checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::s
     */
 }
 
-void Shader::update(const Transform* trans, const Camera& cam)
+void Shader::update(const Transform* trans, const Camera* cam)
 {
 	// Multiply the camera projection matrix by the
 	// transform matrix to apply a camera.
-	glm::mat4 model = cam.getProjection() * trans->getModel();
+	glm::mat4 model = trans->getModel();
 	// Model attribute set here.
 	glUniformMatrix4fv(uniforms[MODEL_U], 1, GL_FALSE, &model[0][0]);
+    glm::mat4 view = cam->getView();
+    // Model attribute set here.
+    glUniformMatrix4fv(uniforms[VIEW_U], 1, GL_FALSE, &view[0][0]);
+    glm::mat4 perspectice = cam->getPerspective();
+    // Model attribute set here.
+    glUniformMatrix4fv(uniforms[PERSPECTIVE_U], 1, GL_FALSE, &perspectice[0][0]);
 }
 
 void Shader::draw()

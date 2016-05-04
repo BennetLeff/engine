@@ -16,7 +16,7 @@ public:
     GLuint createShader(std::string text, GLenum shaderType);
     void checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::string errorMessage);
     void draw();
-    void update(const Transform* trans, const Camera& cam);
+    void update(const Transform* trans, const Camera* cam);
     std::string load(std::string file);
 private:
     static const short NUMSHADERS = 2;
@@ -24,6 +24,7 @@ private:
     enum {
     	MODEL_U,
         VIEW_U,
+        PERSPECTIVE_U,
         LIGHT_U,
 		NUMUNIFORMS
     };

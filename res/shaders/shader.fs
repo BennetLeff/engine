@@ -9,7 +9,12 @@ in vec3 FragPos;
 out vec4 outColor;
 
 uniform sampler2D tex;
+// transform
 uniform mat4 model;
+// perspective matrix
+uniform mat4 persp;
+// view matrix
+uniform mat4 view;
 
 void main()
 {
@@ -35,7 +40,7 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     vec3 specular = specularStrength * spec * lightColor;  
 
-    vec3 result = (diffuse + ambient) * vec3(texture(tex, TexCoord));
+    vec3 result = (diffuse + ambient + specular) * vec3(texture(tex, TexCoord));
     // vec3 result = vec3(texture(tex, TexCoord));
     outColor = vec4(result, 1.0f);
 }

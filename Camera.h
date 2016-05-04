@@ -15,9 +15,12 @@ class Camera {
 public:
 	Camera(const glm::vec3& pos, float fov, float aspect, float zNear, float zFar);
 	glm::mat4 getProjection() const;
+    glm::mat4 getView() const;
+    glm::mat4 getPerspective() const;
     glm::vec3* getPosition();
 private:
 	glm::mat4 perspective_;
+    glm::mat4 view_;
 	glm::vec3 position_;
 	glm::vec3 forward_;
 	glm::vec3 up_;

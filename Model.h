@@ -23,7 +23,7 @@ public:
 	Model(std::string path);
 	Model(std::string path, std::string texture);
 	Mesh* loadModel();
-	void draw(Camera cam);
+	void draw(Camera* cam);
 	// If a texture has not been added
 	// Allows one to be bound. 
 	void bindTexture(Texture* tex);
