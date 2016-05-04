@@ -1,9 +1,5 @@
-#include "Window.h"
-
 #include <stdio.h>
-
-// #include "OpenGL/gl3.h"
-
+#include "Window.h"
 
 void Window::clear(float red, float green, float blue, float alpha)
 {
