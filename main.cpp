@@ -1,11 +1,13 @@
 #include <stdio.h>
-#include <vector>
-#include "OpenGL/gl3.h"
+
+#ifdef __APPLE__
+    #include <OpenGL/gl3.h>
+#else
+    #include <GL/glew.h>
+#endif
+
 #include "Camera.h"
-#include "Mesh.h"
 #include "Model.h"
-#include "Shader.h"
-#include "Texture.h"
 #include "Window.h"
 #include "Input.h"
 

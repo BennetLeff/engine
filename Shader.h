@@ -3,7 +3,13 @@
 #include <string>
 #include <vector> 
 #include <fstream>
-#include "OpenGL/gl3.h"
+
+#ifdef __APPLE__
+    #include <OpenGL/gl3.h>
+#else
+    #include <GL/glew.h>
+#endif
+
 #include "camera.h"
 #include "Transform.h"
 

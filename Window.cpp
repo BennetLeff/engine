@@ -19,9 +19,22 @@ GLFWwindow* Window::getWindow()
 
 Window::Window(int width, int height)
 {
+    // If not on OSX we need to include
+    // OpenGL as an extension
+    #ifndef __APPLE__
+        glewExperimental = GL_TRUE;
+
+        GLenum err = glewInit();
+        if (GLEW_OK != err)
+        {
+          /* Problem: glewInit failed, something is seriously wrong. */
+          fprintf(stderr, "Error: %s\n", glewGetErrorString(err)); 
+        }        
+    #endif
+
     if (!glfwInit())
         printf("GLFW could not be initialized. A window could not be created.\n");
-    
+
     // Necessary window hints to make OSX happy.
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
