@@ -6,21 +6,6 @@ project(Engine)
 SET(EXECUTABLE_OUTPUT_PATH ../)
 SET(CMAKE_CXX_FLAGS "-std=c++11")
 
-# OSX only flags
-IF(APPLE)
-   INCLUDE_DIRECTORIES ( /System/Library/Frameworks )
-   FIND_LIBRARY(COCOA_LIBRARY Cocoa)
-   FIND_LIBRARY(IOKIT_LIBRARY IOKit)
-   FIND_LIBRARY(COREVIDEO_LIBRARY CoreVideo)
-   FIND_LIBRARY(GLEW_LIBRARY GLEW )
-   FIND_LIBRARY(OpenGL_LIBRARY OpenGL )
-   MARK_AS_ADVANCED (COCOA_LIBRARY
-                     OpenGL_LIBRARY
-                     IOKIT_LIBRARY
-                     COREVIDEO_LIBRARY)
-   SET(MAC_LIBS ${COCOA_LIBRARY} ${OpenGL_LIBRARY} ${IOKIT_LIBRARY} ${COREVIDEO_LIBRARY})
-ENDIF (APPLE)
-
 # All systems include these files
 include_directories(/usr/local/include)
 link_directories(/usr/local/lib)
@@ -35,5 +20,37 @@ find_package(assimp REQUIRED)
 
 # Add the sources to the executable for linking
 add_executable(Engine main.cpp Camera.cpp Mesh.cpp Model.cpp Shader.cpp Texture.cpp Transform.cpp Window.cpp)
-# Link the libraries
-target_link_libraries(Engine ${MAC_LIBS} ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} assimp glfw3)
+
+# OSX only flags
+IF(APPLE)
+   INCLUDE_DIRECTORIES ( /System/Library/Frameworks )
+   FIND_LIBRARY(COCOA_LIBRARY Cocoa)
+   FIND_LIBRARY(IOKIT_LIBRARY IOKit)
+   FIND_LIBRARY(COREVIDEO_LIBRARY CoreVideo)
+   FIND_LIBRARY(GLEW_LIBRARY GLEW )
+   FIND_LIBRARY(OpenGL_LIBRARY OpenGL )
+   MARK_AS_ADVANCED (COCOA_LIBRARY
+                     OpenGL_LIBRARY
+                     IOKIT_LIBRARY
+                     COREVIDEO_LIBRARY)
+   SET(MAC_LIBS ${COCOA_LIBRARY} ${OpenGL_LIBRARY} ${IOKIT_LIBRARY} ${COREVIDEO_LIBRARY})
+
+  # Link the libraries
+  target_link_libraries(Engine ${MAC_LIBS} ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} assimp glfw3)
+ENDIF (APPLE)
+
+IF(UNIX)
+  find_package(OpenGL REQUIRED)
+  include_directories(${OPENGL_INCLUDE_DIRS})
+
+  find_package(GLEW REQUIRED)
+  include_directories(${GLEW_INCLUDE_DIRS})
+
+  # Link the libraries
+  target_link_libraries(Engine ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} assimp glfw3 ${GLEW_LIBRARY_DIRS} ${OPENGL_LIBRARY_DIRS} GLEW GL X11 Xi Xrandr Xxf86vm Xinerama Xcursor rt pthread ${CMAKE_DL_LIBS})
+
+ENDIF(UNIX)
+
+
+
+

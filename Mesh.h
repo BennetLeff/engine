@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <stdio.h>
 
 #ifdef __APPLE__
     #include <OpenGL/gl3.h>

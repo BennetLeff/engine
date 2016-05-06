@@ -19,19 +19,6 @@ GLFWwindow* Window::getWindow()
 
 Window::Window(int width, int height)
 {
-    // If not on OSX we need to include
-    // OpenGL as an extension
-    #ifndef __APPLE__
-        glewExperimental = GL_TRUE;
-
-        GLenum err = glewInit();
-        if (GLEW_OK != err)
-        {
-          /* Problem: glewInit failed, something is seriously wrong. */
-          fprintf(stderr, "Error: %s\n", glewGetErrorString(err)); 
-        }        
-    #endif
-
     if (!glfwInit())
         printf("GLFW could not be initialized. A window could not be created.\n");
 
@@ -54,6 +41,19 @@ Window::Window(int width, int height)
     glfwSwapInterval(1);
 
     glEnable(GL_DEPTH_TEST);
+
+    // If not on OSX we need to include
+    // OpenGL as an extension
+    #ifndef __APPLE__
+        glewExperimental = GL_TRUE;
+
+        GLenum err = glewInit();
+        if (GLEW_OK != err)
+        {
+          /* Problem: glewInit failed, something is seriously wrong. */
+          fprintf(stderr, "Error: %s\n", glewGetErrorString(err)); 
+        }        
+    #endif
 }
 
 Window::~Window()
