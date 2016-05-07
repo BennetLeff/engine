@@ -31,20 +31,12 @@ Shader::Shader(std::string file)
     uniforms[PERSPECTIVE_U] = glGetUniformLocation(program, "persp");
     uniforms[CAMPOS_U] = glGetUniformLocation(program, "campos");
 
-    // create a point light
-    PointLight light;
-    light.intensity = 1.0f;
-    light.position = glm::vec3(5, 5, 5);
-    light.color = glm::vec3(1.0, 0.0, 0.0);
-
-    // add light to list of lights
+    // Create point lights
+    auto light = PointLight(1.0f, glm::vec3(5), glm::vec3(1.0, 0.0, 0.0));
+    auto light2 = PointLight(1.0f, glm::vec3(-5, 5, 5), glm::vec3(0, 0, 1.0));
     pointLights.push_back(light);
-    // create a second point light
-    PointLight light2;
-    light2.intensity = 1.0f;
-    light2.position = glm::vec3(-5, 5, 5);
-    light2.color = glm::vec3(0.0, 0.0, 1.0);
     pointLights.push_back(light2);
+
 }
 
 std::string Shader::load(std::string file)

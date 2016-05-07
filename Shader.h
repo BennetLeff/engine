@@ -12,12 +12,7 @@
 
 #include "Camera.h"
 #include "Transform.h"
-
-struct PointLight {
-    float intensity;
-    glm::vec3 position;
-    glm::vec3 color;
-};
+#include "Light.h"
 
 class Shader
 {
