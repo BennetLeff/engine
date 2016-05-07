@@ -29,6 +29,22 @@ Shader::Shader(std::string file)
     uniforms[MODEL_U] = glGetUniformLocation(program, "model");
     uniforms[VIEW_U] = glGetUniformLocation(program, "view");
     uniforms[PERSPECTIVE_U] = glGetUniformLocation(program, "persp");
+    uniforms[CAMPOS_U] = glGetUniformLocation(program, "campos");
+
+    // create a point light
+    PointLight light;
+    light.intensity = 1.0f;
+    light.position = glm::vec3(5, 5, 5);
+    light.color = glm::vec3(1.0, 0.0, 0.0);
+
+    // add light to list of lights
+    pointLights.push_back(light);
+    // create a second point light
+    PointLight light2;
+    light2.intensity = 1.0f;
+    light2.position = glm::vec3(-5, 5, 5);
+    light2.color = glm::vec3(0.0, 0.0, 1.0);
+    pointLights.push_back(light2);
 }
 
 std::string Shader::load(std::string file)
@@ -45,7 +61,7 @@ std::string Shader::load(std::string file)
     } 
     else 
     {
-        printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n", file.c_str());
+        printf("Impossible to open %s. Are you in the right directory?\n", file.c_str());
         getchar();
         return 0;
     }
@@ -98,6 +114,19 @@ void Shader::update(const Transform* trans, const Camera* cam)
     glm::mat4 perspectice = cam->getPerspective();
     // Model attribute set here.
     glUniformMatrix4fv(uniforms[PERSPECTIVE_U], 1, GL_FALSE, &perspectice[0][0]);
+
+    glUniform3fv(uniforms[CAMPOS_U], 1, &cam->getConstPosition()[0]);
+    
+    for (int i = 0; i < pointLights.size(); i++)
+    {
+        int_loc = glGetUniformLocation(program, ("pointLight[" + std::to_string(i) + "].intensity").c_str());
+        pos_loc = glGetUniformLocation(program, ("pointLight[" + std::to_string(i) + "].position").c_str());
+        col_loc = glGetUniformLocation(program, ("pointLight[" + std::to_string(i) + "].color").c_str());
+
+        glUniform1f(int_loc, pointLights[i].intensity);
+        glUniform3fv(pos_loc, 1, &pointLights[i].position[0]);
+        glUniform3fv(col_loc, 1, &pointLights[i].color[0]);
+    }
 }
 
 void Shader::draw()

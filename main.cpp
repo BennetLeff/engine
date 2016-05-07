@@ -11,8 +11,8 @@
 #include "Window.h"
 #include "Input.h"
 
-#define WIDTH 800
-#define HEIGHT 600
+#define WIDTH 1000
+#define HEIGHT 800
 
 bool quit = false;
 
@@ -26,8 +26,13 @@ int main()
 
     auto model = Model("./res/Alfred/Alfred.obj", "./res/Alfred/alfred_dif.png");
     auto house = Model("./res/farm house/OBJ/Farmhouse OBJ.obj", "./res/farm house/Textures/Farmhouse Texture.jpg");
+    auto ground = Model("./res/plane/plane.obj", "./res/plane/grass.jpg");
     model.transform->getPosition()->z = 10;
     house.transform->getPosition()->z = 40;
+    ground.transform->getPosition()->y -= 1;
+    ground.transform->getPosition()->z = 30;
+    ground.transform->getScale()->z = 10;
+    ground.transform->getScale()->x = 10;
 
     auto iManager = Input(win.getWindow());
 
@@ -37,6 +42,7 @@ int main()
 
         model.draw(cam);
         house.draw(cam);
+        ground.draw(cam);
         model.transform->getRotation()->y = counter * 2;
 
         if (iManager.keyAction(iManager.A, iManager.PRESS))

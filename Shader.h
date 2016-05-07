@@ -13,6 +13,12 @@
 #include "Camera.h"
 #include "Transform.h"
 
+struct PointLight {
+    float intensity;
+    glm::vec3 position;
+    glm::vec3 color;
+};
+
 class Shader
 {
 public:
@@ -32,11 +38,19 @@ private:
         VIEW_U,
         PERSPECTIVE_U,
         LIGHT_U,
+        CAMPOS_U,
 		NUMUNIFORMS
     };
+
+    std::vector<PointLight> pointLights;
 
     GLuint shaders[NUMSHADERS];
     GLuint uniforms[NUMUNIFORMS];
     GLuint program;
     Transform transform;
+
+    // Point light uniform locations
+    GLuint int_loc;
+    GLuint pos_loc;
+    GLuint col_loc;
 };

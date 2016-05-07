@@ -1,5 +1,7 @@
 #version 330
 
+#define NUMPOINTLIGHTS 10
+
 in vec2 TexCoord;
 in vec3 Normals;
 in vec3 Vertex;
@@ -15,12 +17,20 @@ uniform mat4 model;
 uniform mat4 persp;
 // view matrix
 uniform mat4 view;
+// camera position
+uniform vec3 campos;
 
-void main()
+uniform struct PointLight
 {
-    float intensity = 1.0f;
-    vec3 lightIntensity = vec3(intensity);
-    vec3 lightColor = vec3(1.0f, 1.0f, 1.0f) * lightIntensity;
+    float intensity;
+    vec3  position;
+    vec3  color;
+} pointLight [NUMPOINTLIGHTS];
+
+
+vec3 createLight(int i)
+{
+    vec3 lightColor = pointLight[i].color * pointLight[i].intensity;
 
     // ambient component
     float ambientStrength = 0.1f;
@@ -29,18 +39,30 @@ void main()
     // diffuse component
     mat3 normalMatrix = transpose(inverse(mat3(model)));
     vec3 normal = normalize(normalMatrix * Normals);
-    vec3 lightDir = normalize(vec3(2, 1, 3) - FragPos);
+    vec3 lightDir = normalize(pointLight[i].position - FragPos);
     float diff = max(dot(normal, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
 
     // Specular
     float specularStrength = 0.5f;
-    vec3 viewDir = normalize(vec3(0, 15, -40) - FragPos);
-    vec3 reflectDir = reflect(-lightDir, normal);  
+    vec3 viewDir = normalize(campos - FragPos);
+    vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-    vec3 specular = specularStrength * spec * lightColor;  
+    vec3 specular = specularStrength * spec * lightColor;
 
-    vec3 result = (diffuse + ambient + specular) * vec3(texture(tex, TexCoord));
-    // vec3 result = vec3(texture(tex, TexCoord));
+    return (diffuse + ambient + specular);
+}
+
+
+void main()
+{
+    vec3 lightingTotal = vec3(0);
+    for (int index = 0; index < NUMPOINTLIGHTS; index++)
+    {
+        lightingTotal += createLight(index);
+    }
+
+
+    vec3 result = lightingTotal * vec3(texture(tex, TexCoord));
     outColor = vec4(result, 1.0f);
 }

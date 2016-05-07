@@ -35,3 +35,8 @@ glm::vec3* Camera::getPosition()
 {
     return &position_;
 }
+
+glm::vec3 Camera::getConstPosition() const
+{
+    return position_;
+}

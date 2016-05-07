@@ -18,6 +18,7 @@ public:
     glm::mat4 getView() const;
     glm::mat4 getPerspective() const;
     glm::vec3* getPosition();
+    glm::vec3 getConstPosition() const;
 private:
 	glm::mat4 perspective_;
     glm::mat4 view_;
