@@ -11,15 +11,15 @@
 #include "Window.h"
 #include "Input.h"
 
-#define WIDTH 1000
-#define HEIGHT 800
 
 bool quit = false;
 
 int main()
 {
-    auto win = Window(640, 480);
+    int WIDTH = 800;
+    int HEIGHT = 600;
 
+    auto win = Window(WIDTH, HEIGHT);
     auto cam = new Camera(glm::vec3(0, 5, -15), 70.0f, (float) WIDTH / (float) HEIGHT, 0.01f, 1000.0f);
 
     float counter = 0.0f;
@@ -43,6 +43,7 @@ int main()
         model.draw(cam);
         house.draw(cam);
         ground.draw(cam);
+
         model.transform->getRotation()->y = counter * 2;
 
         if (iManager.keyAction(iManager.A, iManager.PRESS))

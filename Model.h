@@ -18,7 +18,8 @@
 #include "Transform.h"
 #include "Camera.h"
 
-class Model {
+class Model
+{
 public:
 	Model(std::string path);
 	Model(std::string path, std::string texture);

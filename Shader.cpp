@@ -115,7 +115,7 @@ void Shader::update(const Transform* trans, const Camera* cam)
     // Model attribute set here.
     glUniformMatrix4fv(uniforms[PERSPECTIVE_U], 1, GL_FALSE, &perspectice[0][0]);
 
-    glUniform3fv(uniforms[CAMPOS_U], 1, &cam->getConstPosition()[0]);
+    glUniform3fv(uniforms[CAMPOS_U], 1, &cam->getStartPosition()[0]);
     
     for (int i = 0; i < pointLights.size(); i++)
     {
