@@ -34,8 +34,8 @@ private:
 	std::string path;
 	std::string directory;
 	std::vector<Mesh*> meshes;
-	Mesh* modelMesh_;
-	Texture* tex_;
+	Mesh* modelMesh;
+	Texture* tex;
 	Shader* shader;
 };
 

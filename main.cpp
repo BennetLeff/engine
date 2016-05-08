@@ -6,11 +6,11 @@
     #include <GL/glew.h>
 #endif
 
+#include <nanogui/screen.h>
 #include "Camera.h"
 #include "Model.h"
 #include "Window.h"
 #include "Input.h"
-
 
 bool quit = false;
 
@@ -27,7 +27,7 @@ int main()
     auto model = Model("./res/Alfred/Alfred.obj", "./res/Alfred/alfred_dif.png");
     auto house = Model("./res/farm house/OBJ/Farmhouse OBJ.obj", "./res/farm house/Textures/Farmhouse Texture.jpg");
     auto ground = Model("./res/plane/plane.obj", "./res/plane/grass.jpg");
-    
+
     model.transform->getPosition()->z = 10;
     model.transform->setScale(glm::vec3(0.75));
     house.transform->getPosition()->z = 40;
@@ -37,6 +37,12 @@ int main()
     ground.transform->getScale()->x = 10;
 
     auto iManager = Input(win.getWindow());
+
+    // GUI actions will be removed from here /////
+
+
+
+    //////////////////////////////////////////////
 
     while (!win.close() && !quit)
     {

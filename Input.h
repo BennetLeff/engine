@@ -15,7 +15,15 @@ public:
             return true;
         return false;
     }
-    
+
+    bool keyDown(int key)
+    {
+        // Action code 1 = PRESS
+        if (glfwGetKey(window, key) == 1)
+            return true;
+        return false;
+    }
+
     enum Action 
     {
         PRESS = 1

@@ -9,15 +9,15 @@
 
 Model::Model(std::string path) {
 	this->path = path;
-	this->modelMesh_ = loadModel();
+	this->modelMesh = loadModel();
 	this->shader = new Shader("./res/shaders/shader");
 	this->transform = new Transform();
 }
 
 Model::Model(std::string path, std::string texture) {
 	this->path = path;
-	this->modelMesh_ = loadModel();
-	this->tex_ = new Texture(texture);
+	this->modelMesh = loadModel();
+	this->tex = new Texture(texture);
 	this->shader = new Shader("./res/shaders/shader");
 	this->transform = new Transform();
 }
@@ -80,11 +80,11 @@ void Model::draw(Camera* cam)
 {
 	shader->draw();
 	shader->update(transform, cam);
-	tex_->bind(0);
-	modelMesh_->draw();
+	tex->bind(0);
+	modelMesh->draw();
 }
 
 void Model::bindTexture(Texture* tex)
 {
-	this->tex_ = tex;
+	this->tex = tex;
 }

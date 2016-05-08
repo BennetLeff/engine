@@ -17,9 +17,9 @@ public:
 	Transform(const glm::vec3& pos = glm::vec3(),
 			  const glm::vec3& rot = glm::vec3(),
 			  const glm::vec3& scale = glm::vec3(1.0f)) :
-	pos_(pos),
-	rot_(rot),
-	scale_(scale) {}
+	pos(pos),
+	rot(rot),
+	scale(scale) {}
 
 	glm::mat4 getModel() const;
 
@@ -32,10 +32,10 @@ public:
 	glm::vec3* getScale();
 
 private:
-	glm::vec3 pos_;
-	glm::vec3 rot_;
-	glm::vec3 scale_;
-	glm::mat4 model_;
+	glm::vec3 pos;
+	glm::vec3 rot;
+	glm::vec3 scale;
+	glm::mat4 model;
 };
 
 #endif /* TRANSFORM_H_ */

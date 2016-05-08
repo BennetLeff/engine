@@ -32,11 +32,10 @@ Shader::Shader(std::string file)
     uniforms[CAMPOS_U] = glGetUniformLocation(program, "campos");
 
     // Create point lights
-    auto light = PointLight(1.0f, glm::vec3(5), glm::vec3(1.0, 0.0, 0.0));
-    auto light2 = PointLight(1.0f, glm::vec3(-5, 5, 5), glm::vec3(0, 0, 1.0));
+    auto light = PointLight(1.0f, glm::vec3(5), glm::vec3(1, 1, 1));
+    // auto light2 = PointLight(1.0f, glm::vec3(-5, 5, 5), glm::vec3(1, 1, 1));
     pointLights.push_back(light);
-    pointLights.push_back(light2);
-
+    // pointLights.push_back(light2);
 }
 
 std::string Shader::load(std::string file)

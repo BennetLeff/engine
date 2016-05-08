@@ -32,7 +32,7 @@ IF(APPLE)
                      OpenGL_LIBRARY
                      IOKIT_LIBRARY
                      COREVIDEO_LIBRARY)
-   SET(MAC_LIBS ${COCOA_LIBRARY} ${OpenGL_LIBRARY} ${IOKIT_LIBRARY} ${COREVIDEO_LIBRARY} ${Boost_UUID_LIBRARY})
+   SET(MAC_LIBS ${COCOA_LIBRARY} ${OpenGL_LIBRARY} ${IOKIT_LIBRARY} ${COREVIDEO_LIBRARY})
 
   # Link the libraries
   target_link_libraries(Engine ${MAC_LIBS} ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} assimp glfw3)
@@ -45,8 +45,18 @@ IF(UNIX)
   find_package(GLEW REQUIRED)
   include_directories(${GLEW_INCLUDE_DIRS})
 
+  # Assumes nanogui is installed here:
+  include_directories(/usr/local/lib/nanogui/include)
+  link_directories(/usr/local/lib/nanogui)
+
+  # Eigen libs for nanogui
+  find_package(Eigen3 REQUIRED)
+  include_directories(${EIGEN3_INCLUDE_DIR})
+
+  LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/lib)
+
   # Link the libraries
-  target_link_libraries(Engine ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} ${GLEW_LIBRARY_DIRS} ${OPENGL_LIBRARY_DIRS} assimp glfw3 GLEW GL X11 Xi Xrandr Xxf86vm Xinerama Xcursor rt pthread ${CMAKE_DL_LIBS} ${Boost_UUID_LIBRARY})
+  target_link_libraries(Engine ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} ${GLEW_LIBRARY_DIRS} ${OPENGL_LIBRARY_DIRS} nanogui assimp glfw3 GLEW GL X11 Xi Xrandr Xxf86vm Xinerama Xcursor rt pthread ${CMAKE_DL_LIBS})
 
 ENDIF(UNIX)
 

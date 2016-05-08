@@ -9,11 +9,11 @@
 
 glm::mat4 Transform::getModel() const
 {
-	glm::mat4 posMatrix = glm::translate(pos_);
-	glm::mat4 rotXMatrix = glm::rotate(rot_.x, glm::vec3(1, 0, 0));
-	glm::mat4 rotYMatrix = glm::rotate(rot_.y, glm::vec3(0, 1, 0));
-	glm::mat4 rotZMatrix = glm::rotate(rot_.z, glm::vec3(0, 0, 1));
-	glm::mat4 scaleMatrix = glm::scale(scale_);
+	glm::mat4 posMatrix = glm::translate(pos);
+	glm::mat4 rotXMatrix = glm::rotate(rot.x, glm::vec3(1, 0, 0));
+	glm::mat4 rotYMatrix = glm::rotate(rot.y, glm::vec3(0, 1, 0));
+	glm::mat4 rotZMatrix = glm::rotate(rot.z, glm::vec3(0, 0, 1));
+	glm::mat4 scaleMatrix = glm::scale(scale);
 
 	glm::mat4 rotMatrix = rotZMatrix * rotYMatrix * rotXMatrix;
 
@@ -22,28 +22,28 @@ glm::mat4 Transform::getModel() const
 
 void Transform::setPosition(const glm::vec3& modelPosition)
 {
-	pos_ = modelPosition;
+	pos = modelPosition;
 }
 void Transform::setRotation(const glm::vec3& modelRotation)
 {
-	rot_ = modelRotation;
+	rot = modelRotation;
 }
 void Transform::setScale(const glm::vec3& modelScale)
 {
-	scale_ = modelScale;
+	scale = modelScale;
 }
 
 glm::vec3* Transform::getPosition()
 {
-	return &pos_;
+	return &pos;
 }
 
 glm::vec3* Transform::getRotation()
 {
-	return &rot_;
+	return &rot;
 }
 
 glm::vec3* Transform::getScale()
 {
-	return &scale_;
+	return &scale;
 }
