@@ -18,7 +18,7 @@ link_libraries(${GLFW_LIBRARY_DIRS})
 # Find assimp
 find_package(assimp REQUIRED)
 # Add the sources to the executable for linking
-add_executable(Engine main.cpp Camera.cpp Mesh.cpp Model.cpp Shader.cpp Texture.cpp Transform.cpp Window.cpp)
+add_executable(Engine main.cpp Camera.cpp Mesh.cpp Model.cpp Shader.cpp Texture.cpp Transform.cpp Window.cpp GUIWindow.cpp GUIWindow.h)
 
 # OSX only flags
 IF(APPLE)
