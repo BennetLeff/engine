@@ -18,7 +18,7 @@ link_libraries(${GLFW_LIBRARY_DIRS})
 # Find assimp
 find_package(assimp REQUIRED)
 # Add the sources to the executable for linking
-add_executable(Engine main.cpp Camera.cpp Mesh.cpp Model.cpp Shader.cpp Texture.cpp Transform.cpp Window.cpp GUIWindow.cpp GUIWindow.h)
+add_executable(Engine main.cpp Camera.cpp Mesh.cpp Model.cpp Shader.cpp Texture.cpp Transform.cpp Window.cpp GUI.cpp GUIScreen.cpp)
 
 # OSX only flags
 IF(APPLE)
@@ -57,6 +57,10 @@ IF(UNIX AND NOT APPLE)
   include_directories(/usr/local/lib/nanogui/include)
   link_directories(/usr/local/lib/nanogui)
 
+  # Assumes nanogui is installed here:
+  include_directories(/usr/local/lib/nanovg/src)
+  link_directories(/usr/local/lib/nanovg)
+
   # Eigen libs for nanogui
   find_package(Eigen3 REQUIRED)
   include_directories(${EIGEN3_INCLUDE_DIR})
@@ -64,7 +68,7 @@ IF(UNIX AND NOT APPLE)
   LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/lib)
 
   # Link the libraries
-  target_link_libraries(Engine ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} ${GLEW_LIBRARY_DIRS} ${OPENGL_LIBRARY_DIRS} nanogui assimp glfw3 GLEW GL X11 Xi Xrandr Xxf86vm Xinerama Xcursor rt pthread ${CMAKE_DL_LIBS})
+  target_link_libraries(Engine ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} ${GLEW_LIBRARY_DIRS} ${OPENGL_LIBRARY_DIRS} nanovg nanogui assimp glfw3 GLEW GL X11 Xi Xrandr Xxf86vm Xinerama Xcursor rt pthread ${CMAKE_DL_LIBS})
 
 ENDIF(UNIX AND NOT APPLE)
 
