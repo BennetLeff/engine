@@ -197,7 +197,7 @@ void GUIScreen::initialize(GLFWwindow *window, bool shutdownGLFWOnDestruct) {
     glfwGetFramebufferSize(mGLFWWindow, &mFBSize[0], &mFBSize[1]);
 
     mPixelRatio = get_pixel_ratio(window);
-    
+
     /* Detect framebuffer properties and set up compatible NanoVG context */
     GLint nStencilBits = 0, nSamples = 0;
     glGetFramebufferAttachmentParameteriv(GL_DRAW_FRAMEBUFFER,
