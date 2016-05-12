@@ -72,6 +72,7 @@ GUIScreen::GUIScreen(const Vector2i &size, const std::string &caption, bool resi
 
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST);
+    // glDisable(GL_CULL_FACE);
 
     // If not on OSX we need to include
     // OpenGL as an extension
@@ -264,7 +265,9 @@ void GUIScreen::setSize(const Vector2i &size) {
 }
 
 void GUIScreen::drawAll() {
+    // Draw calls in OpenGL.
     drawContents();
+    // Draw nanogui widgets.
     drawWidgets();
 }
 
@@ -286,7 +289,7 @@ void GUIScreen::drawWidgets() {
     mPixelRatio = (float) mFBSize[0] / (float) mSize[0];
     nvgBeginFrame(mNVGContext, mSize[0], mSize[1], mPixelRatio);
 
-    draw(mNVGContext);
+    // draw(mNVGContext);
 
     nvgEndFrame(mNVGContext);
 }

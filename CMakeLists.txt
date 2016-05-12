@@ -42,8 +42,12 @@ IF(APPLE)
   find_package(Eigen3 REQUIRED)
   include_directories(${EIGEN3_INCLUDE_DIR})
 
+  # Assumes nanovg is installed here:
+  include_directories(/usr/local/lib/nanovg/src)
+  link_directories(/usr/local/lib/nanovg)
+
   # Link the libraries
-  target_link_libraries(Engine ${MAC_LIBS} ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} nanogui assimp glfw3)
+  target_link_libraries(Engine ${MAC_LIBS} ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} nanovg nanogui assimp glfw3)
 ENDIF (APPLE)
 
 IF(UNIX AND NOT APPLE)
@@ -57,7 +61,7 @@ IF(UNIX AND NOT APPLE)
   include_directories(/usr/local/lib/nanogui/include)
   link_directories(/usr/local/lib/nanogui)
 
-  # Assumes nanogui is installed here:
+  # Assumes nanovg is installed here:
   include_directories(/usr/local/lib/nanovg/src)
   link_directories(/usr/local/lib/nanovg)
 
