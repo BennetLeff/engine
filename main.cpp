@@ -32,7 +32,9 @@ int main()
 
     model.transform->getPosition()->z = 10;
     model.transform->setScale(glm::vec3(0.75));
+    //model.transform->getScale()->z *= -1;
     house.transform->getPosition()->z = 40;
+    //house.transform->getScale()->z *= -1;
     ground.transform->getPosition()->y -= 0.2;
     ground.transform->getPosition()->z = 30;
     ground.transform->getScale()->z = 10;
@@ -50,7 +52,7 @@ int main()
 
         gui.drawAll();
 
-        gui.setVisible(true);
+        // gui.setVisible(true);
 
         model.transform->getRotation()->y = counter * 2;
 
@@ -69,7 +71,7 @@ int main()
         if (iManager.keyAction(iManager.ESC, iManager.PRESS))
             quit = true;
 
-        glfwSwapBuffers(gui.glfwWindow());
+        glfwSwapBuffers(gui.getWindow());
         glfwPollEvents();
 
         counter += 0.01f;
