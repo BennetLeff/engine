@@ -12,75 +12,75 @@ GUI::GUI(int width, int height)
 {
     using namespace nanogui;
 
-    Window *window = new Window(this, "Button demo");
-    window->setPosition(Vector2i(15, 15));
-    window->setLayout(new GroupLayout());
-
-    /* No need to store a pointer, the data structure will be automatically
-       freed when the parent window is deleted */
-    new Label(window, "Push buttons", "sans-bold");
-
-    Button *b = new Button(window, "Plain button");
-    b->setCallback([] { cout << "pushed!" << endl; });
-    b = new Button(window, "Styled", ENTYPO_ICON_ROCKET);
-    b->setBackgroundColor(Color(0, 0, 255, 25));
-    b->setCallback([] { cout << "pushed!" << endl; });
-
-    new Label(window, "Toggle buttons", "sans-bold");
-    b = new Button(window, "Toggle me");
-    b->setFlags(Button::ToggleButton);
-    b->setChangeCallback([](bool state) { cout << "Toggle button state: " << state << endl; });
-
-    new Label(window, "Radio buttons", "sans-bold");
-    b = new Button(window, "Radio button 1");
-    b->setFlags(Button::RadioButton);
-    b = new Button(window, "Radio button 2");
-    b->setFlags(Button::RadioButton);
-
-    new Label(window, "A tool palette", "sans-bold");
-    Widget *tools = new Widget(window);
-    tools->setLayout(new BoxLayout(Orientation::Horizontal,
-                                   Alignment::Middle, 0, 6));
-
-    b = new ToolButton(tools, ENTYPO_ICON_CLOUD);
-    b = new ToolButton(tools, ENTYPO_ICON_FF);
-    b = new ToolButton(tools, ENTYPO_ICON_COMPASS);
-    b = new ToolButton(tools, ENTYPO_ICON_INSTALL);
-
-    new Label(window, "Popup buttons", "sans-bold");
-    PopupButton *popupBtn = new PopupButton(window, "Popup", ENTYPO_ICON_EXPORT);
-    Popup *popup = popupBtn->popup();
-    popup->setLayout(new GroupLayout());
-    new Label(popup, "Arbitrary widgets can be placed here");
-    new CheckBox(popup, "A check box");
-    popupBtn = new PopupButton(popup, "Recursive popup", ENTYPO_ICON_FLASH);
-    popup = popupBtn->popup();
-    popup->setLayout(new GroupLayout());
-    new CheckBox(popup, "Another check box");
-
-    window = new Window(this, "Basic widgets");
-    window->setPosition(Vector2i(200, 15));
-    window->setLayout(new GroupLayout());
-
-    new Label(window, "Message dialog", "sans-bold");
-    tools = new Widget(window);
-    tools->setLayout(new BoxLayout(Orientation::Horizontal,
-                                   Alignment::Middle, 0, 6));
-    b = new Button(tools, "Info");
-    b->setCallback([&] {
-        auto dlg = new MessageDialog(this, MessageDialog::Type::Information, "Title", "This is an information message");
-        dlg->setCallback([](int result) { cout << "Dialog result: " << result << endl; });
-    });
-    b = new Button(tools, "Warn");
-    b->setCallback([&] {
-        auto dlg = new MessageDialog(this, MessageDialog::Type::Warning, "Title", "This is a warning message");
-        dlg->setCallback([](int result) { cout << "Dialog result: " << result << endl; });
-    });
-    b = new Button(tools, "Ask");
-    b->setCallback([&] {
-        auto dlg = new MessageDialog(this, MessageDialog::Type::Warning, "Title", "This is a question message", "Yes", "No", true);
-        dlg->setCallback([](int result) { cout << "Dialog result: " << result << endl; });
-    });
+//    Window *window = new Window(this, "Button demo");
+//    window->setPosition(Vector2i(15, 15));
+//    window->setLayout(new GroupLayout());
+//
+//    /* No need to store a pointer, the data structure will be automatically
+//       freed when the parent window is deleted */
+//    new Label(window, "Push buttons", "sans-bold");
+//
+//    Button *b = new Button(window, "Plain button");
+//    b->setCallback([] { cout << "pushed!" << endl; });
+//    b = new Button(window, "Styled", ENTYPO_ICON_ROCKET);
+//    b->setBackgroundColor(Color(0, 0, 255, 25));
+//    b->setCallback([] { cout << "pushed!" << endl; });
+//
+//    new Label(window, "Toggle buttons", "sans-bold");
+//    b = new Button(window, "Toggle me");
+//    b->setFlags(Button::ToggleButton);
+//    b->setChangeCallback([](bool state) { cout << "Toggle button state: " << state << endl; });
+//
+//    new Label(window, "Radio buttons", "sans-bold");
+//    b = new Button(window, "Radio button 1");
+//    b->setFlags(Button::RadioButton);
+//    b = new Button(window, "Radio button 2");
+//    b->setFlags(Button::RadioButton);
+//
+//    new Label(window, "A tool palette", "sans-bold");
+//    Widget *tools = new Widget(window);
+//    tools->setLayout(new BoxLayout(Orientation::Horizontal,
+//                                   Alignment::Middle, 0, 6));
+//
+//    b = new ToolButton(tools, ENTYPO_ICON_CLOUD);
+//    b = new ToolButton(tools, ENTYPO_ICON_FF);
+//    b = new ToolButton(tools, ENTYPO_ICON_COMPASS);
+//    b = new ToolButton(tools, ENTYPO_ICON_INSTALL);
+//
+//    new Label(window, "Popup buttons", "sans-bold");
+//    PopupButton *popupBtn = new PopupButton(window, "Popup", ENTYPO_ICON_EXPORT);
+//    Popup *popup = popupBtn->popup();
+//    popup->setLayout(new GroupLayout());
+//    new Label(popup, "Arbitrary widgets can be placed here");
+//    new CheckBox(popup, "A check box");
+//    popupBtn = new PopupButton(popup, "Recursive popup", ENTYPO_ICON_FLASH);
+//    popup = popupBtn->popup();
+//    popup->setLayout(new GroupLayout());
+//    new CheckBox(popup, "Another check box");
+//
+//    window = new Window(this, "Basic widgets");
+//    window->setPosition(Vector2i(200, 15));
+//    window->setLayout(new GroupLayout());
+//
+//    new Label(window, "Message dialog", "sans-bold");
+//    tools = new Widget(window);
+//    tools->setLayout(new BoxLayout(Orientation::Horizontal,
+//                                   Alignment::Middle, 0, 6));
+//    b = new Button(tools, "Info");
+//    b->setCallback([&] {
+//        auto dlg = new MessageDialog(this, MessageDialog::Type::Information, "Title", "This is an information message");
+//        dlg->setCallback([](int result) { cout << "Dialog result: " << result << endl; });
+//    });
+//    b = new Button(tools, "Warn");
+//    b->setCallback([&] {
+//        auto dlg = new MessageDialog(this, MessageDialog::Type::Warning, "Title", "This is a warning message");
+//        dlg->setCallback([](int result) { cout << "Dialog result: " << result << endl; });
+//    });
+//    b = new Button(tools, "Ask");
+//    b->setCallback([&] {
+//        auto dlg = new MessageDialog(this, MessageDialog::Type::Warning, "Title", "This is a question message", "Yes", "No", true);
+//        dlg->setCallback([](int result) { cout << "Dialog result: " << result << endl; });
+//    });
 
 
    // std::vector<std::pair<int, std::string>>

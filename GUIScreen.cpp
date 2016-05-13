@@ -289,7 +289,7 @@ void GUIScreen::drawWidgets() {
     mPixelRatio = (float) mFBSize[0] / (float) mSize[0];
     nvgBeginFrame(mNVGContext, mSize[0], mSize[1], mPixelRatio);
 
-    // draw(mNVGContext);
+    draw(mNVGContext);
 
     nvgEndFrame(mNVGContext);
 }
