@@ -3,24 +3,32 @@
 #ifdef __APPLE__
     #include <OpenGL/gl3.h>
 #else
-    #include <GL/glew.h>
+    // #include <GL/glew.h>
 #endif
 
-#include "Camera.h"
-#include "Model.h"
-#include "Window.h"
-#include "Input.h"
+// #include "Camera.h"
+// #include "Model.h"
+// #include "Window.h"
+// #include "Input.h"
 
 #include "GUIWindow.h"
 #include <QApplication>
+#include "ModelWindow.h"
 
 bool quit = false;
 
 int main(int argc, char* argv[])
 {
-    QApplication app(argc, argv);
-    GUIWindow window;
+    QGuiApplication app(argc, argv);
+    QSurfaceFormat format;
+    format.setSamples(16);
+
+    ModelWindow window;
+    window.setFormat(format);
+    window.resize(640, 480);
     window.show();
+    window.setAnimating(true);
+
     return app.exec();
 
     /*

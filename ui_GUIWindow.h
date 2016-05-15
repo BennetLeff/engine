@@ -76,7 +76,7 @@ public:
 
     void retranslateUi(QMainWindow *GUIWindow)
     {
-        GUIWindow->setWindowTitle(QApplication::translate("GUIWindow", "Hello, World!", 0));
+        GUIWindow->setWindowTitle(QApplication::translate("GUIWindow", "Title", 0));
         actionExit->setText(QApplication::translate("GUIWindow", "E&xit", 0));
         label->setText(QString());
         menuFile->setTitle(QApplication::translate("GUIWindow", "&File", 0));
