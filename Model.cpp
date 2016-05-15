@@ -10,7 +10,7 @@
 Model::Model(std::string path) {
 	this->path = path;
 	this->modelMesh = loadModel();
-	this->shader = new Shader("./res/shaders/shader");
+	this->shader = new Shader("/home/bennet/Desktop/engine/res/shaders");
 	this->transform = new Transform();
 }
 
@@ -18,7 +18,7 @@ Model::Model(std::string path, std::string texture) {
 	this->path = path;
 	this->modelMesh = loadModel();
 	this->tex = new Texture(texture);
-	this->shader = new Shader("./res/shaders/shader");
+	this->shader = new Shader("/home/bennet/Desktop/engine/res/shaders");
 	this->transform = new Transform();
 }
 

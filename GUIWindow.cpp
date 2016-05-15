@@ -3,7 +3,6 @@
 //
 
 #include "GUIWindow.h"
-// #include "ui_GUIWindow.h"
 
 GUIWindow::GUIWindow(QWindow *parent) :
     QWindow(parent),
@@ -110,5 +109,4 @@ void GUIWindow::setAnimating(bool animating)
 
 GUIWindow::~GUIWindow()
 {
-	// delete ui;
 }
