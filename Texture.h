@@ -4,10 +4,6 @@
 #else
     #include <GL/glew.h>
 #endif
-#ifndef STB_IMAGE_H
-    // #define STB_IMAGE_IMPLEMENTATION
-    #include "lib/stb_image.h"
-#endif
 
 class Texture
 {

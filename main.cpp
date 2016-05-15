@@ -12,18 +12,23 @@
 #include "Input.h"
 
 #include "GUIWindow.h"
-#include "GUI.h"
+#include <QApplication>
 
 bool quit = false;
 
-int main()
+int main(int argc, char* argv[])
 {
+    QApplication app(argc, argv);
+    GUIWindow window;
+    window.show();
+    return app.exec();
+
+    /*
     int WIDTH = 800;
     int HEIGHT = 600;
 
-    nanogui::init();
-    GUIWindow* app = new GUIWindow();
     // auto gui = GUI(WIDTH, HEIGHT);
+    auto win = Engine::Window(800, 600);
 
     auto cam = new Camera(glm::vec3(0, 6, -15), 70.0f, (float) WIDTH / (float) HEIGHT, 0.01f, 1000.0f);
 
@@ -43,29 +48,19 @@ int main()
     ground->transform->getScale()->z = 10;
     ground->transform->getScale()->x = 10;
 
-    auto iManager = Input(app->getWindow());
+    auto iManager = Input(win.getWindow());
 
     std::vector<Model*> models = {model, house, ground};
 
-    while (!quit)
+    while (!win.close() && !quit)
     {
-        // gui.clear(0.2, 0.5, 0.8, 1.0);
+        win.clear(0.2, 0.5, 0.8, 1.0);
 
-        app->clear(0.2, 0.5, 0.8, 1.0);
+        model->draw(cam);
+        house->draw(cam);
+        ground->draw(cam);
 
-//        model->draw(cam);
-//        house->draw(cam);
-//        ground->draw(cam);
-
-        app->drawAll(models, cam);
-
-        // gui.drawAll();
-
-        app->setVisible(true);
-
-        // gui.setVisible(true);
-
-    //    model.transform->getRotation()->y = counter * 2;
+        model->transform->getRotation()->y = counter * 2;
 
         if (iManager.keyAction(iManager.A, iManager.PRESS))
             cam->getPosition()->x += 1;
@@ -82,11 +77,10 @@ int main()
         if (iManager.keyAction(iManager.ESC, iManager.PRESS))
             quit = true;
 
-        glfwSwapBuffers(app->getWindow());
+        glfwSwapBuffers(win.getWindow());
         glfwPollEvents();
 
         counter += 0.01f;
     }
-
-    nanogui::shutdown();
+    */
 }

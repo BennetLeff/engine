@@ -17,8 +17,22 @@ find_library(GLFW_LIBRARIES glfw3 ${LIBRARY_SEARCH_PATH})
 link_libraries(${GLFW_LIBRARY_DIRS})
 # Find assimp
 find_package(assimp REQUIRED)
+# Instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTOMOC ON)
+# Find Qt
+find_package(Qt5Widgets REQUIRED)
+# The Qt5Widgets_INCLUDES also includes the include directories for
+# dependencies QtCore and QtGui
+include_directories(${Qt5Widgets_INCLUDES})
+# We need add -DQT_WIDGETS_LIB when using QtWidgets in Qt 5.
+add_definitions(${Qt5Widgets_DEFINITIONS})
+# Generate code from ui files
+# qt5_wrap_ui(UI_HEADERS GUIWindow.ui)
+# Generate rules for building source files from the resources
+# qt5_add_resources(QRCS resources.qrc)
+
 # Add the sources to the executable for linking
-add_executable(Engine main.cpp Camera.cpp Mesh.cpp Model.cpp Shader.cpp Texture.cpp Transform.cpp Window.cpp GUI.cpp GUIScreen.cpp)
+add_executable(Engine main.cpp Camera.cpp Mesh.cpp Model.cpp Shader.cpp Texture.cpp Transform.cpp Window.cpp GUIWindow.cpp ${UI_HEADERS} ${QRCS})
 
 # OSX only flags
 IF(APPLE)
@@ -34,20 +48,8 @@ IF(APPLE)
                      COREVIDEO_LIBRARY)
    SET(MAC_LIBS ${COCOA_LIBRARY} ${OpenGL_LIBRARY} ${IOKIT_LIBRARY} ${COREVIDEO_LIBRARY})
 
-  # Assumes nanogui is installed here:
-  include_directories(/usr/local/lib/nanogui/include)
-  link_directories(/usr/local/lib/nanogui)
-
-  # Eigen libs for nanogui
-  find_package(Eigen3 REQUIRED)
-  include_directories(${EIGEN3_INCLUDE_DIR})
-
-  # Assumes nanovg is installed here:
-  include_directories(/usr/local/lib/nanovg/src)
-  link_directories(/usr/local/lib/nanovg)
-
   # Link the libraries
-  target_link_libraries(Engine ${MAC_LIBS} ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} nanovg nanogui assimp glfw3)
+  target_link_libraries(Engine ${MAC_LIBS} ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} ${Qt5Widgets_LIBRARIES} assimp glfw3)
 ENDIF (APPLE)
 
 IF(UNIX AND NOT APPLE)
@@ -57,22 +59,8 @@ IF(UNIX AND NOT APPLE)
   find_package(GLEW REQUIRED)
   include_directories(${GLEW_INCLUDE_DIRS})
 
-  # Assumes nanogui is installed here:
-  include_directories(/usr/local/lib/nanogui/include)
-  link_directories(/usr/local/lib/nanogui)
-
-  # Assumes nanovg is installed here:
-  include_directories(/usr/local/lib/nanovg/src)
-  link_directories(/usr/local/lib/nanovg)
-
-  # Eigen libs for nanogui
-  find_package(Eigen3 REQUIRED)
-  include_directories(${EIGEN3_INCLUDE_DIR})
-
-  LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/lib)
-
   # Link the libraries
-  target_link_libraries(Engine ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} ${GLEW_LIBRARY_DIRS} ${OPENGL_LIBRARY_DIRS} nanovg nanogui assimp glfw3 GLEW GL X11 Xi Xrandr Xxf86vm Xinerama Xcursor rt pthread ${CMAKE_DL_LIBS})
+  target_link_libraries(Engine ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} ${GLEW_LIBRARY_DIRS} ${OPENGL_LIBRARY_DIRS} ${Qt5Widgets_LIBRARIES} assimp glfw3 GLEW GL X11 Xi Xrandr Xxf86vm Xinerama Xcursor rt pthread ${CMAKE_DL_LIBS})
 
 ENDIF(UNIX AND NOT APPLE)
 
