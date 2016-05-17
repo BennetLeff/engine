@@ -17,6 +17,9 @@ find_library(GLFW_LIBRARIES glfw3 ${LIBRARY_SEARCH_PATH})
 link_libraries(${GLFW_LIBRARY_DIRS})
 # Find assimp
 find_package(assimp REQUIRED)
+
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 # Find Qt
