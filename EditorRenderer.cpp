@@ -30,12 +30,7 @@ void EditorRenderer::paintGL()
 
     glEnable(GL_DEPTH_TEST);
 
-    auto house = new Model("/home/bennet/Desktop/engine/res/farm house/OBJ/Farmhouse OBJ.obj", "/home/bennet/Desktop/engine/res/farm house/Textures/Farmhouse Texture.jpg");
-
-    house->transform->getPosition()->z = 40;
-    house->transform->getRotation()->y = -1.9;
-
-    engine.addModel(house);
+    
 
     engine.draw();
 }

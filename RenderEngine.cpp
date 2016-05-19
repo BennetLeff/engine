@@ -31,5 +31,5 @@ void RenderEngine::addModel(Model* model)
 void RenderEngine::draw()
 {
     for (int i = 0; i < this->models.size(); i++)
-        models[i]->draw(this->cam);
+    	models[i]->draw(this->cam);
 }
