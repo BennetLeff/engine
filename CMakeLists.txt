@@ -35,7 +35,7 @@ add_definitions(${Qt5Widgets_DEFINITIONS})
 # qt5_add_resources(QRCS resources.qrc)
 
 # Add the sources to the executable for linking
-add_executable(Engine main.cpp Camera.cpp Mesh.cpp Model.cpp Shader.cpp Texture.cpp Transform.cpp Window.cpp GUIWindow.cpp ModelWindow.cpp ${UI_HEADERS} ${QRCS})
+add_executable(Engine main.cpp Camera.cpp Mesh.cpp Model.cpp Shader.cpp Texture.cpp Transform.cpp Window.cpp GUIWindow.cpp EditorRenderer.cpp RenderEngine.cpp ${UI_HEADERS} ${QRCS})
 
 # OSX only flags
 IF(APPLE)

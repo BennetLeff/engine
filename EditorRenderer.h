@@ -4,26 +4,31 @@
 
 #pragma once
 
+#include <vector>
+
 // Include GUIWindow first to include GLEW before GL
 #include "Model.h"
 #include "GUIWindow.h"
-
-#include <vector>
-
-#include <QtGui/QGuiApplication>
-
 #include "Camera.h"
+#include "RenderEngine.h"
 
 class EditorRenderer : public GUIWindow
 {
 public:
-    EditorRenderer(Camera* cam);
+    EditorRenderer(Camera* cam, int width, int height);
     ~EditorRenderer() { }
-    void initialize() Q_DECL_OVERRIDE;
-    void render() Q_DECL_OVERRIDE;
+
+    void paintGL();
+    void addModel(Model* model);
 private:
+    void initialize();
+
     int frame;
     Camera* cam;
     std::vector<Model*> models;
     Model* mod;
+    int width;
+    int height;
+
+    RenderEngine engine;
 };

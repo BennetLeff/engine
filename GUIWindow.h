@@ -6,33 +6,19 @@
 #include <QOpenGLPaintDevice>
 #include <QCoreApplication>
 #include <QPainter>
+#include <QOpenGLWidget>
 
-class GUIWindow : public QWindow, protected QOpenGLFunctions
+class GUIWindow : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
-
 public:
-    explicit GUIWindow(QWindow *parent = 0);
+    explicit GUIWindow(QWidget *parent = 0);
+
+    void initializeGL();
+    void resizeGL(int w, int h);
+    void paintGL();
+
+    void clear(float r, float g, float b, float a);
+
     ~GUIWindow();
-
-    virtual void render(QPainter *painter);
-    virtual void render();
-
-    virtual void initialize();
-
-    void setAnimating(bool animating);
-
-public slots:
-    void renderLater();
-    void renderNow();
-
-protected:
-    bool event(QEvent *event) Q_DECL_OVERRIDE;
-    void exposeEvent(QExposeEvent *event) Q_DECL_OVERRIDE;
-
-private:
-    bool m_update_pending;
-    bool m_animating;
-    QOpenGLContext* m_context;
-    QOpenGLPaintDevice* m_device;
 };

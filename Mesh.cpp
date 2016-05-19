@@ -1,7 +1,6 @@
 #include "Mesh.h"
 #include "Transform.h"
 
-
 Mesh::Mesh(ModelData modelData)
 {
 	drawCount_ = modelData.indices_.size();

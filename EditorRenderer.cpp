@@ -3,25 +3,42 @@
 //
 
 #include "EditorRenderer.h"
+#include <chrono>
 
-EditorRenderer::EditorRenderer(Camera* cam)
-    : frame(0), cam(cam) { }
+EditorRenderer::EditorRenderer(Camera* cam, int width, int height)
+    : frame(0), cam(cam), width(width), height(height)
+{
+    engine = RenderEngine();
+}
 
 void EditorRenderer::initialize()
 {
-    glewExperimental = GL_TRUE;
-    glewInit();
+    // Set up the rendering context, load shaders and other resources, etc.:
+    initializeOpenGLFunctions();
 
-    models.push_back(new Model("/home/bennet/Desktop/engine/res/Alfred/Alfred.obj", "/home/bennet/Desktop/engine/res/Alfred/alfred_dif.png"));
+    glViewport(0, 0, width, height);
 }
 
-void EditorRenderer::render()
+void EditorRenderer::addModel(Model *model)
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    glClearColor(0.1, 0.4, 0.6, 1.0);
-
-    for (int i = 0; i < this->models.size(); i++)
-        models[i]->draw(this->cam);
-
-    ++frame;
+    engine.addModel(model);
 }
+
+// Draws OpenGL
+void EditorRenderer::paintGL()
+{
+    // Draw the scene
+    clear(0.1, 0.4, 0.6, 1.0);
+
+    glEnable(GL_DEPTH_TEST);
+
+    auto house = new Model("/home/bennet/Desktop/engine/res/farm house/OBJ/Farmhouse OBJ.obj", "/home/bennet/Desktop/engine/res/farm house/Textures/Farmhouse Texture.jpg");
+
+    house->transform->getPosition()->z = 40;
+    house->transform->getRotation()->y = -1.9;
+
+    engine.addModel(house);
+
+    engine.draw(cam);
+}
+
