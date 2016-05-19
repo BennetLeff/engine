@@ -12,13 +12,15 @@
 #include "Camera.h"
 #include "RenderEngine.h"
 
-class EditorRenderer : public GUIWindow
+class EditorRenderer
 {
 public:
-    EditorRenderer(RenderEngine renderEngine, int width, int height);
+    EditorRenderer(RenderEngine* renderEngine, int width, int height);
     ~EditorRenderer() { }
 
-    void paintGL();
+    GUIWindow* getWindow() { return window; }
+
+    // void paintGL();
     void addModel(Model* model);
 private:
     void initialize();
@@ -30,5 +32,6 @@ private:
     int width;
     int height;
 
-    RenderEngine engine;
+    RenderEngine* engine;
+    GUIWindow* window;
 };

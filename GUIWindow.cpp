@@ -5,8 +5,8 @@
 #include <GL/glew.h>
 #include "GUIWindow.h"
 
-GUIWindow::GUIWindow(QWidget *parent) :
-    QOpenGLWidget(parent) { }
+GUIWindow::GUIWindow(QWidget* parent, RenderEngine* engine) :
+    QOpenGLWidget(parent), engine(engine) { }
 
 void GUIWindow::initializeGL()
 {
@@ -31,7 +31,14 @@ void GUIWindow::resizeGL(int w, int h) {  }
 void GUIWindow::paintGL()
 {
     // Draw the scene
-    clear(1.0, 1.0, 1.0, 1.0);
+    clear(0.1, 0.4, 0.6, 1.0);
+
+    // Depth test noot enabled by default.
+    glEnable(GL_DEPTH_TEST);
+
+    
+    // Draw all Models
+    engine->draw();
 }
 
 void GUIWindow::clear(float r, float g, float b, float a)
