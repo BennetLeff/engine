@@ -5,11 +5,9 @@
 #include "EditorRenderer.h"
 #include <chrono>
 
-EditorRenderer::EditorRenderer(Camera* cam, int width, int height)
-    : frame(0), cam(cam), width(width), height(height)
-{
-    engine = RenderEngine();
-}
+EditorRenderer::EditorRenderer(RenderEngine renderEngine, int width, int height)
+    : frame(0), engine(renderEngine), width(width), height(height)
+{ }
 
 void EditorRenderer::initialize()
 {
@@ -39,6 +37,6 @@ void EditorRenderer::paintGL()
 
     engine.addModel(house);
 
-    engine.draw(cam);
+    engine.draw();
 }
 

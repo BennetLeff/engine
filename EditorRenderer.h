@@ -15,7 +15,7 @@
 class EditorRenderer : public GUIWindow
 {
 public:
-    EditorRenderer(Camera* cam, int width, int height);
+    EditorRenderer(RenderEngine renderEngine, int width, int height);
     ~EditorRenderer() { }
 
     void paintGL();

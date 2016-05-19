@@ -5,6 +5,8 @@
 	as a window or Qt context.
 */
 
+#pragma once
+
 #include "Model.h"
 #include "Camera.h"
 #include <GL/glew.h>
@@ -12,10 +14,12 @@
 class RenderEngine
 {
 public:
-    RenderEngine();
-    void draw(Camera* cam);
+    RenderEngine(Camera* cam);
+    void draw();
     void addModel(Model* model);
-private:
+    Camera* getCamera() { return cam; }
     void init();
+private:
     std::vector<Model*> models;
+    Camera* cam;
 };
