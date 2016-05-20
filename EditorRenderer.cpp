@@ -22,9 +22,37 @@ void EditorRenderer::initialize()
     setupWidgets();
 }
 
+
+void EditorRenderer::onValueChanged(int value)
+{
+    int pos = slider->sliderPosition();
+    fprintf(stderr, "slider pos: %d", pos);
+}
+
 void EditorRenderer::setupWidgets()
 {
-    this->setCentralWidget(this->window);
+    this->resize(width, height);
+    // Set GUIWindow to be Central Widget
+    this->setCentralWidget(window);
+
+    // Set up buttons and set layout.
+    QPushButton *button1 = new QPushButton("One");
+    button1->move(50, 50);
+    button1->resize(50, 50);
+    this->layout()->addWidget(button1);
+
+    slider = new QSlider(Qt::Horizontal);
+    slider->setMinimum(0);
+    slider->setMaximum(100);
+    slider->setSliderPosition(50);
+    slider->setSingleStep(1);
+    slider->resize(400, 40);
+    slider->move(50, 100);
+
+    QObject::connect(slider, SIGNAL(valueChanged(int)),
+                     this, SLOT(onValueChanged(int)));
+
+    this->layout()->addWidget(slider);
 }
 
 void EditorRenderer::showEditor()
@@ -34,7 +62,7 @@ void EditorRenderer::showEditor()
     // Sets up the rest of the widgets locations.
     setupWidgets();
     // Shows the GUIWindow.
-    this->window->show();
+    window->show();
 }
 
 void EditorRenderer::addModel(Model *model)
@@ -42,16 +70,4 @@ void EditorRenderer::addModel(Model *model)
     engine->addModel(model);
 }
 
-// Draws OpenGL
-// void EditorRenderer::paintGL()
-// {
-//     // Draw the scene
-//     clear(0.1, 0.4, 0.6, 1.0);
-
-//     glEnable(GL_DEPTH_TEST);
-
-    
-
-//     engine.draw();
-// }
 

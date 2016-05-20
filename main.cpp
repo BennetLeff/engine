@@ -13,15 +13,13 @@
 #include "RenderEngine.h"
 
 #include <QApplication>
-#include <QPushButton>
-#include <QVBoxLayout>
 
 bool quit = false;
 
 int main(int argc, char* argv[])
 {
-    auto WIDTH = 800;
-    auto HEIGHT = 600;
+    auto WIDTH = 1024;
+    auto HEIGHT = 800;
 
     /* 
      * Sets up a QApplication
@@ -43,20 +41,9 @@ int main(int argc, char* argv[])
     // Sets up Rendering Engine and Editor.
     auto cam = new Camera(glm::vec3(0, 6, -20), 70.0f, (float) WIDTH / (float) HEIGHT, 0.01f, 1000.0f);
     RenderEngine* engine = new RenderEngine(cam);
-    engine->init();
     EditorRenderer editor(engine, WIDTH, HEIGHT);
 
-    editor.resize(WIDTH, HEIGHT);
     editor.showEditor();
-
-    // Set up buttons and set layout. 
-    QPushButton* btn1 = new QPushButton("click me");
-    QVBoxLayout* layout = new QVBoxLayout(editor.getWindow());
-    layout->addWidget(btn1);
-    btn1->setText("no click me");
-    btn1->move(50, 50);
-    editor.setLayout(layout);
-
 
     /*
      * Must call EditorRenderer.show() before any other

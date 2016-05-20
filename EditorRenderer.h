@@ -13,6 +13,9 @@
 #include "RenderEngine.h"
 
 #include <QMainWindow>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QSlider>
 
 class EditorRenderer : public QMainWindow
 {
@@ -27,17 +30,20 @@ public:
     // Call instead of QMainWindow.show()
     // so that all widgets are properly shown.
     void showEditor();
+
+private slots:
+    void onValueChanged(int value);
+
 private:
     void initialize();
     void setupWidgets();
 
     int frame;
     Camera* cam;
-    std::vector<Model*> models;
-    Model* mod;
     int width;
     int height;
 
     RenderEngine* engine;
     GUIWindow* window;
+    QSlider *slider;
 };
