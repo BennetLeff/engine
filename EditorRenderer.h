@@ -12,7 +12,9 @@
 #include "Camera.h"
 #include "RenderEngine.h"
 
-class EditorRenderer
+#include <QMainWindow>
+
+class EditorRenderer : public QMainWindow
 {
 public:
     EditorRenderer(RenderEngine* renderEngine, int width, int height);
@@ -22,8 +24,12 @@ public:
 
     // void paintGL();
     void addModel(Model* model);
+    // Call instead of QMainWindow.show()
+    // so that all widgets are properly shown.
+    void showEditor();
 private:
     void initialize();
+    void setupWidgets();
 
     int frame;
     Camera* cam;

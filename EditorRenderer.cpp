@@ -11,14 +11,30 @@ EditorRenderer::EditorRenderer(RenderEngine* renderEngine, int width, int height
 	this->height = height;
 	this->engine = renderEngine;
 	this->window = new GUIWindow(0, renderEngine);
+
 }
 
 void EditorRenderer::initialize()
 {
     // Set up the rendering context, load shaders and other resources, etc.:
     // initializeOpenGLFunctions();
-
     glViewport(0, 0, width, height);
+    setupWidgets();
+}
+
+void EditorRenderer::setupWidgets()
+{
+    this->setCentralWidget(this->window);
+}
+
+void EditorRenderer::showEditor()
+{
+    // Sets up the QMainWindow.
+    this->show();
+    // Sets up the rest of the widgets locations.
+    setupWidgets();
+    // Shows the GUIWindow.
+    this->window->show();
 }
 
 void EditorRenderer::addModel(Model *model)

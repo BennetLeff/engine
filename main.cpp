@@ -24,11 +24,11 @@ int main(int argc, char* argv[])
     auto HEIGHT = 600;
 
     /* 
-        Sets up a QApplication
-        with the proper formatting. This allows
-        GL versions to be set and so forth. Then
-        the QApplication is polled in the main loop
-        for events.
+     * Sets up a QApplication
+     * with the proper formatting. This allows
+     * GL versions to be set and so forth. Then
+     * the QApplication is polled in the main loop
+     * for events.
     */
 
     QApplication app(argc, argv);
@@ -46,9 +46,8 @@ int main(int argc, char* argv[])
     engine->init();
     EditorRenderer editor(engine, WIDTH, HEIGHT);
 
-    editor.getWindow()->resize(WIDTH, HEIGHT);
-    editor.getWindow()->show();
-
+    editor.resize(WIDTH, HEIGHT);
+    editor.showEditor();
 
     // Set up buttons and set layout. 
     QPushButton* btn1 = new QPushButton("click me");
@@ -56,29 +55,34 @@ int main(int argc, char* argv[])
     layout->addWidget(btn1);
     btn1->setText("no click me");
     btn1->move(50, 50);
-    editor.getWindow()->setLayout(layout);
+    editor.setLayout(layout);
 
 
-    /* 
-        Must call EditorRenderer.show() before any other
-        OpenGL calls. This is mostly because of Qt.
+    /*
+     * Must call EditorRenderer.show() before any other
+     * OpenGL calls. This is mostly because of Qt.
     */
-    auto house = new Model("/home/lasacs/Desktop/engine/res/farm house/OBJ/Farmhouse OBJ.obj", "/home/lasacs/Desktop/engine/res/farm house/Textures/Farmhouse Texture.jpg");
+    auto house = new Model("/home/bennet/Desktop/engine/res/farm house/OBJ/Farmhouse OBJ.obj", "/home/bennet/Desktop/engine/res/farm house/Textures/Farmhouse Texture.jpg");
     house->transform->getPosition()->z = 40;
-    
-    auto model = new Model("/home/lasacs/Desktop/engine/res/Alfred/Alfred.obj", "/home/lasacs/Desktop/engine/res/Alfred/alfred_dif.png");
+
+    auto model = new Model("/home/bennet/Desktop/engine/res/Alfred/Alfred.obj", "/home/bennet/Desktop/engine/res/Alfred/alfred_dif.png");
 
     editor.addModel(house);
     editor.addModel(model);
 
     float counter = 0.0f;
 
-    while (editor.getWindow()->isVisible())
+    while (editor.isVisible())
     {
         app.processEvents();
         model->transform->getRotation()->y = counter;
         counter += 0.1f;
 
+        /*
+         * Just updating window for now because
+         * it may be faster. Need to benchmark this
+         * and determine what is necessary.
+        */
         editor.getWindow()->update();
     }
 
