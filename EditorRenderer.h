@@ -15,10 +15,13 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QSlider>
 
 class EditorRenderer : public QMainWindow
 {
+	Q_OBJECT
+
 public:
     EditorRenderer(RenderEngine* renderEngine, int width, int height);
     ~EditorRenderer() { }
@@ -31,6 +34,8 @@ public:
     // so that all widgets are properly shown.
     void showEditor();
 
+    int getSliderValue() { return sliderPos; };
+
 private slots:
     void onValueChanged(int value);
 
@@ -42,6 +47,7 @@ private:
     Camera* cam;
     int width;
     int height;
+    int sliderPos = 0;
 
     RenderEngine* engine;
     GUIWindow* window;

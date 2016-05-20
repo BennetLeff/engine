@@ -29,13 +29,9 @@ find_package(Qt5Widgets REQUIRED)
 include_directories(${Qt5Widgets_INCLUDES})
 # We need add -DQT_WIDGETS_LIB when using QtWidgets in Qt 5.
 add_definitions(${Qt5Widgets_DEFINITIONS})
-# Generate code from ui files
-# qt5_wrap_ui(UI_HEADERS GUIWindow.ui)
-# Generate rules for building source files from the resources
-# qt5_add_resources(QRCS resources.qrc)
 
 # Add the sources to the executable for linking
-add_executable(Engine main.cpp Camera.cpp Mesh.cpp Model.cpp Shader.cpp Texture.cpp Transform.cpp Window.cpp GUIWindow.cpp EditorRenderer.cpp RenderEngine.cpp ${UI_HEADERS} ${QRCS})
+add_executable(Engine main.cpp Camera.cpp Mesh.cpp Model.cpp Shader.cpp Texture.cpp Transform.cpp Window.cpp GUIWindow.cpp EditorRenderer.cpp RenderEngine.cpp)
 
 # OSX only flags
 IF(APPLE)

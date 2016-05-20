@@ -25,8 +25,7 @@ void EditorRenderer::initialize()
 
 void EditorRenderer::onValueChanged(int value)
 {
-    int pos = slider->sliderPosition();
-    fprintf(stderr, "slider pos: %d", pos);
+    sliderPos = slider->sliderPosition();
 }
 
 void EditorRenderer::setupWidgets()
@@ -39,7 +38,6 @@ void EditorRenderer::setupWidgets()
     QPushButton *button1 = new QPushButton("One");
     button1->move(50, 50);
     button1->resize(50, 50);
-    this->layout()->addWidget(button1);
 
     slider = new QSlider(Qt::Horizontal);
     slider->setMinimum(0);
@@ -52,7 +50,8 @@ void EditorRenderer::setupWidgets()
     QObject::connect(slider, SIGNAL(valueChanged(int)),
                      this, SLOT(onValueChanged(int)));
 
-    this->layout()->addWidget(slider);
+   	this->layout()->addWidget(button1);
+   	this->layout()->addWidget(slider);
 }
 
 void EditorRenderer::showEditor()
