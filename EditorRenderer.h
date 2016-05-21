@@ -14,9 +14,14 @@
 
 #include <QMainWindow>
 #include <QPushButton>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
+#include <QGridLayout>
 #include <QSlider>
+#include <QAction>
+#include <QMenu>
+#include <QMenuBar>
+#include <QContextMenuEvent>
+#include <QLabel>
+#include <QActionGroup>
 
 class EditorRenderer : public QMainWindow
 {
@@ -38,10 +43,22 @@ public:
 
 private slots:
     void onValueChanged(int value);
+    // Menu bar slots
+    void newFile();
+    void open();
+    void save();
+
+protected:
+    // sets up main menu
+    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
 
 private:
     void initialize();
     void setupWidgets();
+
+    // Used to create menu widgets.
+    void createActions();
+    void createMenus();
 
     int frame;
     Camera* cam;
@@ -52,4 +69,12 @@ private:
     RenderEngine* engine;
     GUIWindow* window;
     QSlider *slider;
+
+    QMenuBar* menubar;
+    QMenu* fileMenu;
+    QAction* newAct;
+    QAction* openAct;
+    QAction* saveAct;
+
+    QWidget* mainWidget;
 };

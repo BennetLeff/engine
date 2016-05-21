@@ -49,10 +49,10 @@ int main(int argc, char* argv[])
      * Must call EditorRenderer.show() before any other
      * OpenGL calls. This is mostly because of Qt.
     */
-    auto house = new Model("/home/lasacs/Desktop/engine/res/farm house/OBJ/Farmhouse OBJ.obj", "/home/lasacs/Desktop/engine/res/farm house/Textures/Farmhouse Texture.jpg");
+    auto house = new Model("/home/bennet/Desktop/engine/res/farm house/OBJ/Farmhouse OBJ.obj", "/home/bennet/Desktop/engine/res/farm house/Textures/Farmhouse Texture.jpg");
     house->transform->getPosition()->z = 40;
 
-    auto model = new Model("/home/lasacs/Desktop/engine/res/Alfred/Alfred.obj", "/home/lasacs/Desktop/engine/res/Alfred/alfred_dif.png");
+    auto model = new Model("/home/bennet/Desktop/engine/res/Alfred/Alfred.obj", "/home/bennet/Desktop/engine/res/Alfred/alfred_dif.png");
 
     editor.addModel(house);
     editor.addModel(model);
