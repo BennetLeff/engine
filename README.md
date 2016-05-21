@@ -4,10 +4,13 @@ This is currently a C++ rewrite of the (incomplete) physics simulator I wrote in
 * Implement Component based design and abstract the rendering system
 * Implement shadows, better lighting
 * Longer Term:
- * GUI including interfaces for uploading and editing components
+ * An Editor (Now in the works and based on Qt). It's possible I can tie the engine's GUI libraries for in game GUI to Qt as well.
  * Physics (probably third party lib)
  * Possibly networking
  * Performance Improvments
  * Refactor and clean up code in general/read more C++ books and write better C++ code
  * Sound
  * All of the hundreds of other things you can add to a game engine
+ 
+# Building
+`cd` into the build/ directory and run `cmake ..` then `make` and the executable will be located in the main folder. Until I can fix an issue with relative path's for files not working you will need to change the path of the `res` folder in the files containing reference to it. 
