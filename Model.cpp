@@ -10,7 +10,7 @@
 Model::Model(std::string path) {
 	this->path = path;
 	this->modelMesh = loadModel();
-	this->shader = new Shader("/home/bennet/Desktop/engine/res/shaders");
+	this->shader = new Shader("./res/shaders");
 	this->transform = new Transform();
 }
 
@@ -18,14 +18,14 @@ Model::Model(std::string path, std::string texture) {
 	this->path = path;
 	this->modelMesh = loadModel();
 	this->tex = new Texture(texture);
-	this->shader = new Shader("/home/bennet/Desktop/engine/res/shaders");
+	this->shader = new Shader("./res/shaders");
 	this->transform = new Transform();
 }
 
 Mesh* Model::loadModel()
 {
 	Assimp::Importer import;
-	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+	const aiScene* scene = import.ReadFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
 		printf("Error importing mesh %s", import.GetErrorString());
