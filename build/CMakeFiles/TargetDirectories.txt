@@ -1,4 +1,0 @@
-/home/bennet/Desktop/engine/build/CMakeFiles/edit_cache.dir
-/home/bennet/Desktop/engine/build/CMakeFiles/rebuild_cache.dir
-/home/bennet/Desktop/engine/build/CMakeFiles/Engine.dir
-/home/bennet/Desktop/engine/build/CMakeFiles/Engine_automoc.dir
