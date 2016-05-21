@@ -9,7 +9,7 @@
 #include "Camera.h"
 #include "Model.h"
 
-#include "EditorRenderer.h"
+#include "Editor.h"
 #include "RenderEngine.h"
 
 #include <QApplication>

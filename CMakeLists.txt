@@ -31,7 +31,7 @@ include_directories(${Qt5Widgets_INCLUDES})
 add_definitions(${Qt5Widgets_DEFINITIONS})
 
 # Add the sources to the executable for linking
-add_executable(Engine main.cpp Camera.cpp Mesh.cpp Model.cpp Shader.cpp Texture.cpp Transform.cpp Window.cpp GUIWindow.cpp EditorRenderer.cpp RenderEngine.cpp)
+add_executable(Engine main.cpp Camera.cpp Mesh.cpp Model.cpp Shader.cpp Texture.cpp Transform.cpp Window.cpp GUIWindow.cpp Editor.cpp RenderEngine.cpp)
 
 # OSX only flags
 IF(APPLE)

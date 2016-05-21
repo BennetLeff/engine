@@ -2,7 +2,7 @@
 // Created by bennet on 5/17/16.
 //
 
-#include "EditorRenderer.h"
+#include "Editor.h"
 
 EditorRenderer::EditorRenderer(RenderEngine* renderEngine, int width, int height)
 {
