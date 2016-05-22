@@ -18,9 +18,10 @@ void RenderEngine::init()
             /* Problem: glewInit failed, something is seriously wrong. */
             fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
         }
-    #endif
 
-    glEnable(GL_DEPTH_TEST);
+        glEnable(GL_DEPTH_TEST);
+
+    #endif
 }
 
 void RenderEngine::addModel(Model model)
