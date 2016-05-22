@@ -5,6 +5,8 @@
 #pragma once
 
 #include <vector>
+#include <stdlib.h>
+#include <time.h>
 
 // Include GUIWindow first to include GLEW before GL
 #include "Model.h"
@@ -23,30 +25,34 @@
 #include <QLabel>
 #include <QActionGroup>
 
-class EditorRenderer : public QMainWindow
+class Editor : public QMainWindow
 {
 	Q_OBJECT
 
 public:
-    EditorRenderer(RenderEngine* renderEngine, int width, int height);
-    ~EditorRenderer() { }
+    Editor(RenderEngine* renderEngine, int width, int height);
+    ~Editor() { }
 
     GUIWindow* getWindow() { return window; }
 
     // void paintGL();
-    void addModel(Model* model);
+    void addModel(Model model);
     // Call instead of QMainWindow.show()
     // so that all widgets are properly shown.
     void showEditor();
 
     int getSliderValue() { return sliderPos; };
+    int getManValue() { return sliderPosForMan; }
 
 private slots:
-    void onValueChanged(int value);
+    void onSliderValueChanged(int value);
+    void onSliderManValueChanged(int value);
+    float getRandNum();
     // Menu bar slots
     void newFile();
     void open();
     void save();
+    void addModelToScene();
 
 protected:
     // sets up main menu
@@ -59,22 +65,31 @@ private:
     // Used to create menu widgets.
     void createActions();
     void createMenus();
+    QMenu* createFileMenu();
+    QMenu* createComponentsMenu();
 
     int frame;
     Camera* cam;
     int width;
     int height;
     int sliderPos = 0;
+    int sliderPosForMan = 0;
 
     RenderEngine* engine;
     GUIWindow* window;
     QSlider *slider;
+    QSlider *slidermanPos;
 
-    QMenuBar* menubar;
+    QMenuBar* menubar = new QMenuBar();
+    // New file, Open file, Save file commands.
     QMenu* fileMenu;
     QAction* newAct;
     QAction* openAct;
     QAction* saveAct;
+
+    // Add GameObject.
+    QMenu* componentsMenu;
+    QAction* addModelAct;
 
     QWidget* mainWidget;
 };

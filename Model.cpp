@@ -7,22 +7,21 @@
 
 #include "Model.h"
 
-Model::Model(std::string path) {
-	this->path = path;
-	this->modelMesh = loadModel();
-	this->shader = new Shader("./res/shaders");
-	this->transform = new Transform();
-}
+Model::Model(std::string path, std::string texture, Transform* trans)
+        : shader(Shader("./res/shaders")),
+          tex(Texture(texture)),
+          path(path),
+          modelMesh(loadModel(path)),
+          transform(trans) { }
 
-Model::Model(std::string path, std::string texture) {
-	this->path = path;
-	this->modelMesh = loadModel();
-	this->tex = new Texture(texture);
-	this->shader = new Shader("./res/shaders");
-	this->transform = new Transform();
-}
+Model::Model(std::string path, std::string texture)
+        : shader(Shader("./res/shaders")),
+          tex(Texture(texture)),
+          path(path),
+          modelMesh(loadModel(path)),
+          transform(new Transform()) { }
 
-Mesh* Model::loadModel()
+Mesh* Model::loadModel(std::string path)
 {
 	Assimp::Importer import;
 	const aiScene* scene = import.ReadFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -78,13 +77,13 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene)
 
 void Model::draw(Camera* cam)
 {
-	shader->draw();
-	shader->update(transform, cam);
-	tex->bind(0);
+	shader.draw();
+	shader.update(transform, cam);
+	tex.bind(0);
 	modelMesh->draw();
 }
 
-void Model::bindTexture(Texture* tex)
+void Model::bindTexture(Texture tex)
 {
 	this->tex = tex;
 }

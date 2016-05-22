@@ -21,22 +21,22 @@
 class Model
 {
 public:
-	Model(std::string path);
+	Model(std::string path, std::string texture, Transform* trans);
 	Model(std::string path, std::string texture);
-	Mesh* loadModel();
+	Mesh* loadModel(std::string path);
 	void draw(Camera* cam);
 	// If a texture has not been added
 	// Allows one to be bound. 
-	void bindTexture(Texture* tex);
+	void bindTexture(Texture tex);
 	Transform* transform;
 private:
 	Mesh* processMesh(aiMesh* mesh, const aiScene* scene);
 	std::string path;
 	std::string directory;
-	std::vector<Mesh*> meshes;
+	std::vector<Mesh> meshes;
 	Mesh* modelMesh;
-	Texture* tex;
-	Shader* shader;
+	Texture tex;
+	Shader shader;
 };
 
 #endif /* MODEL_H_ */

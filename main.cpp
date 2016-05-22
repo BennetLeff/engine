@@ -41,19 +41,22 @@ int main(int argc, char* argv[])
     // Sets up Rendering Engine and Editor.
     auto cam = new Camera(glm::vec3(0, 6, -20), 70.0f, (float) WIDTH / (float) HEIGHT, 0.01f, 1000.0f);
     RenderEngine* engine = new RenderEngine(cam);
-    EditorRenderer editor(engine, WIDTH, HEIGHT);
+    Editor editor(engine, WIDTH, HEIGHT);
 
     editor.showEditor();
 
     /*
-     * Must call EditorRenderer.show() before any other
+     * Must call Editor.show() before any other
      * OpenGL calls. This is mostly because of Qt.
     */
-    auto house = new Model("./res/farm house/OBJ/Farmhouse OBJ.obj", "./res/farm house/Textures/Farmhouse Texture.jpg");
-    house->transform->getPosition()->z = 40;
-
-    auto model = new Model("./res/Alfred/Alfred.obj", "./res/Alfred/alfred_dif.png");
-
+    auto house = Model("./res/farm house/OBJ/Farmhouse OBJ.obj", "./res/farm house/Textures/Farmhouse Texture.jpg");
+    house.transform->getPosition()->z = 40;
+//
+    auto model = Model("./res/Alfred/Alfred.obj", "./res/Alfred/alfred_dif.png");
+//    auto mod1 = Model("./res/deer-obj/deer-obj.obj", "./res/deer-obj/deer texture.tga");
+//    auto mod2 = Model("./res/deer-obj/deer-obj.obj", "./res/deer-obj/deer texture.tga");
+//    auto mod3 = Model("./res/deer-obj/deer-obj.obj", "./res/deer-obj/deer texture.tga");
+//
     editor.addModel(house);
     editor.addModel(model);
 
@@ -62,7 +65,10 @@ int main(int argc, char* argv[])
     while (editor.isVisible())
     {
         app.processEvents();
-        model->transform->getRotation()->y = float(editor.getSliderValue()) / 10;
+        model.transform->getRotation()->y = float(editor.getSliderValue()) / 10;
+        model.transform->getPosition()->z = editor.getManValue();
+//        model.transform->setPosition(glm::vec3(0, float(editor.getSliderValue()) / 10, editor.getManValue()));
+//        mod1.transform->getPosition()->z  = editor.getManValue();
         counter += 0.1f;
 
         /*

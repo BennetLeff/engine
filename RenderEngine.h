@@ -16,10 +16,10 @@ class RenderEngine
 public:
     RenderEngine(Camera* cam);
     void draw();
-    void addModel(Model* model);
+    void addModel(Model model);
     Camera* getCamera() { return cam; }
     void init();
 private:
-    std::vector<Model*> models;
+    std::vector<Model> models;
     Camera* cam;
 };
