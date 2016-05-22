@@ -13,4 +13,7 @@ This is currently a C++ rewrite of the (incomplete) physics simulator I wrote in
  * All of the hundreds of other things you can add to a game engine
  
 # Building
-`cd` into the build/ directory and run `cmake ..` then `make` and the executable will be located in the main folder. Until I can fix an issue with relative path's for files not working you will need to change the path of the `res` folder in the files containing reference to it. 
+# Linux
+`cd` into the build/ directory and run `cmake ..` then `make` and the executable will be located in the main folder.
+# OSX
+`cd` into the build/ directory and run `cmake .. -DCMAKE_PREFIX_PATH=/usr/local/Cellar/qt5/5.6.0` or set the `CMAKE_PREFIX_PATH` to the installation path. Then `make` and the executable will be located in the main folder.
