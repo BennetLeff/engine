@@ -3,15 +3,13 @@
 #include "RenderEngine.h"
 
 #include <QMainWindow>
-#include <QOpenGLFunctions>
 #include <QWindow>
 #include <QOpenGLPaintDevice>
 #include <QCoreApplication>
 #include <QPainter>
 #include <QOpenGLWidget>
 
-
-class GUIWindow : public QOpenGLWidget, protected QOpenGLFunctions
+class GUIWindow : public QOpenGLWidget
 {
     Q_OBJECT
 public:

@@ -12,8 +12,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "Mesh.h"
 #include "Texture.h"
+#include "Mesh.h"
 #include "Shader.h"
 #include "Transform.h"
 #include "Camera.h"

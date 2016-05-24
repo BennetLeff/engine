@@ -36,7 +36,7 @@ class Mesh
 {
 public:
     Mesh();
-    Mesh(ModelData modelData);
+    // Mesh(ModelData modelData);
     Mesh(std::vector<glm::vec3> vertices, std::vector<glm::vec3> normals, std::vector<glm::vec2> textures, std::vector<GLuint> indices);
     ~Mesh();
     void draw();

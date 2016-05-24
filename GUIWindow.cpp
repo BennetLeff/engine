@@ -10,9 +10,6 @@ GUIWindow::GUIWindow(QWidget* parent, RenderEngine* engine) :
 
 void GUIWindow::initializeGL()
 {
-    // Set up the rendering context, load shaders and other resources, etc.:
-    initializeOpenGLFunctions();
-
     // If not on OSX we need to include
     // OpenGL as an extension
     #ifndef __APPLE__
