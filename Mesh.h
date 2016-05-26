@@ -17,11 +17,7 @@ public:
     Mesh(std::vector<glm::vec3> vertices, std::vector<glm::vec3> normals, std::vector<glm::vec2> textures, std::vector<GLuint> indices);
     ~Mesh();
     void draw();
-    glm::vec3 pos;
-    std::vector<glm::vec3> positions;
-    std::vector<glm::vec3> normals;
-    std::vector<glm::vec2> textures;
-    std::vector<GLuint> elms;
+
 private:
     enum {
     	POSITION_VB,

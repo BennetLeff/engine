@@ -12,14 +12,32 @@ Model::Model(std::string path, std::string texture, Transform* trans)
           tex(Texture(texture)),
           path(path),
           modelMesh(loadModel(path)),
-          transform(trans) { }
+          transform(trans)
+{
+    if (texture != "")
+    {
+        textureSet = true;
+        shader.canDrawTexture(textureSet);
+    }
+
+    printf ("texture set: %d \n", textureSet);
+}
 
 Model::Model(std::string path, std::string texture)
         : shader(Shader("./res/shaders")),
           tex(Texture(texture)),
           path(path),
           modelMesh(loadModel(path)),
-          transform(new Transform()) { }
+          transform(new Transform())
+{
+    if (texture != "")
+    {
+        textureSet = true;
+        shader.canDrawTexture(textureSet);
+    }
+
+    printf ("texture set: %d \n", textureSet);
+}
 
 Mesh* Model::loadModel(std::string path)
 {
@@ -79,11 +97,14 @@ void Model::draw(Camera* cam)
 {
 	shader.draw();
 	shader.update(transform, cam);
-	tex.bind(0);
+	if (textureSet)
+		tex.bind(0);
 	modelMesh->draw();
 }
 
 void Model::bindTexture(Texture tex)
 {
-	this->tex = tex;
+    this->tex = tex;
+    textureSet = true;
+    shader.canDrawTexture(true);
 }

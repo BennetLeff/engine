@@ -20,13 +20,16 @@ uniform mat4 view;
 // camera position
 uniform vec3 campos;
 
+// Set to grey if no texture present
+// Otherwise set to texture.
+uniform bool textureSet;
+
 uniform struct PointLight
 {
     float intensity;
     vec3  position;
     vec3  color;
 } pointLight [NUMPOINTLIGHTS];
-
 
 vec3 createLight(int i)
 {
@@ -53,7 +56,6 @@ vec3 createLight(int i)
     return (diffuse + ambient + specular);
 }
 
-
 void main()
 {
     vec3 lightingTotal = vec3(0);
@@ -62,7 +64,15 @@ void main()
         lightingTotal += createLight(index);
     }
 
+    vec3 result;
 
-    vec3 result = lightingTotal * vec3(texture(tex, TexCoord));
+    if (textureSet)
+    {
+        result = lightingTotal * vec3(texture(tex, TexCoord));
+    }
+    else
+    {
+        result = lightingTotal * vec3(0.5f, 0.5f, 0.5f);
+    }
     outColor = vec4(result, 1.0f);
 }

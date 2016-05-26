@@ -24,6 +24,7 @@
 #include <QContextMenuEvent>
 #include <QLabel>
 #include <QActionGroup>
+#include <QFileDialog>
 
 class Editor : public QMainWindow
 {
@@ -68,6 +69,9 @@ private:
     void createMenus();
     QMenu* createFileMenu();
     QMenu* createComponentsMenu();
+
+    // Returns path from file dialog
+    std::string createFileDialogPath(std::string caption, std::string directory, std::string fileTypes);
 
     int frame;
     Camera* cam;

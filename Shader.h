@@ -25,6 +25,8 @@ public:
     void draw();
     void update(const Transform* trans, const Camera* cam);
     std::string load(std::string file);
+    // Use to set texture drawing uniform
+    void canDrawTexture(bool canDraw);
 private:
     static const short NUMSHADERS = 2;
 
@@ -34,6 +36,7 @@ private:
         PERSPECTIVE_U,
         LIGHT_U,
         CAMPOS_U,
+        TEXSET_U,
 		NUMUNIFORMS
     };
 
@@ -48,4 +51,6 @@ private:
     GLuint int_loc;
     GLuint pos_loc;
     GLuint col_loc;
+
+    bool textureIsSetup = false;
 };

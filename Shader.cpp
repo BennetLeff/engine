@@ -30,6 +30,7 @@ Shader::Shader(std::string file)
     uniforms[VIEW_U] = glGetUniformLocation(program, "view");
     uniforms[PERSPECTIVE_U] = glGetUniformLocation(program, "persp");
     uniforms[CAMPOS_U] = glGetUniformLocation(program, "campos");
+    uniforms[TEXSET_U] = glGetUniformLocation(program, "textureSet");
 
     // Create point lights
     auto light = PointLight(1.0f, glm::vec3(5), glm::vec3(1, 1, 1));
@@ -92,6 +93,13 @@ void Shader::checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::s
     */
 }
 
+// Create texture uniform and set
+// boolean uniform textureSet to true.
+void Shader::canDrawTexture(bool canDraw)
+{
+    textureIsSetup = canDraw;
+}
+
 void Shader::update(const Transform* trans, const Camera* cam)
 {
 	// Multiply the camera projection matrix by the
@@ -107,7 +115,9 @@ void Shader::update(const Transform* trans, const Camera* cam)
     glUniformMatrix4fv(uniforms[PERSPECTIVE_U], 1, GL_FALSE, &perspectice[0][0]);
 
     glUniform3fv(uniforms[CAMPOS_U], 1, &cam->getStartPosition()[0]);
-    
+
+    glUniform1i(uniforms[TEXSET_U], textureIsSetup);
+
     for (int i = 0; i < pointLights.size(); i++)
     {
         int_loc = glGetUniformLocation(program, ("pointLight[" + std::to_string(i) + "].intensity").c_str());

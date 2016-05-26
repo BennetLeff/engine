@@ -47,6 +47,16 @@ void Editor::save()
     fprintf(stderr, "Saved \n");
 }
 
+std::string Editor::createFileDialogPath(std::string caption, std::string directory, std::string fileTypes)
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr(caption.data()),
+                                                    directory.data(),
+                                                    tr(fileTypes.data()));
+    return fileName.toStdString();
+}
+
+
 void Editor::addModelToScene()
 {
     srand (time(NULL));
@@ -62,9 +72,17 @@ void Editor::addModelToScene()
      * will be drawn on Linux. It still works on OSX,
      * I'm not quite sure why though.
      */
-    window->makeCurrent();
-    engine->addModel(Model("./res/Alfred/Alfred.obj", "./res/Alfred/alfred_dif.png", trans));
-    fprintf(stderr, "Added a Model \n");
+    auto meshPath = createFileDialogPath("Mesh File", "./res/", "Mesh (*.obj *.fbx *.3ds)");
+    if (meshPath != "")
+    {
+        window->makeCurrent();
+        engine->addModel(Model(meshPath, "", trans));
+        fprintf(stderr, "Added a Model \n");
+    }
+    else
+    {
+        fprintf(stderr, "Could not create mesh");
+    }
 }
 
 void Editor::contextMenuEvent(QContextMenuEvent *event)
