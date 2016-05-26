@@ -8,8 +8,9 @@
 #include <QCoreApplication>
 #include <QPainter>
 #include <QOpenGLWidget>
+#include <QOpenGLFunctions>
 
-class GUIWindow : public QOpenGLWidget
+class GUIWindow : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
 public:

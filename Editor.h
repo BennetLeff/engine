@@ -35,19 +35,20 @@ public:
 
     GUIWindow* getWindow() { return window; }
 
-    // void paintGL();
+    // Wraps RenderEngine::addModel()
     void addModel(Model model);
     // Call instead of QMainWindow.show()
     // so that all widgets are properly shown.
     void showEditor();
 
+    // Some dummy functions for testing sliders.
     int getSliderValue() { return sliderPos; };
     int getManValue() { return sliderPosForMan; }
 
 private slots:
     void onSliderValueChanged(int value);
     void onSliderManValueChanged(int value);
-    float getRandNum();
+
     // Menu bar slots
     void newFile();
     void open();

@@ -47,27 +47,24 @@ void Editor::save()
     fprintf(stderr, "Saved \n");
 }
 
-float Editor::getRandNum()
-{
-    srand(time(0));
-    float num = rand() % 10 + 1;
-    fprintf(stderr, "%d \n", num);
-    return num;
-}
-
 void Editor::addModelToScene()
 {
-//    Model* modelToAdd = new Model("./res/Alfred/Alfred.obj", "./res/Alfred/alfred_dif.png");
     srand (time(NULL));
-//    modelToAdd->transform->getPosition()->z = 0;
-//    modelToAdd->transform->getPosition()->x = getRandNum();
 
     auto trans = new Transform();
     trans->getPosition()->x = rand() % 10 + 1;
     trans->getPosition()->y = rand() % 10 + 1;
     trans->getPosition()->z = rand() % 10 + 1;
+
+    /*
+     * Need to make the context current so
+     * OpenGL calls will work. Otherwise no mesh
+     * will be drawn on Linux. It still works on OSX,
+     * I'm not quite sure why though.
+     */
+    window->makeCurrent();
     engine->addModel(Model("./res/Alfred/Alfred.obj", "./res/Alfred/alfred_dif.png", trans));
-    fprintf(stderr, "Add a Model \n");
+    fprintf(stderr, "Added a Model \n");
 }
 
 void Editor::contextMenuEvent(QContextMenuEvent *event)
@@ -183,5 +180,3 @@ void Editor::addModel(Model model)
 {
     engine->addModel(model);
 }
-
-

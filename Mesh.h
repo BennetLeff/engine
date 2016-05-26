@@ -11,32 +11,9 @@
 
 #include <glm/glm.hpp>
 
-struct ModelData
-{
-	std::vector<glm::vec3> vertices_;
-	std::vector<glm::vec2> texCoords_;
-	std::vector<GLuint> indices_;
-	std::vector<glm::vec3> normals_;
-
-	ModelData(std::vector<glm::vec3> vertices, std::vector<glm::vec2> texCoords, std::vector<GLuint> indices)
-		: vertices_(vertices), texCoords_(texCoords), indices_(indices)
-	{
-		if (texCoords.size() == 0)
-		{
-			printf("no texCoords");
-		}
-		if (indices.size() == 0)
-		{
-			printf("no indices");
-		}
-	}
-};
-
 class Mesh
 {
 public:
-    Mesh();
-    // Mesh(ModelData modelData);
     Mesh(std::vector<glm::vec3> vertices, std::vector<glm::vec3> normals, std::vector<glm::vec2> textures, std::vector<GLuint> indices);
     ~Mesh();
     void draw();
@@ -54,7 +31,7 @@ private:
     	NUMBUFFERS
     };
 
-    GLuint vertexArrayObject_;
-    GLuint vertexBufferObject_[NUMBUFFERS];
-    unsigned int drawCount_;
+    GLuint vertexArrayObject;
+    GLuint vertexBufferObject[NUMBUFFERS];
+    unsigned int drawCount;
 };

@@ -25,7 +25,8 @@ Texture::Texture(std::string textureFile)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glGenerateMipmap(GL_TEXTURE_2D);
-    //"./res/deer-obj/deer texture.tga"
+
+    // Use stb_image to load images.
     image = stbi_load(textureFile.c_str(), &width, &height, &comp, STBI_rgb);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,

@@ -10,6 +10,8 @@ GUIWindow::GUIWindow(QWidget* parent, RenderEngine* engine) :
 
 void GUIWindow::initializeGL()
 {
+    initializeOpenGLFunctions();
+
     // If not on OSX we need to include
     // OpenGL as an extension
     #ifndef __APPLE__
@@ -27,12 +29,13 @@ void GUIWindow::resizeGL(int w, int h) {  }
 
 void GUIWindow::paintGL()
 {
+    this->makeCurrent();
+
     // Draw the scene
     clear(0.1, 0.4, 0.6, 1.0);
 
-    // Depth test noot enabled by default.
+    // Depth test not enabled by default.
     glEnable(GL_DEPTH_TEST);
-
     
     // Draw all Models
     engine->draw();
