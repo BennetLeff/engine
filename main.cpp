@@ -8,8 +8,8 @@
 
 int main(int argc, char* argv[])
 {
-    auto WIDTH = 1024;
-    auto HEIGHT = 800;
+    auto WIDTH = 1400;
+    auto HEIGHT = 900;
 
     /* 
      * Sets up a QApplication

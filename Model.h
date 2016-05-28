@@ -5,8 +5,7 @@
  *      Author: bennetleff
  */
 
-#ifndef MODEL_H_
-#define MODEL_H_
+#pragma once
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -17,8 +16,9 @@
 #include "Shader.h"
 #include "Transform.h"
 #include "Camera.h"
+#include "GameObject.h"
 
-class Model
+class Model : public GameObject
 {
 public:
 	Model(std::string path, std::string texture, Transform* trans);
@@ -40,5 +40,3 @@ private:
     bool textureSet = false;
 	Shader shader;
 };
-
-#endif /* MODEL_H_ */

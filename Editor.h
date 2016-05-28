@@ -5,14 +5,13 @@
 #pragma once
 
 #include <vector>
-#include <stdlib.h>
-#include <time.h>
 
 // Include GUIWindow first to include GLEW before GL
 #include "Model.h"
 #include "GUIWindow.h"
 #include "Camera.h"
 #include "RenderEngine.h"
+#include "GameObject.h"
 
 #include <QMainWindow>
 #include <QPushButton>
@@ -27,6 +26,7 @@
 #include <QActionGroup>
 #include <QFileDialog>
 #include <QListWidget>
+#include <QTableWidget>
 
 class Editor : public QMainWindow
 {
@@ -46,16 +46,16 @@ public:
     // so that all widgets are properly shown.
     void showEditor();
 
+protected:
+    // sets up main menu
+    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
+
 private slots:
     // Menu bar slots
     void newFile();
     void open();
     void save();
     void addModelToScene();
-
-protected:
-    // sets up main menu
-    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
 
 private:
     void initialize();
@@ -72,11 +72,15 @@ private:
     QListWidget* createSideBar();
 
     // Add GameObject to GameObject side bar viewer.
-    void addGameObjectListItem(std::string objectName);
+    void addGameObjectListItem(GameObject gameObject);
+
+    // Create an inspector for a GameObject based on QTableWidget.
+    QVBoxLayout* createInspector(GameObject gameObject);
 
     // Returns path from file dialog
     std::string createFileDialogPath(std::string caption, std::string directory, std::string fileTypes);
 
+    // Window width and height.
     int width;
     int height;
 
@@ -91,16 +95,18 @@ private:
     QAction* openAct;
     QAction* saveAct;
 
+    // Action for adding model
+    QAction* addModelAct;
+
     // Menu for component commands.
     QMenu* componentsMenu;
-    QAction* addModelAct;
 
     QWidget* mainWidget;
 
-    // The main layout for the Editor.
+    // The layouts for the Editor.
     QHBoxLayout* layout;
-
     QVBoxLayout* sideBarLayout;
+    QVBoxLayout* inspectorLayout;
 
     // Contains the GameObjects added
     // To the scene.
@@ -111,4 +117,7 @@ private:
 
     // The count of GameObjects added to the scene.
     int gameObjectCount = 0;
+
+    // The inspector's table.
+    // QTableWidget* inspector;
 };

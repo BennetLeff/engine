@@ -13,7 +13,8 @@ Editor::Editor(RenderEngine* renderEngine, int width, int height)
     this->layout = new QHBoxLayout();
     this->sideBarLayout = new QVBoxLayout();
     this->gameObjectList = createSideBar();
-
+    // this->inspector = new QTableWidget(this);
+    this->inspectorLayout = new QVBoxLayout();
 }
 
 void Editor::initialize()
@@ -138,7 +139,7 @@ void Editor::createMenus()
 QListWidget* Editor::createSideBar()
 {
     auto list = new QListWidget(this);
-    list->setMaximumWidth(100);
+    list->setMaximumWidth(150);
 
     return list;
 }
@@ -148,7 +149,7 @@ void Editor::setupSiderBarLayout()
     QLabel *label = new QLabel(this);
     label->setFrameStyle(QFrame::Raised);
     label->setText("Game Objects");
-    label->setAlignment(Qt::AlignTop | Qt::AlignCenter);
+    label->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
     sideBarLayout->addWidget(label);
     sideBarLayout->addWidget(gameObjectList);
@@ -156,9 +157,60 @@ void Editor::setupSiderBarLayout()
     sideBarLayout->setSpacing(0);
 }
 
-void Editor::addGameObjectListItem(std::string objectName)
+void Editor::addGameObjectListItem(GameObject gameObject)
 {
-    gameObjectListItems.push_back(new QListWidgetItem(tr(objectName.data()), gameObjectList));
+    auto item = new QListWidgetItem(tr(gameObject.getName().data()), gameObjectList);
+    gameObjectListItems.push_back(item);
+}
+
+QVBoxLayout* Editor::createInspector(GameObject gameObject)
+{
+    // Set up the main inspector label
+    auto inspectorLabel = new QLabel(this);
+    inspectorLabel->setText("Inspector");
+    inspectorLabel->setAlignment(Qt::AlignLeft);
+
+    // Set up the name label to signify a GameObject's name.
+    auto name = new QLabel(this);
+    name->setAlignment(Qt::AlignCenter);
+
+    // If the GameObject is set up.
+    if (gameObject.getName() != "")
+    {
+        name->setText(gameObject.getName().data());
+
+        // Set up the QTable with contains the GameObject data.
+        auto inspector = new QTableWidget(3, 2, this);
+        auto gameObjectPosition = new QTableWidgetItem("Position");
+        inspector->setItem(1, 1, gameObjectPosition);
+
+        inspector->setMaximumWidth(150);
+
+        inspectorLayout = new QVBoxLayout();
+
+        inspectorLayout->addWidget(inspectorLabel);
+        inspectorLayout->addWidget(name);
+        inspectorLayout->addWidget(inspector);
+    }
+    else
+    {
+        name->setText("Place Holder Name!");
+
+        // Set up the QTable with contains the GameObject data.
+        auto inspector = new QTableWidget(this);
+
+        inspector->setMaximumWidth(300);
+
+        inspectorLayout = new QVBoxLayout();
+
+        inspectorLayout->addWidget(inspectorLabel);
+        inspectorLayout->addWidget(name);
+        inspectorLayout->addWidget(inspector);
+    }
+
+    inspectorLayout->setSpacing(0);
+
+    return inspectorLayout;
 }
 
 void Editor::setupLayout()
@@ -169,6 +221,8 @@ void Editor::setupLayout()
 
     // Adds the GUIWindow to the layout.
     layout->addWidget(window);
+
+    layout->addLayout(createInspector(GameObject()));
 
     /*
      * Set a main widget that the other
@@ -205,9 +259,10 @@ void Editor::showEditor()
 
 void Editor::addModel(Model model)
 {
+    model.setName("Game Object " + std::to_string(gameObjectCount));
     engine->addModel(model);
 
     // Add the Model to the gameObjectList
-    addGameObjectListItem("Model " + std::to_string(gameObjectCount));
+    addGameObjectListItem(model);
     gameObjectCount += 1;
 }
