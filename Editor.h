@@ -16,7 +16,7 @@
 
 #include <QMainWindow>
 #include <QPushButton>
-#include <QGridLayout>
+#include <QHBoxLayout>
 #include <QSlider>
 #include <QAction>
 #include <QMenu>
@@ -25,6 +25,7 @@
 #include <QLabel>
 #include <QActionGroup>
 #include <QFileDialog>
+#include <QListWidget>
 
 class Editor : public QMainWindow
 {
@@ -34,22 +35,17 @@ public:
     Editor(RenderEngine* renderEngine, int width, int height);
     ~Editor() { }
 
+    // Returns the Window that OpenGL is rendered to.
     GUIWindow* getWindow() { return window; }
 
     // Wraps RenderEngine::addModel()
     void addModel(Model model);
+
     // Call instead of QMainWindow.show()
     // so that all widgets are properly shown.
     void showEditor();
 
-    // Some dummy functions for testing sliders.
-    int getSliderValue() { return sliderPos; };
-    int getManValue() { return sliderPosForMan; }
-
 private slots:
-    void onSliderValueChanged(int value);
-    void onSliderManValueChanged(int value);
-
     // Menu bar slots
     void newFile();
     void open();
@@ -63,38 +59,48 @@ protected:
 private:
     void initialize();
     void setupWidgets();
+    void setupLayout();
 
     // Used to create menu widgets.
-    void createActions();
     void createMenus();
     QMenu* createFileMenu();
     QMenu* createComponentsMenu();
 
+    // Sets up the side bar where GameObjects are listed.
+    QListWidget* createSideBar();
+
+    // Add GameObject to GameObject side bar viewer.
+    void addGameObjectListItem(std::string objectName);
+
     // Returns path from file dialog
     std::string createFileDialogPath(std::string caption, std::string directory, std::string fileTypes);
 
-    int frame;
-    Camera* cam;
     int width;
     int height;
-    int sliderPos = 0;
-    int sliderPosForMan = 0;
 
     RenderEngine* engine;
     GUIWindow* window;
-    QSlider *slider;
-    QSlider *slidermanPos;
 
     QMenuBar* menubar = new QMenuBar();
+
     // New file, Open file, Save file commands.
     QMenu* fileMenu;
     QAction* newAct;
     QAction* openAct;
     QAction* saveAct;
 
-    // Add GameObject.
+    // Menu for component commands.
     QMenu* componentsMenu;
     QAction* addModelAct;
 
     QWidget* mainWidget;
+
+    // The main layout for the Editor.
+    QHBoxLayout* layout;
+
+    // Contains the GameObjects added
+    // To the scene.
+    QListWidget *gameObjectList;
+    // The count of GameObjects added to the scene.
+    int gameObjectCount = 0;
 };

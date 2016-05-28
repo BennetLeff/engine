@@ -8,25 +8,23 @@
 #define GLFW_INCLUDE_GLCOREARB
 #include "GLFW/glfw3.h"
 
-namespace Engine {
-    class Window {
-    public:
-        void update();
+class Window {
+public:
+    void update();
 
-        // sets the color for the buffer clear
-        void clear(float red, float green, float blue, float alpha);
+    // sets the color for the buffer clear
+    void clear(float red, float green, float blue, float alpha);
 
-        // returns glfw window
-        GLFWwindow *getWindow();
+    // returns glfw window
+    GLFWwindow *getWindow();
 
-        // should the window close
-        bool close();
+    // should the window close
+    bool close();
 
-        Window(int width, int height);
+    Window(int width, int height);
 
-        ~Window();
+    ~Window();
 
-    private:
-        GLFWwindow *window;
-    };
-}
+private:
+    GLFWwindow *window;
+};

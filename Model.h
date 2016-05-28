@@ -29,7 +29,7 @@ public:
 	// Allows one to be bound. 
 	void bindTexture(Texture tex);
 	Transform* transform;
-    bool isTextureSet() { return textureSet; }
+
 private:
 	Mesh* processMesh(aiMesh* mesh, const aiScene* scene);
 	std::string path;

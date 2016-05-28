@@ -6,11 +6,12 @@
 
 Editor::Editor(RenderEngine* renderEngine, int width, int height)
 {
-	frame = 0;
 	this->width = width;
 	this->height = height;
 	this->engine = renderEngine;
 	this->window = new GUIWindow(0, renderEngine);
+    this->layout = new QHBoxLayout();
+    this->gameObjectList = createSideBar();
 }
 
 void Editor::initialize()
@@ -19,16 +20,6 @@ void Editor::initialize()
     // initializeOpenGLFunctions();
     glViewport(0, 0, width, height);
     setupWidgets();
-}
-
-void Editor::onSliderValueChanged(int value)
-{
-    sliderPos = slider->sliderPosition();
-}
-
-void Editor::onSliderManValueChanged(int value)
-{
-    sliderPosForMan = slidermanPos->sliderPosition();
 }
 
 // Set up slots.
@@ -76,12 +67,11 @@ void Editor::addModelToScene()
     if (meshPath != "")
     {
         window->makeCurrent();
-        engine->addModel(Model(meshPath, "", trans));
-        fprintf(stderr, "Added a Model \n");
+        addModel(Model(meshPath, "", trans));
     }
     else
     {
-        fprintf(stderr, "Could not create mesh");
+        fprintf(stderr, "Error: Could not create mesh from that path.");
     }
 }
 
@@ -143,45 +133,51 @@ void Editor::createMenus()
     menuBar()->show();
 }
 
-void Editor::setupWidgets()
+QListWidget* Editor::createSideBar()
 {
-    this->resize(width, height);
+    auto list = new QListWidget(this);
+    list->setMaximumWidth(100);
 
-    // Set up buttons and set layout.
-    slidermanPos = new QSlider(Qt::Horizontal);
-    slidermanPos->setMinimum(0);
-    slidermanPos->setMaximum(20);
-    slidermanPos->setSliderPosition(10);
+    return list;
+}
 
-    QObject::connect(slidermanPos, SIGNAL(valueChanged(int)),
-                     this, SLOT(onSliderManValueChanged(int)));
+void Editor::addGameObjectListItem(std::string objectName)
+{
+    new QListWidgetItem(tr(objectName.data()), gameObjectList);
+}
 
-    slider = new QSlider(Qt::Horizontal);
-    slider->setMinimum(0);
-    slider->setMaximum(314);
-    slider->setSliderPosition(314 / 2);
-    slider->setSingleStep(10);
-    slider->resize(400, 40);
-    slider->move(50, 100);
+void Editor::setupLayout()
+{
+    /*
+     * Add the side bar to the layout.
+     * This also initializes gameObjectList
+     * so that items can be added to it.
+     */
 
-    QObject::connect(slider, SIGNAL(valueChanged(int)),
-                     this, SLOT(onSliderValueChanged(int)));
-
-    // Creates Actions and creates the Menu bar.
-    createMenus();
-
-    // Set layout
-    auto layout = new QGridLayout;
-    layout->addWidget(slidermanPos);
-    layout->addWidget(slider);
+    layout->addWidget(gameObjectList);
+    // Adds the GUIWindow to the layout.
     layout->addWidget(window);
 
-    // Set layout in QWidget
+    /*
+     * Set a main widget that the other
+     * widgets are attached to. The main
+     * widget acts as an empty parent for
+     * the rest of the editor's widgets.
+     */
     mainWidget = new QWidget();
     mainWidget->setLayout(layout);
 
     // Set QWidget as the central layout of the main window
     setCentralWidget(mainWidget);
+}
+
+void Editor::setupWidgets()
+{
+    this->resize(width, height);
+
+    // Creates Actions and creates the Menu bar.
+    createMenus();
+    setupLayout();
 
     setMinimumSize(400, 400);
 }
@@ -190,6 +186,7 @@ void Editor::showEditor()
 {
     // Sets up the rest of the widgets locations.
     setupWidgets();
+
     // Sets up the QMainWindow.
     this->show();
 }
@@ -197,4 +194,8 @@ void Editor::showEditor()
 void Editor::addModel(Model model)
 {
     engine->addModel(model);
+
+    // Add the Model to the gameObjectList
+    addGameObjectListItem("Model " + std::to_string(gameObjectCount));
+    gameObjectCount += 1;
 }
