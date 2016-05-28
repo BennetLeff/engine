@@ -7,11 +7,12 @@
 #include <vector>
 
 // Include GUIWindow first to include GLEW before GL
-#include "Model.h"
-#include "GUIWindow.h"
-#include "Camera.h"
-#include "RenderEngine.h"
-#include "GameObject.h"
+#include "Core/Model.h"
+#include "Editor/GUIWindow.h"
+#include "Core/Camera.h"
+#include "Core/RenderEngine.h"
+#include "Core/GameObject.h"
+#include "Editor/SideBarList.h"
 
 #include <QMainWindow>
 #include <QPushButton>
@@ -25,13 +26,10 @@
 #include <QLabel>
 #include <QActionGroup>
 #include <QFileDialog>
-#include <QListWidget>
-#include <QTableWidget>
 
 class Editor : public QMainWindow
 {
 	Q_OBJECT
-
 public:
     Editor(RenderEngine* renderEngine, int width, int height);
     ~Editor() { }
@@ -69,7 +67,7 @@ private:
     QMenu* createComponentsMenu();
 
     // Sets up the side bar where GameObjects are listed.
-    QListWidget* createSideBar();
+    SideBarList* createSideBar();
 
     // Add GameObject to GameObject side bar viewer.
     void addGameObjectListItem(GameObject gameObject);
@@ -108,16 +106,8 @@ private:
     QVBoxLayout* sideBarLayout;
     QVBoxLayout* inspectorLayout;
 
-    // Contains the GameObjects added
-    // To the scene.
-    QListWidget *gameObjectList;
-
-    // Stores all GameObject list items so they can be edited.
-    std::vector<QListWidgetItem*> gameObjectListItems;
-
     // The count of GameObjects added to the scene.
     int gameObjectCount = 0;
 
-    // The inspector's table.
-    // QTableWidget* inspector;
+    SideBarList* sideBar;
 };

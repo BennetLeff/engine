@@ -3,7 +3,7 @@
 //
 
 #include <GL/glew.h>
-#include "GUIWindow.h"
+#include "Editor/GUIWindow.h"
 
 GUIWindow::GUIWindow(QWidget* parent, RenderEngine* engine) :
     QOpenGLWidget(parent), engine(engine) { }

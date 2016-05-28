@@ -2,9 +2,9 @@
 
 #include <QApplication>
 
-#include "Camera.h"
-#include "Model.h"
-#include "Editor.h"
+#include "Core/Camera.h"
+#include "Core/Model.h"
+#include "Editor/Editor.h"
 
 int main(int argc, char* argv[])
 {

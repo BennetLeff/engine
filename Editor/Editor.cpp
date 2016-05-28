@@ -2,7 +2,7 @@
 // Created by bennet on 5/17/16.
 //
 
-#include "Editor.h"
+#include "Editor/Editor.h"
 
 Editor::Editor(RenderEngine* renderEngine, int width, int height)
 {
@@ -12,9 +12,11 @@ Editor::Editor(RenderEngine* renderEngine, int width, int height)
 	this->window = new GUIWindow(0, renderEngine);
     this->layout = new QHBoxLayout();
     this->sideBarLayout = new QVBoxLayout();
-    this->gameObjectList = createSideBar();
+
     // this->inspector = new QTableWidget(this);
     this->inspectorLayout = new QVBoxLayout();
+
+    this->sideBar = createSideBar();
 }
 
 void Editor::initialize()
@@ -136,12 +138,11 @@ void Editor::createMenus()
     menuBar()->show();
 }
 
-QListWidget* Editor::createSideBar()
+SideBarList* Editor::createSideBar()
 {
-    auto list = new QListWidget(this);
-    list->setMaximumWidth(150);
-
-    return list;
+    sideBar = new SideBarList();
+    sideBar->setupSideBar();
+    return sideBar;
 }
 
 void Editor::setupSiderBarLayout()
@@ -152,16 +153,16 @@ void Editor::setupSiderBarLayout()
     label->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
     sideBarLayout->addWidget(label);
-    sideBarLayout->addWidget(gameObjectList);
+    sideBarLayout->addWidget(sideBar->getGameObjectList());
 
     sideBarLayout->setSpacing(0);
 }
 
 void Editor::addGameObjectListItem(GameObject gameObject)
 {
-    auto item = new QListWidgetItem(tr(gameObject.getName().data()), gameObjectList);
-    gameObjectListItems.push_back(item);
+    sideBar->addSideBarListItem(gameObject);
 }
+
 
 QVBoxLayout* Editor::createInspector(GameObject gameObject)
 {
