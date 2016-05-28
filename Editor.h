@@ -17,6 +17,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QSlider>
 #include <QAction>
 #include <QMenu>
@@ -60,6 +61,7 @@ private:
     void initialize();
     void setupWidgets();
     void setupLayout();
+    void setupSiderBarLayout();
 
     // Used to create menu widgets.
     void createMenus();
@@ -98,9 +100,15 @@ private:
     // The main layout for the Editor.
     QHBoxLayout* layout;
 
+    QVBoxLayout* sideBarLayout;
+
     // Contains the GameObjects added
     // To the scene.
     QListWidget *gameObjectList;
+
+    // Stores all GameObject list items so they can be edited.
+    std::vector<QListWidgetItem*> gameObjectListItems;
+
     // The count of GameObjects added to the scene.
     int gameObjectCount = 0;
 };

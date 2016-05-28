@@ -11,7 +11,9 @@ Editor::Editor(RenderEngine* renderEngine, int width, int height)
 	this->engine = renderEngine;
 	this->window = new GUIWindow(0, renderEngine);
     this->layout = new QHBoxLayout();
+    this->sideBarLayout = new QVBoxLayout();
     this->gameObjectList = createSideBar();
+
 }
 
 void Editor::initialize()
@@ -141,20 +143,30 @@ QListWidget* Editor::createSideBar()
     return list;
 }
 
+void Editor::setupSiderBarLayout()
+{
+    QLabel *label = new QLabel(this);
+    label->setFrameStyle(QFrame::Raised);
+    label->setText("Game Objects");
+    label->setAlignment(Qt::AlignTop | Qt::AlignCenter);
+
+    sideBarLayout->addWidget(label);
+    sideBarLayout->addWidget(gameObjectList);
+
+    sideBarLayout->setSpacing(0);
+}
+
 void Editor::addGameObjectListItem(std::string objectName)
 {
-    new QListWidgetItem(tr(objectName.data()), gameObjectList);
+    gameObjectListItems.push_back(new QListWidgetItem(tr(objectName.data()), gameObjectList));
 }
 
 void Editor::setupLayout()
 {
-    /*
-     * Add the side bar to the layout.
-     * This also initializes gameObjectList
-     * so that items can be added to it.
-     */
+    setupSiderBarLayout();
 
-    layout->addWidget(gameObjectList);
+    layout->addLayout(sideBarLayout);
+
     // Adds the GUIWindow to the layout.
     layout->addWidget(window);
 
