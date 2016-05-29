@@ -13,6 +13,7 @@
 #include "Core/RenderEngine.h"
 #include "Core/GameObject.h"
 #include "Editor/SideBarList.h"
+#include "Editor/Inspector.h"
 
 #include <QMainWindow>
 #include <QPushButton>
@@ -59,12 +60,16 @@ private:
     void initialize();
     void setupWidgets();
     void setupLayout();
-    void setupSiderBarLayout();
+    void setupSideBarLayout();
 
     // Used to create menu widgets.
     void createMenus();
     QMenu* createFileMenu();
     QMenu* createComponentsMenu();
+
+    // Gets called when Editor needs to update
+    // like when GameObjects are added.
+    void updateEditor();
 
     // Sets up the side bar where GameObjects are listed.
     SideBarList* createSideBar();
@@ -73,7 +78,7 @@ private:
     void addGameObjectListItem(GameObject gameObject);
 
     // Create an inspector for a GameObject based on QTableWidget.
-    QVBoxLayout* createInspector(GameObject gameObject);
+    // QVBoxLayout* createInspectorLayout(GameObject gameObject);
 
     // Returns path from file dialog
     std::string createFileDialogPath(std::string caption, std::string directory, std::string fileTypes);
@@ -105,9 +110,11 @@ private:
     QHBoxLayout* layout;
     QVBoxLayout* sideBarLayout;
     QVBoxLayout* inspectorLayout;
+//    QTableWidget* inspector;
 
     // The count of GameObjects added to the scene.
     int gameObjectCount = 0;
 
     SideBarList* sideBar;
+    Inspector* inspector;
 };

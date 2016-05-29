@@ -35,7 +35,27 @@ void SideBarList::setupSideBar()
 
 void SideBarList::updateGameObjectName(QStandardItem *item)
 {
-    auto thing = static_cast<SideBarListItem*>(item);
-    printf("object changed %s \n", thing->getGameObject().getName().data());
-    printf("item changed to %s \n", item->text().toStdString().data());
+    auto sideBarItem = static_cast<SideBarListItem*>(item);
+    printf("object changed %s \n", sideBarItem->getGameObject().getName().data());
+
+    for (int i = 0; i < this->gameObjectListItems.size(); i++)
+    {
+        printf("Object: %s \n", static_cast<SideBarListItem* >(gameObjectListItems[i])->getGameObject().getName().data());
+    }
+}
+
+QModelIndexList* SideBarList::getSelected()
+{
+    auto indexes = gameObjectList->selectionModel()->selectedIndexes();
+    for (int i = 0; i < indexes.size(); i++)
+    {
+        printf("Index: %s \n", indexes[i].data().toString().toStdString().data());
+    }
+
+    return nullptr;
+}
+
+std::vector<QStandardItem*> SideBarList::getGameObjectListItems()
+{
+    return this->gameObjectListItems;
 }

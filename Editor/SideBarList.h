@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Editor/SideBarListItem.h"
+#include <QModelIndexList>
 
 class SideBarList : public QObject
 {
@@ -16,7 +17,9 @@ public:
     void addSideBarListItem(GameObject gameObject);
     QStandardItemModel* getStandardModel();
     QListView* getGameObjectList();
+    std::vector<QStandardItem*> getGameObjectListItems();
     void setupSideBar();
+    QModelIndexList* getSelected();
 
 private slots:
     void updateGameObjectName(QStandardItem* item);

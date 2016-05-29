@@ -38,13 +38,13 @@ int main(int argc, char* argv[])
     */
     editor.showEditor();
 
-    auto house = Model("./res/farm house/OBJ/Farmhouse OBJ.obj", "./res/farm house/Textures/Farmhouse Texture.jpg");
-    house.transform->getPosition()->z = 40;
-
-    auto model = Model("./res/Alfred/Alfred.obj", "./res/Alfred/alfred_dif.png");
-
-    editor.addModel(house);
-    editor.addModel(model);
+//    auto house = Model("./res/farm house/OBJ/Farmhouse OBJ.obj", "./res/farm house/Textures/Farmhouse Texture.jpg");
+//    house.transform->getPosition()->z = 40;
+//
+//    auto model = Model("./res/Alfred/Alfred.obj", "./res/Alfred/alfred_dif.png");
+//
+//    editor.addModel(house);
+//    editor.addModel(model);
 
     while (editor.isVisible())
     {

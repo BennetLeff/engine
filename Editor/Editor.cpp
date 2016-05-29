@@ -13,10 +13,8 @@ Editor::Editor(RenderEngine* renderEngine, int width, int height)
     this->layout = new QHBoxLayout();
     this->sideBarLayout = new QVBoxLayout();
 
-    // this->inspector = new QTableWidget(this);
-    this->inspectorLayout = new QVBoxLayout();
-
     this->sideBar = createSideBar();
+    this->inspector = new Inspector();
 }
 
 void Editor::initialize()
@@ -145,7 +143,7 @@ SideBarList* Editor::createSideBar()
     return sideBar;
 }
 
-void Editor::setupSiderBarLayout()
+void Editor::setupSideBarLayout()
 {
     QLabel *label = new QLabel(this);
     label->setFrameStyle(QFrame::Raised);
@@ -163,67 +161,18 @@ void Editor::addGameObjectListItem(GameObject gameObject)
     sideBar->addSideBarListItem(gameObject);
 }
 
-
-QVBoxLayout* Editor::createInspector(GameObject gameObject)
-{
-    // Set up the main inspector label
-    auto inspectorLabel = new QLabel(this);
-    inspectorLabel->setText("Inspector");
-    inspectorLabel->setAlignment(Qt::AlignLeft);
-
-    // Set up the name label to signify a GameObject's name.
-    auto name = new QLabel(this);
-    name->setAlignment(Qt::AlignCenter);
-
-    // If the GameObject is set up.
-    if (gameObject.getName() != "")
-    {
-        name->setText(gameObject.getName().data());
-
-        // Set up the QTable with contains the GameObject data.
-        auto inspector = new QTableWidget(3, 2, this);
-        auto gameObjectPosition = new QTableWidgetItem("Position");
-        inspector->setItem(1, 1, gameObjectPosition);
-
-        inspector->setMaximumWidth(150);
-
-        inspectorLayout = new QVBoxLayout();
-
-        inspectorLayout->addWidget(inspectorLabel);
-        inspectorLayout->addWidget(name);
-        inspectorLayout->addWidget(inspector);
-    }
-    else
-    {
-        name->setText("Place Holder Name!");
-
-        // Set up the QTable with contains the GameObject data.
-        auto inspector = new QTableWidget(this);
-
-        inspector->setMaximumWidth(300);
-
-        inspectorLayout = new QVBoxLayout();
-
-        inspectorLayout->addWidget(inspectorLabel);
-        inspectorLayout->addWidget(name);
-        inspectorLayout->addWidget(inspector);
-    }
-
-    inspectorLayout->setSpacing(0);
-
-    return inspectorLayout;
-}
-
 void Editor::setupLayout()
 {
-    setupSiderBarLayout();
+    setupSideBarLayout();
 
     layout->addLayout(sideBarLayout);
 
     // Adds the GUIWindow to the layout.
     layout->addWidget(window);
 
-    layout->addLayout(createInspector(GameObject()));
+    // layout->addWidget(inspector);
+
+    // layout->addLayout(inspector->getLayout());
 
     /*
      * Set a main widget that the other
@@ -266,4 +215,16 @@ void Editor::addModel(Model model)
     // Add the Model to the gameObjectList
     addGameObjectListItem(model);
     gameObjectCount += 1;
+
+    updateEditor();
+}
+
+void Editor::updateEditor()
+{
+    auto sideBarListItem = dynamic_cast<SideBarListItem*>(sideBar->getGameObjectListItems()[gameObjectCount - 1]);
+    inspector->createWidgets(sideBarListItem->getGameObject());
+
+    layout->takeAt(2);
+
+    layout->addLayout(inspector->getLayout());
 }
