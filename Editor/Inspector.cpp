@@ -6,38 +6,39 @@
 
 Inspector::Inspector()
 {
-    // Set up the main inspector label
-    inspectorLabel = new QLabel();
-    inspectorLabel->setText("Inspector");
-    inspectorLabel->setAlignment(Qt::AlignLeft);
-
-    // Set up the name label to signify a GameObject's name.
-    name = new QLabel();
-    name->setAlignment(Qt::AlignCenter);
-
     inspectorLayout = new QVBoxLayout();
-    inspectorLayout->addWidget(inspectorLabel);
-    inspectorLayout->addWidget(name);
+    inspectorLabel = new QLabel("Inspector");
+    inspectorObjectName = new QLabel("Place Holder");
 
-    // init();
+    inspectorLayout->setSpacing(10);
 }
+
+// To be implemented in the future.
+void Inspector::createWidgets(GameObject gameObject) { }
+
+void Inspector::insertRow(std::string label, std::string formData)
+{
+    inspectorLayout->addWidget(new LabeledLineEdit(label, formData));
+}
+
+void Inspector::clearLayout()
+{
+    while (inspectorLayout->count() != 0) // Check this first as warning issued if no items when calling takeAt(0).
+    {
+        QLayoutItem* forDeletion = inspectorLayout->takeAt(0);
+
+        if (forDeletion != nullptr)
+        {
+            delete forDeletion->widget();
+            delete forDeletion;
+        }
+    }
+
+}
+
+void Inspector::updateLayout() { }
 
 QVBoxLayout* Inspector::getLayout()
 {
-    return this->inspectorLayout;
-}
-
-QTableWidget* Inspector::getTable()
-{
-    return this->inspectorTable;
-}
-
-void Inspector::createWidgets(GameObject gameObject)
-{
-    inspectorWidgets.push_back(new LabeledLineEdit("Pos x: ", std::to_string(gameObject.getPosition().x)));
-
-    for (int i = 0; i < inspectorWidgets.size(); i++)
-    {
-        inspectorLayout->addWidget(inspectorWidgets[i]);
-    }
+    return inspectorLayout;
 }

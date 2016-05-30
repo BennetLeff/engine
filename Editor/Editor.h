@@ -27,6 +27,7 @@
 #include <QLabel>
 #include <QActionGroup>
 #include <QFileDialog>
+#include <QLineEdit>
 
 class Editor : public QMainWindow
 {
@@ -69,7 +70,7 @@ private:
 
     // Gets called when Editor needs to update
     // like when GameObjects are added.
-    void updateEditor();
+    void updateEditor(GameObject* gameObject);
 
     // Sets up the side bar where GameObjects are listed.
     SideBarList* createSideBar();
@@ -110,8 +111,6 @@ private:
     QHBoxLayout* layout;
     QVBoxLayout* sideBarLayout;
     QVBoxLayout* inspectorLayout;
-//    QTableWidget* inspector;
-
     // The count of GameObjects added to the scene.
     int gameObjectCount = 0;
 

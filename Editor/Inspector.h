@@ -13,7 +13,7 @@
 
 class LabeledLineEdit : public QWidget
 {
-    Q_OBJECT
+Q_OBJECT
 public:
     LabeledLineEdit(std::string labelText, std::string lineText="")
     {
@@ -40,26 +40,19 @@ class Inspector : public QWidget
 public:
     Inspector();
     QVBoxLayout* getLayout();
-    QTableWidget* getTable();
-
+    QLabel* getName() { return inspectorObjectName; }
+    void insertRow(std::string label, std::string formData);
+    void updateLayout();
+    void clearLayout();
     /*
      * In the future createWidgets should use
      * introspection to dynamically generate a Inspector
      * menu for any GameObject.
      */
     void createWidgets(GameObject gameObject);
-    std::vector<QWidget*> getWidgets() { return this->inspectorWidgets; }
 private:
     QVBoxLayout* inspectorLayout;
-    QTableWidget* inspectorTable;
     QLabel* inspectorLabel;
-    QLabel* name;
-
-    /*
-     * inspectorWidgets contains all widgets
-     * that should be drawn for a given inspector
-     * instance. I plan to have it update based on
-     * the selected GameObject.
-     */
-    std::vector<QWidget*> inspectorWidgets;
+    QLabel* inspectorObjectName;
+    std::vector<LabeledLineEdit*> rows;
 };
