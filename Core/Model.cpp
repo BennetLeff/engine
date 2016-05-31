@@ -19,8 +19,6 @@ Model::Model(std::string path, std::string texture, Transform* trans)
         textureSet = true;
         shader.canDrawTexture(textureSet);
     }
-
-    printf ("texture set: %d \n", textureSet);
 }
 
 Model::Model(std::string path, std::string texture)
@@ -35,8 +33,6 @@ Model::Model(std::string path, std::string texture)
         textureSet = true;
         shader.canDrawTexture(textureSet);
     }
-
-    printf ("texture set: %d \n", textureSet);
 }
 
 Mesh* Model::loadModel(std::string path)

@@ -15,6 +15,8 @@ Editor::Editor(RenderEngine* renderEngine, int width, int height)
 
     this->sideBar = createSideBar();
     this->inspector = new Inspector();
+
+    mainWidget = new QWidget();
 }
 
 void Editor::initialize()
@@ -167,13 +169,11 @@ void Editor::setupLayout()
 
     layout->addLayout(sideBarLayout);
 
-
     // Adds the GUIWindow to the layout.
-    window->setMinimumHeight(400);
-
     layout->addWidget(window);
 
-    layout->addLayout(inspector->getLayout());
+    // layout->addLayout(inspector->getLayout());
+    layout->addWidget(inspector->getLayoutParent());
 
     /*
      * Set a main widget that the other
@@ -181,7 +181,6 @@ void Editor::setupLayout()
      * widget acts as an empty parent for
      * the rest of the editor's widgets.
      */
-    mainWidget = new QWidget();
     mainWidget->setLayout(layout);
 
     // Set QWidget as the central layout of the main window
@@ -222,22 +221,5 @@ void Editor::addModel(Model model)
 
 void Editor::updateEditor(GameObject* gameObject)
 {
-    inspector->clearLayout();
-    inspector->getLayout()->addWidget(new QLabel("Inspector"));
-    inspector->getLayout()->addWidget(new QLabel(gameObject->getName().data()));
-
-    // Cast gameObject to Model and get properties.
-    auto model = dynamic_cast<Model*>(gameObject);
-    if (model != nullptr)
-    {
-        inspector->insertRow("x: ", std::to_string(model->transform->getPosition()->x));
-        inspector->insertRow("y: ", std::to_string(model->transform->getPosition()->y));
-        inspector->insertRow("z: ", std::to_string(model->transform->getPosition()->z));
-    }
-    else
-    {
-        fprintf(stderr, "Error: Model pointer not passed to update editor. ");
-    }
-
-    inspector->getLayout()->setSpacing(10);
+    inspector->updateLayout(gameObject);
 }
