@@ -70,7 +70,7 @@ private:
 
     // Gets called when Editor needs to update
     // like when GameObjects are added.
-    void updateEditor(GameObject* gameObject);
+    void updateEditor(Model* gameObject);
 
     // Sets up the side bar where GameObjects are listed.
     SideBarList* createSideBar();

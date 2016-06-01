@@ -25,7 +25,26 @@ Inspector::Inspector()
     controlsRestrictorWidget = new QWidget();
     controlsRestrictorWidget->setLayout(formLayout);
     controlsRestrictorWidget->setMaximumWidth(150);
+
+    standardItemModel = setupModel();
+    mapper = setupMapper();
 }
+
+QStandardItemModel* Inspector::setupModel()
+{
+    auto standardsModel = new QStandardItemModel(3, 2);
+
+    return  standardsModel;
+}
+
+QDataWidgetMapper* Inspector::setupMapper()
+{
+    auto widgetMapper = new QDataWidgetMapper();
+    widgetMapper->setModel(standardItemModel);
+
+    return widgetMapper;
+}
+
 
 // To be implemented in the future.
 void Inspector::createWidgets(GameObject gameObject) { }
@@ -44,7 +63,7 @@ void Inspector::clearLayout()
     }
 }
 
-void Inspector::updateLayout(GameObject* gameObject)
+void Inspector::updateLayout(Model* gameObject)
 {
     clearLayout();
 
@@ -55,20 +74,36 @@ void Inspector::updateLayout(GameObject* gameObject)
     getLayout()->addRow(inspectorLabel);
     getLayout()->addRow(objectNameLabel);
 
+    fprintf(stderr, "%g\n", gameObject->transform->getPosition()->x);
+
     // Cast gameObject to Model and get properties.
-    auto model = dynamic_cast<Model*>(gameObject);
-    if (model != nullptr)
+    // auto model = dynamic_cast<Model*>(gameObject);
+    if (gameObject != nullptr)
     {
-        auto xLineEdit = new QLineEdit(std::to_string(model->transform->getPosition()->x).data());
+        auto xLineEdit = new QLineEdit(std::to_string(gameObject->transform->getPosition()->x).data());
         xLineEdit->setMaximumWidth(100);
-        auto yLineEdit = new QLineEdit(std::to_string(model->transform->getPosition()->y).data());
+        mapper->addMapping(xLineEdit, 0);
+        connect(xLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(updateGameObjectX(const QString&)));
+
+        auto yLineEdit = new QLineEdit(std::to_string(gameObject->transform->getPosition()->y).data());
         yLineEdit->setMaximumWidth(100);
-        auto zLineEdit = new QLineEdit(std::to_string(model->transform->getPosition()->z).data());
+        mapper->addMapping(yLineEdit, 1);
+        connect(yLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(updateGameObjectY(const QString&)));
+
+
+        auto zLineEdit = new QLineEdit(std::to_string(gameObject->transform->getPosition()->z).data());
         zLineEdit->setMaximumWidth(100);
+        mapper->addMapping(zLineEdit, 2);
+        connect(zLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(updateGameObjectZ(const QString&)));
+
+        connect(mapper, SIGNAL(currentIndexChanged(int)), this, SLOT(updateGameObject(int)));
 
         getLayout()->addRow(tr("x: "), xLineEdit);
         getLayout()->addRow(tr("y: "), yLineEdit);
         getLayout()->addRow(tr("z: "), zLineEdit);
+
+        currentModel = gameObject;
+        // modelPos = gameObject->transform->getPosition();
     }
     else
     {
@@ -86,4 +121,27 @@ QFormLayout* Inspector::getLayout()
 QWidget* Inspector::getLayoutParent()
 {
     return controlsRestrictorWidget;
+}
+
+void Inspector::updateGameObjectX(const QString& text)
+{
+    fprintf(stderr, "%s", text.toStdString().data());
+    auto pos_x = std::atof(text.toStdString().data());
+}
+
+void Inspector::updateGameObjectY(const QString& text)
+{
+    fprintf(stderr, "%s", text.toStdString().data());
+    auto pos_y = std::atof(text.toStdString().data());
+}
+
+void Inspector::updateGameObjectZ(const QString& text)
+{
+    fprintf(stderr, "%s", text.toStdString().data());
+    auto pos_z = std::atof(text.toStdString().data());
+}
+
+void Inspector::updateGameObject(int row)
+{
+    fprintf(stderr, "update game object row %d", row);
 }

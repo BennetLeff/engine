@@ -219,7 +219,7 @@ void Editor::addModel(Model model)
     updateEditor(&model);
 }
 
-void Editor::updateEditor(GameObject* gameObject)
+void Editor::updateEditor(Model* gameObject)
 {
     inspector->updateLayout(gameObject);
 }
