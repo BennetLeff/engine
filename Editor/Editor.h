@@ -14,6 +14,7 @@
 #include "Core/GameObject.h"
 #include "Editor/SideBarList.h"
 #include "Editor/Inspector.h"
+#include "Editor/PropertyBrowser.h"
 
 #include <QMainWindow>
 #include <QPushButton>
@@ -116,4 +117,5 @@ private:
 
     SideBarList* sideBar;
     Inspector* inspector;
+    PropertyBrowser* propertyBrowser;
 };

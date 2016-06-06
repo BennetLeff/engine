@@ -5,7 +5,7 @@
 #pragma once
 
 #include <QVBoxLayout>
-#include <QTableWidget>
+#include <QListView>
 #include <QLabel>
 #include <QLineEdit>
 #include <QFormLayout>
@@ -15,6 +15,8 @@
 
 #include "Core/GameObject.h"
 #include "Core/Model.h"
+
+#include <QtTreePropertyBrowser>
 
 class Inspector : public QWidget
 {

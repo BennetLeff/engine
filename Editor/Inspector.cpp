@@ -40,7 +40,7 @@ QStandardItemModel* Inspector::setupModel()
 QDataWidgetMapper* Inspector::setupMapper()
 {
     auto widgetMapper = new QDataWidgetMapper();
-    widgetMapper->setModel(standardItemModel);
+//    widgetMapper->setModel(standardItemModel);
 
     return widgetMapper;
 }
@@ -82,28 +82,27 @@ void Inspector::updateLayout(Model* gameObject)
     {
         auto xLineEdit = new QLineEdit(std::to_string(gameObject->transform->getPosition()->x).data());
         xLineEdit->setMaximumWidth(100);
-        mapper->addMapping(xLineEdit, 0);
+        // mapper->addMapping(xLineEdit, 0);
         connect(xLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(updateGameObjectX(const QString&)));
 
         auto yLineEdit = new QLineEdit(std::to_string(gameObject->transform->getPosition()->y).data());
         yLineEdit->setMaximumWidth(100);
-        mapper->addMapping(yLineEdit, 1);
+        // mapper->addMapping(yLineEdit, 1);
         connect(yLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(updateGameObjectY(const QString&)));
 
 
         auto zLineEdit = new QLineEdit(std::to_string(gameObject->transform->getPosition()->z).data());
         zLineEdit->setMaximumWidth(100);
-        mapper->addMapping(zLineEdit, 2);
+        // mapper->addMapping(zLineEdit, 2);
         connect(zLineEdit, SIGNAL(textEdited(const QString&)), this, SLOT(updateGameObjectZ(const QString&)));
 
-        connect(mapper, SIGNAL(currentIndexChanged(int)), this, SLOT(updateGameObject(int)));
+         connect(mapper, SIGNAL(currentIndexChanged(int)), this, SLOT(updateGameObject(int)));
 
-        getLayout()->addRow(tr("x: "), xLineEdit);
-        getLayout()->addRow(tr("y: "), yLineEdit);
-        getLayout()->addRow(tr("z: "), zLineEdit);
+         getLayout()->addRow(tr("x: "), xLineEdit);
+         getLayout()->addRow(tr("y: "), yLineEdit);
+         getLayout()->addRow(tr("z: "), zLineEdit);
 
         currentModel = gameObject;
-        // modelPos = gameObject->transform->getPosition();
     }
     else
     {

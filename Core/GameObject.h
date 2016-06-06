@@ -7,9 +7,11 @@
 #include <string>
 
 #include <glm/glm.hpp>
+#include <QtCore/QObject>
 
-class GameObject
+class GameObject // : public QObject
 {
+    // Q_OBJECT
 public:
     GameObject();
     std::string& getName();

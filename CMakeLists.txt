@@ -30,10 +30,17 @@ include_directories(${Qt5Widgets_INCLUDES})
 # We need add -DQT_WIDGETS_LIB when using QtWidgets in Qt 5.
 add_definitions(${Qt5Widgets_DEFINITIONS})
 
+# QtTreePropertyBrowser
+set(QtPropertyBrowser_DIR /home/bennet/local/lib/cmake/QtPropertyBrowser)
+find_package(QtPropertyBrowser REQUIRED)
+
+include_directories(${QtPropertyBrowser_INCLUDES})
+add_definitions(${QtPropertyBrowser_DEFINITIONS})
+
 # Add the sources to the executable for linking
 add_executable(Engine main.cpp Core/Camera.cpp Core/Mesh.cpp Core/Model.cpp Core/Shader.cpp Core/Texture.cpp
                 Core/Transform.cpp Core/Window.cpp Editor/GUIWindow.cpp Editor/Editor.cpp Core/RenderEngine.cpp Core/GameObject.cpp
-                Editor/SideBarListItem.cpp Editor/SideBarList.cpp Editor/Inspector.cpp)
+                Editor/SideBarListItem.cpp Editor/SideBarList.cpp Editor/Inspector.cpp Editor/PropertyBrowser.cpp Editor/PropertyBrowser.h)
 
 # OSX only flags
 IF(APPLE)
@@ -61,7 +68,7 @@ IF(UNIX AND NOT APPLE)
   include_directories(${GLEW_INCLUDE_DIRS})
 
   # Link the libraries
-  target_link_libraries(Engine ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} ${GLEW_LIBRARY_DIRS} ${OPENGL_LIBRARY_DIRS} ${Qt5Widgets_LIBRARIES} assimp glfw3 GLEW GL X11 Xi Xrandr Xxf86vm Xinerama Xcursor rt pthread ${CMAKE_DL_LIBS})
+  target_link_libraries(Engine ${GLFW_LIBRARY_DIRS} ${GLM_LIBRARY_DIRS} ${GLEW_LIBRARY_DIRS} ${OPENGL_LIBRARY_DIRS} ${Qt5Widgets_LIBRARIES} QtPropertyBrowser assimp glfw3 GLEW GL X11 Xi Xrandr Xxf86vm Xinerama Xcursor rt pthread ${CMAKE_DL_LIBS})
 
 ENDIF(UNIX AND NOT APPLE)
 

@@ -17,6 +17,7 @@ Editor::Editor(RenderEngine* renderEngine, int width, int height)
     this->inspector = new Inspector();
 
     mainWidget = new QWidget();
+    propertyBrowser = new PropertyBrowser();
 }
 
 void Editor::initialize()
@@ -173,7 +174,9 @@ void Editor::setupLayout()
     layout->addWidget(window);
 
     // layout->addLayout(inspector->getLayout());
-    layout->addWidget(inspector->getLayoutParent());
+    // layout->addWidget(inspector->getLayoutParent());
+
+    layout->addWidget(propertyBrowser);
 
     /*
      * Set a main widget that the other
@@ -221,5 +224,7 @@ void Editor::addModel(Model model)
 
 void Editor::updateEditor(Model* gameObject)
 {
-    inspector->updateLayout(gameObject);
+    // inspector->updateLayout(gameObject);
+    // propertyBrowser->loadProperties(gameObject);
+    propertyBrowser->loadProperties(inspector);
 }
