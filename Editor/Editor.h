@@ -13,7 +13,6 @@
 #include "Core/RenderEngine.h"
 #include "Core/GameObject.h"
 #include "Editor/SideBarList.h"
-#include "Editor/Inspector.h"
 #include "Editor/PropertyBrowser.h"
 
 #include <QMainWindow>
@@ -41,7 +40,7 @@ public:
     GUIWindow* getWindow() { return window; }
 
     // Wraps RenderEngine::addModel()
-    void addModel(Model model);
+    void addModel(Model *model);
 
     // Call instead of QMainWindow.show()
     // so that all widgets are properly shown.
@@ -77,7 +76,7 @@ private:
     SideBarList* createSideBar();
 
     // Add GameObject to GameObject side bar viewer.
-    void addGameObjectListItem(GameObject gameObject);
+    void addGameObjectListItem(GameObject *gameObject);
 
     // Create an inspector for a GameObject based on QTableWidget.
     // QVBoxLayout* createInspectorLayout(GameObject gameObject);
@@ -111,11 +110,10 @@ private:
     // The layouts for the Editor.
     QHBoxLayout* layout;
     QVBoxLayout* sideBarLayout;
-    QVBoxLayout* inspectorLayout;
+
     // The count of GameObjects added to the scene.
     int gameObjectCount = 0;
 
     SideBarList* sideBar;
-    Inspector* inspector;
     PropertyBrowser* propertyBrowser;
 };

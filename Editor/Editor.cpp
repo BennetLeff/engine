@@ -14,7 +14,6 @@ Editor::Editor(RenderEngine* renderEngine, int width, int height)
     this->sideBarLayout = new QVBoxLayout();
 
     this->sideBar = createSideBar();
-    this->inspector = new Inspector();
 
     mainWidget = new QWidget();
     propertyBrowser = new PropertyBrowser();
@@ -73,7 +72,7 @@ void Editor::addModelToScene()
     if (meshPath != "")
     {
         window->makeCurrent();
-        addModel(Model(meshPath, "", trans));
+        addModel(new Model(meshPath, "", trans));
     }
     else
     {
@@ -159,7 +158,7 @@ void Editor::setupSideBarLayout()
     sideBarLayout->setSpacing(0);
 }
 
-void Editor::addGameObjectListItem(GameObject gameObject)
+void Editor::addGameObjectListItem(GameObject* gameObject)
 {
     sideBar->addSideBarListItem(gameObject);
 }
@@ -172,9 +171,6 @@ void Editor::setupLayout()
 
     // Adds the GUIWindow to the layout.
     layout->addWidget(window);
-
-    // layout->addLayout(inspector->getLayout());
-    // layout->addWidget(inspector->getLayoutParent());
 
     layout->addWidget(propertyBrowser);
 
@@ -210,21 +206,19 @@ void Editor::showEditor()
     this->show();
 }
 
-void Editor::addModel(Model model)
+void Editor::addModel(Model* model)
 {
-    model.setName("Game Object " + std::to_string(gameObjectCount));
+    model->setName("Game Object " + std::to_string(gameObjectCount));
     engine->addModel(model);
 
     // Add the Model to the gameObjectList
     addGameObjectListItem(model);
     gameObjectCount += 1;
 
-    updateEditor(&model);
+    updateEditor(model);
 }
 
 void Editor::updateEditor(Model* gameObject)
 {
-    // inspector->updateLayout(gameObject);
-    // propertyBrowser->loadProperties(gameObject);
-    propertyBrowser->loadProperties(inspector);
+    propertyBrowser->loadProperties(gameObject);
 }

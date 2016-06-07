@@ -4,10 +4,10 @@
 
 #include "SideBarListItem.h"
 
-SideBarListItem::SideBarListItem(GameObject gameObject, QStandardItemModel* standModel, QListView* listWidget)
+SideBarListItem::SideBarListItem(GameObject* gameObject, QStandardItemModel* standModel, QListView* listWidget)
 {
     this->gameObject = gameObject;
-    this->setText(gameObject.getName().data());
+    this->setText(gameObject->getName().data());
 
     standModel->insertRow(standModel->rowCount() + 1);
     standModel->appendRow(this);

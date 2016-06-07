@@ -14,7 +14,7 @@ class SideBarList : public QObject
     Q_OBJECT
 public:
     SideBarList();
-    void addSideBarListItem(GameObject gameObject);
+    void addSideBarListItem(GameObject *gameObject);
     QStandardItemModel* getStandardModel();
     QListView* getGameObjectList();
     std::vector<QStandardItem*> getGameObjectListItems();

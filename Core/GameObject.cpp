@@ -6,7 +6,7 @@
 
 GameObject::GameObject()
 {
-
+    // qRegisterMetaType<std::string>("std::string");
 }
 
 std::string& GameObject::getName()
@@ -17,14 +17,4 @@ std::string& GameObject::getName()
 void GameObject::setName(std::string name)
 {
     this->name = name;
-}
-
-glm::vec3& GameObject::getPosition()
-{
-    return this->position;
-}
-
-void GameObject::setPosition(glm::vec3 position)
-{
-    this->position = position;
 }

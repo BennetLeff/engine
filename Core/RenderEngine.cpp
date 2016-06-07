@@ -8,7 +8,7 @@ RenderEngine::RenderEngine(Camera* cam)
 
 void RenderEngine::init() { }
 
-void RenderEngine::addModel(Model model)
+void RenderEngine::addModel(Model* model)
 {
     this->models.push_back(model);
 }
@@ -16,5 +16,5 @@ void RenderEngine::addModel(Model model)
 void RenderEngine::draw()
 {
      for (int i = 0; i < this->models.size(); i++)
-    	models[i].draw(this->cam);
+    	models[i]->draw(this->cam);
 }

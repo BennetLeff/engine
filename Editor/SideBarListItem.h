@@ -15,13 +15,13 @@ class SideBarListItem : public QObject, public QStandardItem
 {
     Q_OBJECT
 public:
-    SideBarListItem(GameObject gameObject, QStandardItemModel* standModel, QListView* listWidget);
+    SideBarListItem(GameObject* gameObject, QStandardItemModel* standModel, QListView* listWidget);
 
-    GameObject getGameObject()
+    GameObject* getGameObject()
     {
         return gameObject;
     }
 
 private:
-    GameObject gameObject;
+    GameObject *gameObject;
 };

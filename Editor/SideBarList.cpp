@@ -12,7 +12,7 @@ SideBarList::SideBarList()
     gameObjectList->setMaximumWidth(150);
 }
 
-void SideBarList::addSideBarListItem(GameObject gameObject)
+void SideBarList::addSideBarListItem(GameObject* gameObject)
 {
     auto item = new SideBarListItem(gameObject, this->standardModel, this->gameObjectList);
     this->gameObjectListItems.push_back(item);
@@ -36,11 +36,11 @@ void SideBarList::setupSideBar()
 void SideBarList::updateGameObjectName(QStandardItem *item)
 {
     auto sideBarItem = static_cast<SideBarListItem*>(item);
-    printf("object changed %s \n", sideBarItem->getGameObject().getName().data());
+    printf("object changed %s \n", sideBarItem->getGameObject()->getName().data());
 
     for (int i = 0; i < this->gameObjectListItems.size(); i++)
     {
-        printf("Object: %s \n", static_cast<SideBarListItem* >(gameObjectListItems[i])->getGameObject().getName().data());
+        printf("Object: %s \n", static_cast<SideBarListItem* >(gameObjectListItems[i])->getGameObject()->getName().data());
     }
 }
 

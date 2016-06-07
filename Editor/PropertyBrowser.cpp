@@ -2,21 +2,42 @@
 // Created by bennet on 6/5/16.
 //
 
+#include <QtWidgets/QLabel>
+#include <QtLineEditFactory>
 #include "PropertyBrowser.h"
 
 PropertyBrowser::PropertyBrowser()
 {
+    this->setMaximumHeight(1000);
+    this->setMaximumWidth(300);
 
+    qvBoxLayout = new QVBoxLayout();
 
-    _intManager = new QtIntPropertyManager();
-    _doubleManager = new QtDoublePropertyManager();
-    _stringManager = new QtStringPropertyManager();
+    qvBoxLayout->addWidget(new QLabel("Inspector"));
 
-    _browser = new QtTreePropertyBrowser(this);
+    // Subclass abstract property manager in the future to make
+    // these for other types like vectors.
+    intPropertyManager = new QtIntPropertyManager(this);
+    doublePropertyManager = new QtDoublePropertyManager(this);
+    stringPropertyManager = new QtStringPropertyManager(this);
+
+    propertyBrowser = new QtTreePropertyBrowser(this);
+
+    QtDoubleSpinBoxFactory* doubleSpinBoxFactory = new QtDoubleSpinBoxFactory();
+    QtLineEditFactory* lineEditFactory = new QtLineEditFactory();
+    QtSpinBoxFactory* intSpinBoxFactory = new QtSpinBoxFactory();
+
+    propertyBrowser->setFactoryForManager(intPropertyManager, intSpinBoxFactory);
+    propertyBrowser->setFactoryForManager(doublePropertyManager, doubleSpinBoxFactory);
+    propertyBrowser->setFactoryForManager(stringPropertyManager, lineEditFactory);
+
+    qvBoxLayout->addWidget(propertyBrowser);
+
+    this->setLayout(qvBoxLayout);
 }
 
 void PropertyBrowser::loadProperties(QObject *object) {
-    _browser->clear();
+    propertyBrowser->clear();
     if (object) {
         const QMetaObject *meta = object->metaObject();
 
@@ -27,23 +48,41 @@ void PropertyBrowser::loadProperties(QObject *object) {
             QVariant value = metaProperty.read(object);
             QtProperty *property = NULL;
 
-            qDebug() << "property : " << metaProperty.name() << " : " << value.toInt();
+            qDebug() << "property : " << metaProperty.name() << " : " << value.toString();
 
             if (metaProperty.type() == QVariant::Int) {
-                property = _intManager->addProperty(metaProperty.name());
-                _intManager->setValue(property, value.toInt());
+                property = intPropertyManager->addProperty(metaProperty.name());
+                intPropertyManager->setValue(property, value.toInt());
             }
-            else if (metaProperty.type() == QVariant::Double) {
-                property = _doubleManager->addProperty(metaProperty.name());
-                _doubleManager->setValue(property, value.toDouble());
+            else if (metaProperty.type() == QVariant::Double)
+            {
+                property = doublePropertyManager->addProperty(metaProperty.name());
+                doublePropertyManager->setValue(property, value.toDouble());
             }
-            else if (metaProperty.type() == QVariant::String) {
-                property = _stringManager->addProperty(metaProperty.name());
-                _stringManager->setValue(property, value.toString());
+            else if (metaProperty.type() == QVariant::String)
+            {
+                property = stringPropertyManager->addProperty(metaProperty.name());
+                stringPropertyManager->setValue(property, value.toString());
+            }
+            else if (metaProperty.type() == QVariant::nameToType("Transform*"))
+            {
+                fprintf(stderr, "Identified a Transform* \n");
+                fprintf(stderr, "%d \n", metaProperty.enclosingMetaObject()->propertyCount());
+            }
+            else
+            {
+                fprintf(stderr, "meta property type is not QVariant::Int, QVariant::Double, QVariant::String"
+                        "\n it is instead %s \n", metaProperty.typeName());
             }
 
             if (property)
-                _browser->addProperty(property);
+            {
+                property->setEnabled(true);
+                propertyBrowser->addProperty(property);
+            }
         }
     }
+
+    propertyBrowser->setEnabled(true);
+    propertyBrowser->update();
 }

@@ -11,14 +11,17 @@ Model::Model(std::string path, std::string texture, Transform* trans)
         : shader(Shader("./res/shaders")),
           tex(Texture(texture)),
           path(path),
-          modelMesh(loadModel(path)),
-          transform(trans)
+          modelMesh(loadModel(path))
 {
     if (texture != "")
     {
         textureSet = true;
         shader.canDrawTexture(textureSet);
     }
+
+    transform = trans;
+
+    qRegisterMetaType<Transform*>("Transform*");
 }
 
 Model::Model(std::string path, std::string texture)
@@ -33,6 +36,8 @@ Model::Model(std::string path, std::string texture)
         textureSet = true;
         shader.canDrawTexture(textureSet);
     }
+
+	qRegisterMetaType<Transform*>("Transform*");
 }
 
 Mesh* Model::loadModel(std::string path)

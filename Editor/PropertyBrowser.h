@@ -8,8 +8,11 @@
 #include <QtIntPropertyManager>
 #include <QtBoolPropertyManager>
 #include <QtStringPropertyManager>
+
 #include <QMetaProperty>
 #include <QDebug>
+
+#include <QVBoxLayout>
 
 class PropertyBrowser : public QWidget
 {
@@ -17,9 +20,11 @@ public:
     PropertyBrowser();
     void loadProperties(QObject* object);
 private:
-    QtTreePropertyBrowser       *_browser;
-    QtIntPropertyManager        *_intManager;
-    QtDoublePropertyManager     *_doubleManager;
-    QtStringPropertyManager     *_stringManager;
+    QtTreePropertyBrowser* propertyBrowser;
+    QtIntPropertyManager* intPropertyManager;
+    QtDoublePropertyManager* doublePropertyManager;
+    QtStringPropertyManager* stringPropertyManager;
+
+    QVBoxLayout *qvBoxLayout;
 };
 

@@ -45,7 +45,6 @@ private:
     GLuint shaders[NUMSHADERS];
     GLuint uniforms[NUMUNIFORMS];
     GLuint program;
-    Transform transform;
 
     // Point light uniform locations
     GLuint int_loc;

@@ -10,16 +10,16 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
-
+#include <QObject>
 
 class Transform {
 public:
-	Transform(const glm::vec3& pos = glm::vec3(),
+	explicit Transform(const glm::vec3& pos = glm::vec3(),
 			  const glm::vec3& rot = glm::vec3(),
 			  const glm::vec3& scale = glm::vec3(1.0f)) :
 	pos(pos),
 	rot(rot),
-	scale(scale) {}
+	scale(scale) { }
 
 	glm::mat4 getModel() const;
 
