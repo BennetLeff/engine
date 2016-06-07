@@ -4,6 +4,7 @@
 
 #include <QtWidgets/QLabel>
 #include <QtLineEditFactory>
+#include <Core/Model.h>
 #include "PropertyBrowser.h"
 
 PropertyBrowser::PropertyBrowser()
@@ -34,6 +35,13 @@ PropertyBrowser::PropertyBrowser()
     qvBoxLayout->addWidget(propertyBrowser);
 
     this->setLayout(qvBoxLayout);
+
+//    connect(intPropertyManager, SIGNAL(valueChanged(QtProperty *, int)),
+//            this, SLOT(valueChanged(QtProperty *, int)));
+    connect(doublePropertyManager, SIGNAL(valueChanged(QtProperty *, double)),
+            this, SLOT(valueChanged(QtProperty *, double)));
+//    connect(stringPropertyManager, SIGNAL(valueChanged(QtProperty *, QString)),
+//            this, SLOT(valueChanged(QtProperty *, QString)));
 }
 
 void PropertyBrowser::loadProperties(QObject *object) {
@@ -83,6 +91,41 @@ void PropertyBrowser::loadProperties(QObject *object) {
         }
     }
 
+    currentItem = object;
+
     propertyBrowser->setEnabled(true);
     propertyBrowser->update();
+}
+
+void PropertyBrowser::valueChanged(QtProperty *property, double value)
+{
+    if (!currentItem)
+        return;
+
+    Model* model = dynamic_cast<Model*> (currentItem);
+    if (model != nullptr)
+    {
+        auto id = property->propertyName().toStdString().data();
+
+        if (id == QLatin1String("position_x"))
+        {
+            model->transform->getPosition()->x = value;
+        }
+
+        else if (id == QLatin1String("position_y"))
+        {
+            model->transform->getPosition()->y = value;
+        }
+
+        else if (id == QLatin1String("position_z"))
+        {
+            model->transform->getPosition()->z = value;
+        }
+
+        else
+        {
+            fprintf(stderr, "id = %s", id);
+        }
+
+    }
 }

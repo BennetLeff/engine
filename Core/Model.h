@@ -51,26 +51,32 @@ private:
     // These methods are so that Q_PROPERTY can acess certain fields
     double getPosition_x()
     {
+        fprintf(stderr, "getPosition_x called \n");
         return transform->getPosition()->x;
     }
+
     double getPosition_y()
     {
         return transform->getPosition()->y;
     }
+
     double getPosition_z()
     {
         return transform->getPosition()->z;
     }
 
-    double setPosition_x(int x)
+    void setPosition_x(double x)
     {
+        fprintf(stderr, "setPosition_x called");
         transform->getPosition()->x = x;
     }
-    double setPosition_y(int y)
+
+    void setPosition_y(double y)
     {
         transform->getPosition()->y = y;
     }
-    double setPosition_z(int z)
+
+    void setPosition_z(double z)
     {
         transform->getPosition()->z = z;
     }

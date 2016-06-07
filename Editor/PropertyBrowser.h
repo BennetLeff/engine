@@ -16,6 +16,7 @@
 
 class PropertyBrowser : public QWidget
 {
+    Q_OBJECT
 public:
     PropertyBrowser();
     void loadProperties(QObject* object);
@@ -26,5 +27,11 @@ private:
     QtStringPropertyManager* stringPropertyManager;
 
     QVBoxLayout *qvBoxLayout;
+
+    QObject* currentItem;
+
+private slots:
+    void valueChanged(QtProperty *property, double value);
+    // void valueChanged(QtProperty *property, const QString &value);
 };
 
