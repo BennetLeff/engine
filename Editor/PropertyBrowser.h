@@ -8,11 +8,20 @@
 #include <QtIntPropertyManager>
 #include <QtBoolPropertyManager>
 #include <QtStringPropertyManager>
+#include <QtVariantPropertyManager>
 
 #include <QMetaProperty>
 #include <QDebug>
 
 #include <QVBoxLayout>
+#include <QtGroupBoxPropertyBrowser>
+
+
+class TransformPropertyManager : public QtGroupPropertyManager
+{
+public:
+    TransformPropertyManager() { }
+};
 
 class PropertyBrowser : public QWidget
 {
@@ -21,10 +30,12 @@ public:
     PropertyBrowser();
     void loadProperties(QObject* object);
 private:
-    QtTreePropertyBrowser* propertyBrowser;
+    QtGroupBoxPropertyBrowser* propertyBrowser;
     QtIntPropertyManager* intPropertyManager;
     QtDoublePropertyManager* doublePropertyManager;
     QtStringPropertyManager* stringPropertyManager;
+
+    TransformPropertyManager* transformPropertyManager;
 
     QVBoxLayout *qvBoxLayout;
 

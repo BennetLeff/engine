@@ -22,7 +22,9 @@ PropertyBrowser::PropertyBrowser()
     doublePropertyManager = new QtDoublePropertyManager(this);
     stringPropertyManager = new QtStringPropertyManager(this);
 
-    propertyBrowser = new QtTreePropertyBrowser(this);
+    transformPropertyManager = new TransformPropertyManager();
+
+    propertyBrowser = new QtGroupBoxPropertyBrowser(this);
 
     QtDoubleSpinBoxFactory* doubleSpinBoxFactory = new QtDoubleSpinBoxFactory();
     QtLineEditFactory* lineEditFactory = new QtLineEditFactory();
@@ -32,12 +34,13 @@ PropertyBrowser::PropertyBrowser()
     propertyBrowser->setFactoryForManager(doublePropertyManager, doubleSpinBoxFactory);
     propertyBrowser->setFactoryForManager(stringPropertyManager, lineEditFactory);
 
+
+    // Set up layout and container widget for propertyBrowser.
     qvBoxLayout->addWidget(propertyBrowser);
 
     this->setLayout(qvBoxLayout);
 
-//    connect(intPropertyManager, SIGNAL(valueChanged(QtProperty *, int)),
-//            this, SLOT(valueChanged(QtProperty *, int)));
+    // Set up property managers signals and slots
     connect(doublePropertyManager, SIGNAL(valueChanged(QtProperty *, double)),
             this, SLOT(valueChanged(QtProperty *, double)));
     connect(stringPropertyManager, SIGNAL(valueChanged(QtProperty *, QString)),
@@ -71,13 +74,41 @@ void PropertyBrowser::loadProperties(QObject *object) {
             }
             else if (metaProperty.type() == QVariant::String)
             {
-                property = stringPropertyManager->addProperty(metaProperty.name());
-                stringPropertyManager->setValue(property, value.toString());
+                // objectName is just a field of QObject we don't need.
+                // it's usually stored at index 0, I'll have a better method of
+                // removing it later.
+                if (metaProperty.propertyIndex() != 0)
+                {
+                    property = stringPropertyManager->addProperty(metaProperty.name());
+                    stringPropertyManager->setValue(property, value.toString());
+                }
+                else
+                {
+                    qDebug() << "objectName field found";
+                }
             }
             else if (metaProperty.type() == QVariant::nameToType("Transform*"))
             {
-                fprintf(stderr, "Identified a Transform* \n");
-                fprintf(stderr, "%d \n", metaProperty.enclosingMetaObject()->propertyCount());
+                // Sets up main transform property.
+                property = transformPropertyManager->addProperty(metaProperty.name());
+
+                // Initialize the transform to get it's properties.
+                auto trans = value.value<Transform*>();
+
+                // Get the transform meta object.
+                const QMetaObject* transMeta = trans->metaObject();
+
+                // Loop through the meta objects properties and add them as subproperties.
+                for(int subprop = 0; subprop < transMeta->propertyCount(); subprop++)
+                {
+                    QMetaProperty transMetaProperty = transMeta->property(subprop);
+                    QtProperty* transSubProperty = NULL;
+
+                    transSubProperty = doublePropertyManager->addProperty(transMetaProperty.name());
+                    doublePropertyManager->setValue(transSubProperty, value.toDouble());
+
+                    property->addSubProperty(transSubProperty);
+                }
             }
             else
             {

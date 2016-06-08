@@ -12,7 +12,11 @@
 #include <glm/gtx/transform.hpp>
 #include <QObject>
 
-class Transform {
+class Transform : public QObject {
+	Q_OBJECT
+	Q_PROPERTY(double position_x READ getPosition_x)
+	Q_PROPERTY(double position_y READ getPosition_y)
+	Q_PROPERTY(double position_z READ getPosition_z)
 public:
 	explicit Transform(const glm::vec3& pos = glm::vec3(),
 			  const glm::vec3& rot = glm::vec3(),
@@ -36,6 +40,15 @@ private:
 	glm::vec3 rot;
 	glm::vec3 scale;
 	glm::mat4 model;
+
+
+    double getPosition_x() { return pos.x; }
+    double getPosition_y() { return pos.y; }
+    double getPosition_z() { return pos.z; }
+    void setPosition_x(double x) { pos.x = x; }
+    void setPosition_y(double y) { pos.y = y; }
+    void setPosition_z(double z) { pos.z = z; }
+
 };
 
 #endif /* TRANSFORM_H_ */
