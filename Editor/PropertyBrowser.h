@@ -30,8 +30,10 @@ private:
 
     QObject* currentItem;
 
+    std::vector<QObject*> items;
+
 private slots:
     void valueChanged(QtProperty *property, double value);
-    // void valueChanged(QtProperty *property, const QString &value);
+    void valueChanged(QtProperty *property, QString value);
 };
 

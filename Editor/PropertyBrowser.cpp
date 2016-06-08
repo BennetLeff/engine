@@ -40,11 +40,13 @@ PropertyBrowser::PropertyBrowser()
 //            this, SLOT(valueChanged(QtProperty *, int)));
     connect(doublePropertyManager, SIGNAL(valueChanged(QtProperty *, double)),
             this, SLOT(valueChanged(QtProperty *, double)));
-//    connect(stringPropertyManager, SIGNAL(valueChanged(QtProperty *, QString)),
-//            this, SLOT(valueChanged(QtProperty *, QString)));
+    connect(stringPropertyManager, SIGNAL(valueChanged(QtProperty *, QString)),
+            this, SLOT(valueChanged(QtProperty *, QString)));
 }
 
 void PropertyBrowser::loadProperties(QObject *object) {
+    currentItem = nullptr;
+
     propertyBrowser->clear();
     if (object) {
         const QMetaObject *meta = object->metaObject();
@@ -99,14 +101,17 @@ void PropertyBrowser::loadProperties(QObject *object) {
 
 void PropertyBrowser::valueChanged(QtProperty *property, double value)
 {
+    auto id = property->propertyName().toStdString().data();
+
+    if (!id)
+        return;
+
     if (!currentItem)
         return;
 
     Model* model = dynamic_cast<Model*> (currentItem);
     if (model != nullptr)
     {
-        auto id = property->propertyName().toStdString().data();
-
         if (id == QLatin1String("position_x"))
         {
             model->transform->getPosition()->x = value;
@@ -126,6 +131,25 @@ void PropertyBrowser::valueChanged(QtProperty *property, double value)
         {
             fprintf(stderr, "id = %s", id);
         }
+    }
+}
 
+void PropertyBrowser::valueChanged(QtProperty *property, QString value)
+{
+    auto id = property->propertyName().toStdString().data();
+
+    if (!id)
+        return;
+
+    if (!currentItem)
+        return;
+
+    Model* model = dynamic_cast<Model*>(currentItem);
+    if (model != nullptr)
+    {
+        if (id == QLatin1String("name"))
+        {
+            model->setName(value.toStdString());
+        }
     }
 }
