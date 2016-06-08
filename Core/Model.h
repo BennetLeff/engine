@@ -23,7 +23,7 @@
 class Model : public GameObject
 {
     Q_OBJECT
-    Q_PROPERTY(Transform* transform READ getTransform)
+    Q_PROPERTY(Transform* Transform READ getTransform)
 
 public:
 	Model(std::string path, std::string texture, Transform* trans);

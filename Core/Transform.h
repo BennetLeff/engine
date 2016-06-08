@@ -5,8 +5,7 @@
  *      Author: bennetleff
  */
 
-#ifndef TRANSFORM_H_
-#define TRANSFORM_H_
+#pragma once
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
@@ -14,9 +13,13 @@
 
 class Transform : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(double position_x READ getPosition_x)
-	Q_PROPERTY(double position_y READ getPosition_y)
-	Q_PROPERTY(double position_z READ getPosition_z)
+	Q_PROPERTY(double position_x READ getPosition_x WRITE setPosition_x)
+	Q_PROPERTY(double position_y READ getPosition_y WRITE setPosition_y)
+	Q_PROPERTY(double position_z READ getPosition_z WRITE setPosition_z)
+
+    Q_PROPERTY(double rotation_x READ getRotation_x WRITE setRotation_x)
+    Q_PROPERTY(double rotation_y READ getRotation_y WRITE setRotation_y)
+    Q_PROPERTY(double rotation_z READ getRotation_z WRITE setRotation_z)
 public:
 	explicit Transform(const glm::vec3& pos = glm::vec3(),
 			  const glm::vec3& rot = glm::vec3(),
@@ -49,6 +52,10 @@ private:
     void setPosition_y(double y) { pos.y = y; }
     void setPosition_z(double z) { pos.z = z; }
 
+    double getRotation_x() { return rot.x; };
+    double getRotation_y() { return rot.y; };
+    double getRotation_z() { return rot.z; };
+    void setRotation_x(double x) { rot.x = x; }
+    void setRotation_y(double y) { rot.y = y; }
+    void setRotation_z(double z) { rot.z = z; }
 };
-
-#endif /* TRANSFORM_H_ */

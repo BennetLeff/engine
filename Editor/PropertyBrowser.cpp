@@ -143,25 +143,7 @@ void PropertyBrowser::valueChanged(QtProperty *property, double value)
     Model* model = dynamic_cast<Model*> (currentItem);
     if (model != nullptr)
     {
-        if (id == QLatin1String("position_x"))
-        {
-            model->transform->getPosition()->x = value;
-        }
-
-        else if (id == QLatin1String("position_y"))
-        {
-            model->transform->getPosition()->y = value;
-        }
-
-        else if (id == QLatin1String("position_z"))
-        {
-            model->transform->getPosition()->z = value;
-        }
-
-        else
-        {
-            fprintf(stderr, "id = %s", id);
-        }
+        model->setProperty(id, value);
     }
 }
 
@@ -178,9 +160,6 @@ void PropertyBrowser::valueChanged(QtProperty *property, QString value)
     Model* model = dynamic_cast<Model*>(currentItem);
     if (model != nullptr)
     {
-        if (id == QLatin1String("name"))
-        {
-            model->setName(value.toStdString());
-        }
+        model->setProperty(id, value);
     }
 }
