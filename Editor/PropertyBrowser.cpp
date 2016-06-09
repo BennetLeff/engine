@@ -22,7 +22,7 @@ PropertyBrowser::PropertyBrowser()
     doublePropertyManager = new QtDoublePropertyManager(this);
     stringPropertyManager = new QtStringPropertyManager(this);
 
-    transformPropertyManager = new TransformPropertyManager();
+    groupPropertyManager = new QtGroupPropertyManager(this);
 
     propertyBrowser = new QtGroupBoxPropertyBrowser(this);
 
@@ -47,23 +47,27 @@ PropertyBrowser::PropertyBrowser()
             this, SLOT(valueChanged(QtProperty *, QString)));
 }
 
-void PropertyBrowser::loadProperties(QObject *object) {
+void PropertyBrowser::loadProperties(QObject *object)
+{
     currentItem = nullptr;
 
     propertyBrowser->clear();
-    if (object) {
+    if (object)
+    {
         const QMetaObject *meta = object->metaObject();
 
         qDebug() << "class : " << meta->className();
 
-        for (int i = 0; i < meta->propertyCount(); i++) {
+        for (int i = 0; i < meta->propertyCount(); i++)
+        {
             QMetaProperty metaProperty = meta->property(i);
             QVariant value = metaProperty.read(object);
             QtProperty *property = NULL;
 
             qDebug() << "property : " << metaProperty.name() << " : " << value.toString();
 
-            if (metaProperty.type() == QVariant::Int) {
+            if (metaProperty.type() == QVariant::Int)
+            {
                 property = intPropertyManager->addProperty(metaProperty.name());
                 intPropertyManager->setValue(property, value.toInt());
             }
@@ -82,38 +86,37 @@ void PropertyBrowser::loadProperties(QObject *object) {
                     property = stringPropertyManager->addProperty(metaProperty.name());
                     stringPropertyManager->setValue(property, value.toString());
                 }
-                else
-                {
-                    qDebug() << "objectName field found";
-                }
-            }
-            else if (metaProperty.type() == QVariant::nameToType("Transform*"))
-            {
-                // Sets up main transform property.
-                property = transformPropertyManager->addProperty(metaProperty.name());
-
-                // Initialize the transform to get it's properties.
-                auto trans = value.value<Transform*>();
-
-                // Get the transform meta object.
-                const QMetaObject* transMeta = trans->metaObject();
-
-                // Loop through the meta objects properties and add them as subproperties.
-                for(int subprop = 0; subprop < transMeta->propertyCount(); subprop++)
-                {
-                    QMetaProperty transMetaProperty = transMeta->property(subprop);
-                    QtProperty* transSubProperty = NULL;
-
-                    transSubProperty = doublePropertyManager->addProperty(transMetaProperty.name());
-                    doublePropertyManager->setValue(transSubProperty, value.toDouble());
-
-                    property->addSubProperty(transSubProperty);
-                }
             }
             else
             {
-                fprintf(stderr, "meta property type is not QVariant::Int, QVariant::Double, QVariant::String"
-                        "\n it is instead %s \n", metaProperty.typeName());
+                qDebug() << metaProperty.type() << metaProperty.name();
+
+                // Sets up main property.
+                property = groupPropertyManager->addProperty(metaProperty.name());
+
+                // Initialize the object to get it's properties.
+                QObject* obj = new QObject();
+
+                if (metaProperty.type() == QVariant::nameToType("Transform*"))
+                    obj = value.value<Transform*>();
+
+                if (metaProperty.type() == QVariant::nameToType("glm::vec3*"))
+                    qDebug() << "got to glm::vec3*";
+
+                // Get the transform meta object.
+                const QMetaObject* objMeta = obj->metaObject();
+
+                // Loop through the meta objects properties and add them as subproperties.
+                for(int subprop = 0; subprop < objMeta->propertyCount(); subprop++)
+                {
+                    QMetaProperty objMetaProperty = objMeta->property(subprop);
+                    QtProperty* objSubProperty = NULL;
+
+                    objSubProperty = doublePropertyManager->addProperty(objMetaProperty.name());
+                    doublePropertyManager->setValue(objSubProperty, value.toDouble());
+
+                    property->addSubProperty(objSubProperty);
+                }
             }
 
             if (property)
@@ -143,7 +146,7 @@ void PropertyBrowser::valueChanged(QtProperty *property, double value)
     Model* model = dynamic_cast<Model*> (currentItem);
     if (model != nullptr)
     {
-        model->setProperty(id, value);
+        model->transform->setProperty(id, value);
     }
 }
 

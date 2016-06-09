@@ -20,6 +20,8 @@ class Transform : public QObject {
     Q_PROPERTY(double rotation_x READ getRotation_x WRITE setRotation_x)
     Q_PROPERTY(double rotation_y READ getRotation_y WRITE setRotation_y)
     Q_PROPERTY(double rotation_z READ getRotation_z WRITE setRotation_z)
+
+    Q_PROPERTY(glm::vec3 rotation READ getRot WRITE setRot)
 public:
 	explicit Transform(const glm::vec3& pos = glm::vec3(),
 			  const glm::vec3& rot = glm::vec3(),
@@ -32,6 +34,8 @@ public:
 
 	void setPosition(const glm::vec3& modelPosition);
 	void setRotation(const glm::vec3& modelRotation);
+    glm::vec3 getRot() { return rot; }
+    void setRot(glm::vec3 modelRotation) { rot = modelRotation; }
 	void setScale(const glm::vec3& modelScale);
 
 	glm::vec3* getPosition();
