@@ -47,4 +47,6 @@ private:
 	Shader shader;
 };
 
+Q_DECLARE_METATYPE(glm::vec3)
+Q_DECLARE_METATYPE(Vec3*)
 Q_DECLARE_METATYPE(Transform*)

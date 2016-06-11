@@ -16,6 +16,7 @@
 #include <QVBoxLayout>
 #include <QtGroupBoxPropertyBrowser>
 
+#include "Vec3PropertyManager.h"
 
 class PropertyBrowser : public QWidget
 {
@@ -31,6 +32,7 @@ private:
     QtStringPropertyManager* stringPropertyManager;
 
     QtGroupPropertyManager* groupPropertyManager;
+    Vec3PropertyManger* vec3PropertyManger;
 
     QVBoxLayout *qvBoxLayout;
 

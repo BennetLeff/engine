@@ -24,6 +24,7 @@ PropertyBrowser::PropertyBrowser()
 
     groupPropertyManager = new QtGroupPropertyManager(this);
 
+
     propertyBrowser = new QtGroupBoxPropertyBrowser(this);
 
     QtDoubleSpinBoxFactory* doubleSpinBoxFactory = new QtDoubleSpinBoxFactory();
@@ -34,6 +35,7 @@ PropertyBrowser::PropertyBrowser()
     propertyBrowser->setFactoryForManager(doublePropertyManager, doubleSpinBoxFactory);
     propertyBrowser->setFactoryForManager(stringPropertyManager, lineEditFactory);
 
+    vec3PropertyManger = new Vec3PropertyManger(this, doublePropertyManager);
 
     // Set up layout and container widget for propertyBrowser.
     qvBoxLayout->addWidget(propertyBrowser);
@@ -56,7 +58,7 @@ void PropertyBrowser::loadProperties(QObject *object)
     {
         const QMetaObject *meta = object->metaObject();
 
-        qDebug() << "class : " << meta->className();
+//        qDebug() << "class : " << meta->className();
 
         for (int i = 0; i < meta->propertyCount(); i++)
         {
@@ -64,7 +66,7 @@ void PropertyBrowser::loadProperties(QObject *object)
             QVariant value = metaProperty.read(object);
             QtProperty *property = NULL;
 
-            qDebug() << "property : " << metaProperty.name() << " : " << value.toString();
+//            qDebug() << "property : " << metaProperty.name() << " : " << value.toString();
 
             if (metaProperty.type() == QVariant::Int)
             {
@@ -89,8 +91,6 @@ void PropertyBrowser::loadProperties(QObject *object)
             }
             else
             {
-                qDebug() << metaProperty.type() << metaProperty.name();
-
                 // Sets up main property.
                 property = groupPropertyManager->addProperty(metaProperty.name());
 
@@ -100,21 +100,19 @@ void PropertyBrowser::loadProperties(QObject *object)
                 if (metaProperty.type() == QVariant::nameToType("Transform*"))
                     obj = value.value<Transform*>();
 
-                if (metaProperty.type() == QVariant::nameToType("glm::vec3*"))
-                    qDebug() << "got to glm::vec3*";
-
                 // Get the transform meta object.
                 const QMetaObject* objMeta = obj->metaObject();
 
                 // Loop through the meta objects properties and add them as subproperties.
-                for(int subprop = 0; subprop < objMeta->propertyCount(); subprop++)
+                for(int subprop = 1; subprop < objMeta->propertyCount(); subprop++)
                 {
                     QMetaProperty objMetaProperty = objMeta->property(subprop);
                     QtProperty* objSubProperty = NULL;
 
-                    objSubProperty = doublePropertyManager->addProperty(objMetaProperty.name());
-                    doublePropertyManager->setValue(objSubProperty, value.toDouble());
+                    auto vec3Variant =  objMetaProperty.read(obj);
+                    auto vec3Obj = vec3Variant.value<Vec3*>();
 
+                    objSubProperty = vec3PropertyManger->addProperty(objMetaProperty.name(), vec3Obj);
                     property->addSubProperty(objSubProperty);
                 }
             }
@@ -135,9 +133,9 @@ void PropertyBrowser::loadProperties(QObject *object)
 
 void PropertyBrowser::valueChanged(QtProperty *property, double value)
 {
-    auto id = property->propertyName().toStdString().data();
+    auto propertyName = property->propertyName().toStdString().data();
 
-    if (!id)
+    if (!propertyName)
         return;
 
     if (!currentItem)
@@ -146,7 +144,28 @@ void PropertyBrowser::valueChanged(QtProperty *property, double value)
     Model* model = dynamic_cast<Model*> (currentItem);
     if (model != nullptr)
     {
-        model->transform->setProperty(id, value);
+        auto propertySubTypeList = property->propertyId().split(".");
+        // Is this is a Transform?
+        if (propertySubTypeList[0].compare("Transform") == 0)
+        {
+            // Is this a Rotation?
+            if (propertySubTypeList[1].compare("Rotation") == 0)
+            {
+                model->transform->rotation()->setProperty(propertyName, value);
+            }
+
+            else if (propertySubTypeList[1].compare("Position") == 0)
+            {
+                model->transform->position()->setProperty(propertyName, value);
+            }
+
+            else if (propertySubTypeList[1].compare("Scale") == 0)
+            {
+                model->transform->scale()->setProperty(propertyName, value);
+            }
+        }
+        else
+            qDebug() << "not transform property" << property->propertyId();
     }
 }
 

@@ -58,9 +58,9 @@ void Editor::addModelToScene()
     srand (time(NULL));
 
     auto trans = new Transform();
-    trans->getPosition()->x = rand() % 10 + 1;
-    trans->getPosition()->y = rand() % 10 + 1;
-    trans->getPosition()->z = rand() % 10 + 1;
+    trans->position()->x = rand() % 10 + 1;
+    trans->position()->y = rand() % 10 + 1;
+    trans->position()->z = rand() % 10 + 1;
 
     /*
      * Need to make the context current so
