@@ -99,6 +99,8 @@ void PropertyBrowser::loadProperties(QObject *object)
 
                 if (metaProperty.type() == QVariant::nameToType("Transform*"))
                     obj = value.value<Transform*>();
+//                else if (metaProperty.type() == QVariant::nameToType("Vec3*"))
+//                    obj = value.value<Vec3*>();
 
                 // Get the transform meta object.
                 const QMetaObject* objMeta = obj->metaObject();

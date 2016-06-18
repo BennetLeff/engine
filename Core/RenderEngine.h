@@ -22,9 +22,12 @@ public:
     RenderEngine(Camera* cam);
     void draw();
     void addModel(Model* model);
+    void attachLight(Light *light);
     Camera* getCamera() { return cam; }
     void init();
 private:
     std::vector<Model*> models;
+    std::vector<Light*> lights;
+
     Camera* cam;
 };

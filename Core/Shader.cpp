@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <glm/vec3.hpp>
+#include <glm/glm.hpp>
 
 Shader::Shader(std::string file)
 {
@@ -31,12 +32,6 @@ Shader::Shader(std::string file)
     uniforms[PERSPECTIVE_U] = glGetUniformLocation(program, "persp");
     uniforms[CAMPOS_U] = glGetUniformLocation(program, "campos");
     uniforms[TEXSET_U] = glGetUniformLocation(program, "textureSet");
-
-    // Create point lights
-    auto light = PointLight(1.0f, glm::vec3(5), glm::vec3(1, 1, 1));
-    // auto light2 = PointLight(1.0f, glm::vec3(-5, 5, 5), glm::vec3(1, 1, 1));
-    pointLights.push_back(light);
-    // pointLights.push_back(light2);
 }
 
 std::string Shader::load(std::string file)
@@ -124,10 +119,15 @@ void Shader::update(const Transform* trans, const Camera* cam)
         pos_loc = glGetUniformLocation(program, ("pointLight[" + std::to_string(i) + "].position").c_str());
         col_loc = glGetUniformLocation(program, ("pointLight[" + std::to_string(i) + "].color").c_str());
 
-        glUniform1f(int_loc, pointLights[i].intensity);
-        glUniform3fv(pos_loc, 1, &pointLights[i].position[0]);
-        glUniform3fv(col_loc, 1, &pointLights[i].color[0]);
+        glUniform1f(int_loc, pointLights[i]->intensity);
+        glUniform3fv(pos_loc, 1, &pointLights[i]->position[0][0]);
+        glUniform3fv(col_loc, 1, &pointLights[i]->color[0][0]);
     }
+}
+
+void Shader::attachLight(Light *light)
+{
+    pointLights.push_back(light);
 }
 
 void Shader::draw()

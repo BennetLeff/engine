@@ -80,6 +80,12 @@ void Editor::addModelToScene()
     }
 }
 
+void Editor::addLightToScene()
+{
+    auto light = new Light(1, new Vec3(1, 1, 1), new Vec3(1, 1, 1));
+    attachLight(light);
+}
+
 void Editor::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu menu(this);
@@ -122,8 +128,13 @@ QMenu* Editor::createComponentsMenu()
     addModelAct->setStatusTip(tr("Add a Model to the scene"));
     connect(addModelAct, &QAction::triggered, this, &Editor::addModelToScene);
 
+    addLightAct = new QAction(tr("&Add Light"), this);
+    addLightAct->setStatusTip(tr("Add a Light to the scene"));
+    connect(addLightAct, &QAction::triggered, this, &Editor::addLightToScene);
+
     componentsMenu = menubar->addMenu(tr("&Components"));
     componentsMenu->addAction(addModelAct);
+    componentsMenu->addAction(addLightAct);
     componentsMenu->addSeparator();
 
     return componentsMenu;
@@ -218,7 +229,20 @@ void Editor::addModel(Model* model)
     updateEditor(model);
 }
 
-void Editor::updateEditor(Model* gameObject)
+void Editor::attachLight(Light *light)
+{
+    light->setName("Light " + std::to_string(gameObjectCount));
+    engine->attachLight(light);
+
+    // Add the Light to the gameObjectList
+    addGameObjectListItem(light);
+    gameObjectCount += 1;
+
+    updateEditor(light);
+}
+
+
+void Editor::updateEditor(GameObject *gameObject)
 {
     propertyBrowser->loadProperties(gameObject);
 }

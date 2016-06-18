@@ -10,6 +10,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <QObject>
+#include <glm/gtc/type_ptr.hpp>
 
 class Vec3 : public QObject, public glm::vec3
 {
@@ -39,6 +40,11 @@ public:
         this->y = vector.y;
         this->z = vector.z;
     }
+
+	const float* getPointer()
+	{
+		return glm::value_ptr(glm::vec3(this->x, this->y, this->z));
+	}
 
 private:
 	double getX() { return this->x; }

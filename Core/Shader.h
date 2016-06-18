@@ -27,6 +27,7 @@ public:
     std::string load(std::string file);
     // Use to set texture drawing uniform
     void canDrawTexture(bool canDraw);
+    void attachLight(Light *light);
 private:
     static const short NUMSHADERS = 2;
 
@@ -40,7 +41,7 @@ private:
 		NUMUNIFORMS
     };
 
-    std::vector<PointLight> pointLights;
+    std::vector<Light*> pointLights;
 
     GLuint shaders[NUMSHADERS];
     GLuint uniforms[NUMUNIFORMS];

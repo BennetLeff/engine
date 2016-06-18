@@ -14,6 +14,7 @@
 #include "Core/GameObject.h"
 #include "Editor/SideBarList.h"
 #include "Editor/PropertyBrowser.h"
+#include "Core/Transform.h"
 
 #include <QMainWindow>
 #include <QPushButton>
@@ -40,7 +41,8 @@ public:
     GUIWindow* getWindow() { return window; }
 
     // Wraps RenderEngine::addModel()
-    void addModel(Model *model);
+    void addModel(Model* model);
+    void attachLight(Light *light);
 
     // Call instead of QMainWindow.show()
     // so that all widgets are properly shown.
@@ -56,6 +58,7 @@ private slots:
     void open();
     void save();
     void addModelToScene();
+    void addLightToScene();
 
 private:
     void initialize();
@@ -70,7 +73,7 @@ private:
 
     // Gets called when Editor needs to update
     // like when GameObjects are added.
-    void updateEditor(Model* gameObject);
+    void updateEditor(GameObject *gameObject);
 
     // Sets up the side bar where GameObjects are listed.
     SideBarList* createSideBar();
@@ -116,4 +119,5 @@ private:
 
     SideBarList* sideBar;
     PropertyBrowser* propertyBrowser;
+    QAction *addLightAct;
 };

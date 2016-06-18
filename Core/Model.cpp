@@ -8,7 +8,7 @@
 #include "Model.h"
 
 Model::Model(std::string path, std::string texture, Transform* trans)
-        : shader(Shader("./res/shaders")),
+        : shader(new Shader("./res/shaders")),
           tex(Texture(texture)),
           path(path),
           modelMesh(loadModel(path))
@@ -16,7 +16,7 @@ Model::Model(std::string path, std::string texture, Transform* trans)
     if (texture != "")
     {
         textureSet = true;
-        shader.canDrawTexture(textureSet);
+        shader->canDrawTexture(textureSet);
     }
 
     transform = trans;
@@ -25,7 +25,7 @@ Model::Model(std::string path, std::string texture, Transform* trans)
 }
 
 Model::Model(std::string path, std::string texture)
-        : shader(Shader("./res/shaders")),
+        : shader(new Shader("./res/shaders")),
           tex(Texture(texture)),
           path(path),
           modelMesh(loadModel(path)),
@@ -34,7 +34,7 @@ Model::Model(std::string path, std::string texture)
     if (texture != "")
     {
         textureSet = true;
-        shader.canDrawTexture(textureSet);
+        shader->canDrawTexture(textureSet);
     }
 
 	qRegisterMetaType<Transform*>("Transform*");
@@ -96,8 +96,8 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene)
 
 void Model::draw(Camera* cam)
 {
-	shader.draw();
-	shader.update(transform, cam);
+	shader->draw();
+	shader->update(transform, cam);
 	if (textureSet)
 		tex.bind(0);
 	modelMesh->draw();
@@ -107,5 +107,10 @@ void Model::bindTexture(Texture tex)
 {
     this->tex = tex;
     textureSet = true;
-    shader.canDrawTexture(true);
+    shader->canDrawTexture(true);
+}
+
+void Model::attachLight(Light* light)
+{
+    this->shader->attachLight(light);
 }

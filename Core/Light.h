@@ -1,22 +1,34 @@
-#include <glm/glm.hpp>
+#pragma once
 
-class Light 
+#include <QObject>
+
+#include "Core/GameObject.h"
+#include "Core/Transform.h"
+
+class Light : public GameObject
 {
+    //Q_OBJECT
+    Q_PROPERTY(Vec3* Position MEMBER position)
+   // Q_PROPERTY(Transform* Transform READ getTransform)
+
+    Q_PROPERTY(Vec3* Color MEMBER color)
+
 public:
 	Light(float intensity,
-			   glm::vec3 position,
-			   glm::vec3 color) 
-		: intensity(intensity), position(position), color(color) {} 
-	float intensity;
-	glm::vec3 position;
-	glm::vec3 color;
+			   Vec3* position,
+			   Vec3* color);
+
+    float intensity;
+	Vec3* position;
+	Vec3* color;
+
 };
 
-class PointLight : public Light 
-{ 
+class PointLight : public Light
+{
 public:
 	PointLight(float intensity,
-			   glm::vec3 position,
-			   glm::vec3 color) 
-		: Light(intensity, position, color) {} 
+			   Vec3* position,
+			   Vec3* color)
+		: Light(intensity, position, color) {}
 };

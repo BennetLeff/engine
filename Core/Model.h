@@ -35,6 +35,7 @@ public:
 	void bindTexture(Texture tex);
     Transform* getTransform() { return transform; }
 	Transform* transform;
+    void attachLight(Light* light);
 
 private:
 	Mesh* processMesh(aiMesh* mesh, const aiScene* scene);
@@ -44,9 +45,6 @@ private:
 	Mesh* modelMesh;
 	Texture tex;
     bool textureSet = false;
-	Shader shader;
+	Shader* shader;
 };
 
-Q_DECLARE_METATYPE(glm::vec3)
-Q_DECLARE_METATYPE(Vec3*)
-Q_DECLARE_METATYPE(Transform*)
