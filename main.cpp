@@ -6,10 +6,16 @@
 #include "Core/Model.h"
 #include "Editor/Editor.h"
 
+Q_DECLARE_METATYPE(Vec3*)
+Q_DECLARE_METATYPE(Transform*)
+
+
 int main(int argc, char* argv[])
 {
     auto WIDTH = 1400;
     auto HEIGHT = 900;
+
+
 
     /* 
      * Sets up a QApplication
@@ -37,14 +43,6 @@ int main(int argc, char* argv[])
      * OpenGL calls. This is mostly because of Qt.
     */
     editor.showEditor();
-
-//    auto house = Model("./res/farm house/OBJ/Farmhouse OBJ.obj", "./res/farm house/Textures/Farmhouse Texture.jpg");
-//    house.transform->position()->z = 40;
-//
-//    auto model = Model("./res/Alfred/Alfred.obj", "./res/Alfred/alfred_dif.png");
-//
-//    editor.addModel(house);
-//    editor.addModel(model);
 
     while (editor.isVisible())
     {

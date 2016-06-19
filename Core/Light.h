@@ -3,14 +3,12 @@
 #include <QObject>
 
 #include "Core/GameObject.h"
-#include "Core/Transform.h"
+#include "Core/Vec3.h"
 
 class Light : public GameObject
 {
-    //Q_OBJECT
+    Q_OBJECT
     Q_PROPERTY(Vec3* Position MEMBER position)
-   // Q_PROPERTY(Transform* Transform READ getTransform)
-
     Q_PROPERTY(Vec3* Color MEMBER color)
 
 public:

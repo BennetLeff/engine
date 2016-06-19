@@ -5,6 +5,7 @@
 #include <QtWidgets/QLabel>
 #include <QtLineEditFactory>
 #include <Core/Model.h>
+#include <QtCore/QString>
 #include "PropertyBrowser.h"
 
 PropertyBrowser::PropertyBrowser()
@@ -49,6 +50,35 @@ PropertyBrowser::PropertyBrowser()
             this, SLOT(valueChanged(QtProperty *, QString)));
 }
 
+QtProperty* PropertyBrowser::loadTransformProperties(QObject* object)
+{
+    auto mainPropery = groupPropertyManager->addProperty("Transform");
+
+    // Get the transform meta object.
+    const QMetaObject* objMeta = object->metaObject();
+
+    // Loop through the meta objects properties and add them as subproperties.
+    for(int subprop = objMeta->propertyOffset(); subprop < objMeta->propertyCount(); subprop++)
+    {
+        QMetaProperty objMetaProperty = objMeta->property(subprop);
+
+        auto vec3Variant =  objMetaProperty.read(object);
+        auto vec3Obj = vec3Variant.value<Vec3*>();
+
+        auto propName = QString("Transform.") +  QString(objMetaProperty.name());
+
+        mainPropery->addSubProperty(loadVec3Properties(vec3Obj, propName.toStdString()));
+    }
+
+    return mainPropery;
+}
+
+QtProperty* PropertyBrowser::loadVec3Properties(Vec3* object, std::string name = "")
+{
+    return vec3PropertyManger->addProperty(name.data(), object);
+}
+
+
 void PropertyBrowser::loadProperties(QObject *object)
 {
     currentItem = nullptr;
@@ -60,7 +90,7 @@ void PropertyBrowser::loadProperties(QObject *object)
 
 //        qDebug() << "class : " << meta->className();
 
-        for (int i = 0; i < meta->propertyCount(); i++)
+        for (int i = meta->propertyOffset(); i < meta->propertyCount(); i++)
         {
             QMetaProperty metaProperty = meta->property(i);
             QVariant value = metaProperty.read(object);
@@ -80,14 +110,8 @@ void PropertyBrowser::loadProperties(QObject *object)
             }
             else if (metaProperty.type() == QVariant::String)
             {
-                // objectName is just a field of QObject we don't need.
-                // it's usually stored at index 0, I'll have a better method of
-                // removing it later.
-                if (metaProperty.propertyIndex() != 0)
-                {
-                    property = stringPropertyManager->addProperty(metaProperty.name());
-                    stringPropertyManager->setValue(property, value.toString());
-                }
+                property = stringPropertyManager->addProperty(metaProperty.name());
+                stringPropertyManager->setValue(property, value.toString());
             }
             else
             {
@@ -97,26 +121,22 @@ void PropertyBrowser::loadProperties(QObject *object)
                 // Initialize the object to get it's properties.
                 QObject* obj = new QObject();
 
-                if (metaProperty.type() == QVariant::nameToType("Transform*"))
-                    obj = value.value<Transform*>();
-//                else if (metaProperty.type() == QVariant::nameToType("Vec3*"))
-//                    obj = value.value<Vec3*>();
-
-                // Get the transform meta object.
-                const QMetaObject* objMeta = obj->metaObject();
-
-                // Loop through the meta objects properties and add them as subproperties.
-                for(int subprop = 1; subprop < objMeta->propertyCount(); subprop++)
+                if (QVariant(metaProperty.typeName()) == QVariant("Transform*"))
                 {
-                    QMetaProperty objMetaProperty = objMeta->property(subprop);
-                    QtProperty* objSubProperty = NULL;
-
-                    auto vec3Variant =  objMetaProperty.read(obj);
-                    auto vec3Obj = vec3Variant.value<Vec3*>();
-
-                    objSubProperty = vec3PropertyManger->addProperty(objMetaProperty.name(), vec3Obj);
-                    property->addSubProperty(objSubProperty);
+                    obj = value.value<Transform*>();
+                    property = loadTransformProperties(obj);
                 }
+                else if (QVariant(metaProperty.typeName()) == QVariant("Vec3*"))
+                {
+                    obj = value.value<Vec3*>();
+                    auto vec3 = dynamic_cast<Vec3*>(obj);
+                    property = loadVec3Properties(vec3, QString(meta->className()).toStdString() + "." + QString(metaProperty.name()).toStdString());
+                }
+                else
+                {
+                    qDebug() << "Non primitive of following type not recognized: " << metaProperty.typeName();
+                }
+
             }
 
             if (property)
@@ -152,22 +172,25 @@ void PropertyBrowser::valueChanged(QtProperty *property, double value)
         {
             // Is this a Rotation?
             if (propertySubTypeList[1].compare("Rotation") == 0)
-            {
                 model->transform->rotation()->setProperty(propertyName, value);
-            }
-
             else if (propertySubTypeList[1].compare("Position") == 0)
-            {
                 model->transform->position()->setProperty(propertyName, value);
-            }
-
             else if (propertySubTypeList[1].compare("Scale") == 0)
-            {
                 model->transform->scale()->setProperty(propertyName, value);
-            }
         }
         else
             qDebug() << "not transform property" << property->propertyId();
+    }
+
+    Light* light = dynamic_cast<Light*> (currentItem);
+    if (light != nullptr)
+    {
+        auto propertySubTypeList = property->propertyId().split(".");
+
+        if (propertySubTypeList[1].compare("Position") == 0)
+            light->position->setProperty(propertyName, value);
+        else if (propertySubTypeList[1].compare("Color") == 0)
+            light->color->setProperty(propertyName, value);
     }
 }
 

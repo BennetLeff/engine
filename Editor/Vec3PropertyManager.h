@@ -25,9 +25,13 @@ public:
         this->groupPropertyManager = new QtGroupPropertyManager();
     }
 
+    // Use name to set whether property is from Transform, Light etc. as well as actual name.
+    // For instance Transform.Rotation.
     QtProperty* addProperty(const QString& name, Vec3* vector3)
     {
-        QtProperty* mainProp = groupPropertyManager->addProperty(name);
+        auto splitName = QString(name).split(".");
+
+        QtProperty* mainProp = groupPropertyManager->addProperty(splitName[splitName.size() - 1]);
 
         auto vec3MetaObj = vector3->metaObject();
 
@@ -35,8 +39,8 @@ public:
         {
             QMetaProperty vec3MetaProperty = vec3MetaObj->property(i);
 
-            auto subProp = doublePropertyManager->addProperty(vec3MetaProperty.name());
-            subProp->setPropertyId("Transform." + name);
+            auto subProp = doublePropertyManager->addProperty( vec3MetaProperty.name() );
+            subProp->setPropertyId(name);
 
             doublePropertyManager->setValue(subProp, vec3MetaProperty.read(vector3).value<double>());
 

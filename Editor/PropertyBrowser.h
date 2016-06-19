@@ -43,5 +43,8 @@ private:
 private slots:
     void valueChanged(QtProperty *property, double value);
     void valueChanged(QtProperty *property, QString value);
+
+    QtProperty* loadTransformProperties(QObject* transformObject);
+    QtProperty* loadVec3Properties(Vec3* vec3Object, std::string name);
 };
 
