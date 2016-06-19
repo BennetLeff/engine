@@ -26,6 +26,9 @@ public:
     void loadProperties(QObject* object);
     std::vector<QtProperty*> setupProperty(QMetaProperty property);
 private:
+    QtProperty* loadTransformProperties(QObject* transformObject);
+    QtProperty* loadVec3Properties(Vec3* vec3Object, std::string name);
+    QtProperty* loadTextureProperties(QObject* textureObject);
     QtGroupBoxPropertyBrowser* propertyBrowser;
     QtIntPropertyManager* intPropertyManager;
     QtDoublePropertyManager* doublePropertyManager;
@@ -43,8 +46,5 @@ private:
 private slots:
     void valueChanged(QtProperty *property, double value);
     void valueChanged(QtProperty *property, QString value);
-
-    QtProperty* loadTransformProperties(QObject* transformObject);
-    QtProperty* loadVec3Properties(Vec3* vec3Object, std::string name);
 };
 

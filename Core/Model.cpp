@@ -9,7 +9,7 @@
 
 Model::Model(std::string path, std::string texture, Transform* trans)
         : shader(new Shader("./res/shaders")),
-          tex(Texture(texture)),
+          tex(new Texture(texture)),
           path(path),
           modelMesh(loadModel(path))
 {
@@ -22,11 +22,12 @@ Model::Model(std::string path, std::string texture, Transform* trans)
     transform = trans;
 
     qRegisterMetaType<Transform*>("Transform*");
+    qRegisterMetaType<Texture*>("Texture*");
 }
 
 Model::Model(std::string path, std::string texture)
         : shader(new Shader("./res/shaders")),
-          tex(Texture(texture)),
+          tex(new Texture(texture)),
           path(path),
           modelMesh(loadModel(path)),
           transform(new Transform())
@@ -38,6 +39,7 @@ Model::Model(std::string path, std::string texture)
     }
 
 	qRegisterMetaType<Transform*>("Transform*");
+	qRegisterMetaType<Texture*>("Texture*");
 }
 
 Mesh* Model::loadModel(std::string path)
@@ -99,15 +101,18 @@ void Model::draw(Camera* cam)
 	shader->draw();
 	shader->update(transform, cam);
 	if (textureSet)
-		tex.bind(0);
+		tex->bind(0);
 	modelMesh->draw();
 }
 
-void Model::bindTexture(Texture tex)
+void Model::bindTexture(Texture* tex)
 {
     this->tex = tex;
-    textureSet = true;
-    shader->canDrawTexture(true);
+    if(tex->textureFilePathValid())
+    {
+        textureSet = true;
+        shader->canDrawTexture(true);
+    }
 }
 
 void Model::attachLight(Light* light)

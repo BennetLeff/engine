@@ -8,14 +8,12 @@
 
 Q_DECLARE_METATYPE(Vec3*)
 Q_DECLARE_METATYPE(Transform*)
-
+Q_DECLARE_METATYPE(Texture*)
 
 int main(int argc, char* argv[])
 {
     auto WIDTH = 1400;
     auto HEIGHT = 900;
-
-
 
     /* 
      * Sets up a QApplication

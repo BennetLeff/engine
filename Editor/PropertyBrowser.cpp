@@ -78,6 +78,32 @@ QtProperty* PropertyBrowser::loadVec3Properties(Vec3* object, std::string name =
     return vec3PropertyManger->addProperty(name.data(), object);
 }
 
+QtProperty* PropertyBrowser::loadTextureProperties(QObject *textureObject)
+{
+    auto mainPropery = groupPropertyManager->addProperty("Texture");
+
+    // Get the transform meta object.
+    const QMetaObject* objMeta = textureObject->metaObject();
+
+    // Loop through the meta objects properties and add them as subproperties.
+    for(int i = objMeta->propertyOffset(); i < objMeta->propertyCount(); i++)
+    {
+        QMetaProperty objMetaProperty = objMeta->property(i);
+
+        auto fieldVariant = objMetaProperty.read(textureObject);
+        auto fieldObj = fieldVariant.value<QString>();
+
+        auto propId = QString("Texture.") + QString(objMetaProperty.name());
+
+        auto subProp = stringPropertyManager->addProperty(objMetaProperty.name());
+        subProp->setEnabled(true);
+        subProp->setPropertyId(propId);
+
+        mainPropery->addSubProperty(subProp);
+    }
+
+    return mainPropery;
+}
 
 void PropertyBrowser::loadProperties(QObject *object)
 {
@@ -131,6 +157,11 @@ void PropertyBrowser::loadProperties(QObject *object)
                     obj = value.value<Vec3*>();
                     auto vec3 = dynamic_cast<Vec3*>(obj);
                     property = loadVec3Properties(vec3, QString(meta->className()).toStdString() + "." + QString(metaProperty.name()).toStdString());
+                }
+                else if (QVariant(metaProperty.typeName()) == QVariant("Texture*"))
+                {
+                    obj = value.value<Texture*>();
+                    property = loadTextureProperties(obj);
                 }
                 else
                 {
@@ -207,6 +238,11 @@ void PropertyBrowser::valueChanged(QtProperty *property, QString value)
     Model* model = dynamic_cast<Model*>(currentItem);
     if (model != nullptr)
     {
-        model->setProperty(id, value);
+        auto propertySubTypeList = property->propertyId().split(".");
+        
+        if (propertySubTypeList[1].compare("Path") == 0)
+        {
+            model->bindTexture(new Texture(value.toStdString()));
+        }
     }
 }
