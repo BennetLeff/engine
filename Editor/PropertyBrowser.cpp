@@ -239,7 +239,7 @@ void PropertyBrowser::valueChanged(QtProperty *property, QString value)
     if (model != nullptr)
     {
         auto propertySubTypeList = property->propertyId().split(".");
-        
+
         if (propertySubTypeList[1].compare("Path") == 0)
         {
             model->bindTexture(new Texture(value.toStdString()));

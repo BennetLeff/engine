@@ -6,7 +6,10 @@
 #endif
 
 #include <QObject>
+#include <QImage>
 #include <fstream>
+
+#include <QOpenGLTexture>
 
 class Texture : public QObject
 {
@@ -20,9 +23,6 @@ public:
     bool fileExists(const std::string& name);
 private:
     QString mFilePath = "";
-    GLuint tex;
-    unsigned char* image;
-    int width;
-    int height;
-    int comp;
+    QImage mImage;
+    QOpenGLTexture* mTexture;
 };
