@@ -21,6 +21,7 @@ public:
     // Call when a texture should be reset like when the file path changes.
     bool textureFilePathValid() { return fileExists(mFilePath.toStdString()); }
     bool fileExists(const std::string& name);
+    QImage* getImage() { return &mImage; }
 private:
     QString mFilePath = "";
     QImage mImage;

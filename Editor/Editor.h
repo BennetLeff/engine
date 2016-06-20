@@ -30,6 +30,8 @@
 #include <QFileDialog>
 #include <QLineEdit>
 
+class SideBarList;
+
 class Editor : public QMainWindow
 {
 	Q_OBJECT
@@ -47,6 +49,10 @@ public:
     // Call instead of QMainWindow.show()
     // so that all widgets are properly shown.
     void showEditor();
+
+    // Gets called when Editor needs to update
+    // like when GameObjects are added.
+    void updateEditor(GameObject *gameObject);
 
 protected:
     // sets up main menu
@@ -70,10 +76,6 @@ private:
     void createMenus();
     QMenu* createFileMenu();
     QMenu* createComponentsMenu();
-
-    // Gets called when Editor needs to update
-    // like when GameObjects are added.
-    void updateEditor(GameObject *gameObject);
 
     // Sets up the side bar where GameObjects are listed.
     SideBarList* createSideBar();

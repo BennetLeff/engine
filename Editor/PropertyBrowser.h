@@ -15,6 +15,7 @@
 
 #include <QVBoxLayout>
 #include <QtGroupBoxPropertyBrowser>
+#include <QtWidgets/QFileDialog>
 
 #include "Vec3PropertyManager.h"
 
@@ -28,7 +29,7 @@ public:
 private:
     QtProperty* loadTransformProperties(QObject* transformObject);
     QtProperty* loadVec3Properties(Vec3* vec3Object, std::string name);
-    QtProperty* loadTextureProperties(QObject* textureObject);
+    QtProperty* loadTextureProperties(Texture* textureObject);
     QtGroupBoxPropertyBrowser* propertyBrowser;
     QtIntPropertyManager* intPropertyManager;
     QtDoublePropertyManager* doublePropertyManager;
@@ -46,5 +47,9 @@ private:
 private slots:
     void valueChanged(QtProperty *property, double value);
     void valueChanged(QtProperty *property, QString value);
+    void showImagePicker()
+    {
+        auto filepath = QFileDialog::getOpenFileName(this, tr("Open Image"), "/home/jana", tr("Image Files (*.png *.jpg *.bmp)"));
+    }
 };
 

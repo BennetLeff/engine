@@ -151,7 +151,7 @@ void Editor::createMenus()
 
 SideBarList* Editor::createSideBar()
 {
-    sideBar = new SideBarList();
+    sideBar = new SideBarList(this);
     sideBar->setupSideBar();
     return sideBar;
 }

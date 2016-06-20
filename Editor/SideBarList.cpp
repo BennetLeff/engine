@@ -4,12 +4,14 @@
 
 #include "SideBarList.h"
 
-SideBarList::SideBarList()
+SideBarList::SideBarList(Editor* editor)
 {
     this->gameObjectList = new QListView();
     this->standardModel = new QStandardItemModel();
 
     gameObjectList->setMaximumWidth(150);
+
+    mEditorParent = editor;
 }
 
 void SideBarList::addSideBarListItem(GameObject* gameObject)
@@ -31,31 +33,18 @@ QListView* SideBarList::getGameObjectList()
 void SideBarList::setupSideBar()
 {
     connect(this->getStandardModel(), SIGNAL(itemChanged(QStandardItem*)), this, SLOT(updateGameObjectName(QStandardItem*)));
+    connect(gameObjectList, SIGNAL(clicked(QModelIndex)), this, SLOT(updateClicked(QModelIndex)));
 }
 
 void SideBarList::updateGameObjectName(QStandardItem *item)
 {
-    auto sideBarItem = static_cast<SideBarListItem*>(item);
-    printf("object changed %s \n", sideBarItem->getGameObject()->getName().data());
+    auto sideBarItem = dynamic_cast<SideBarListItem*>(item);
 
-    for (int i = 0; i < this->gameObjectListItems.size(); i++)
-    {
-        printf("Object: %s \n", static_cast<SideBarListItem* >(gameObjectListItems[i])->getGameObject()->getName().data());
-    }
+    mEditorParent->updateEditor(sideBarItem->getGameObject());
 }
 
-QModelIndexList* SideBarList::getSelected()
+void SideBarList::updateClicked(const QModelIndex &index)
 {
-    auto indexes = gameObjectList->selectionModel()->selectedIndexes();
-    for (int i = 0; i < indexes.size(); i++)
-    {
-        printf("Index: %s \n", indexes[i].data().toString().toStdString().data());
-    }
-
-    return nullptr;
-}
-
-std::vector<QStandardItem*> SideBarList::getGameObjectListItems()
-{
-    return this->gameObjectListItems;
+    QStandardItem *item = getStandardModel()->itemFromIndex(index);
+    updateGameObjectName(item);
 }

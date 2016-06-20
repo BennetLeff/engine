@@ -78,7 +78,7 @@ QtProperty* PropertyBrowser::loadVec3Properties(Vec3* object, std::string name =
     return vec3PropertyManger->addProperty(name.data(), object);
 }
 
-QtProperty* PropertyBrowser::loadTextureProperties(QObject *textureObject)
+QtProperty* PropertyBrowser::loadTextureProperties(Texture* textureObject)
 {
     auto mainPropery = groupPropertyManager->addProperty("Texture");
 
@@ -161,7 +161,8 @@ void PropertyBrowser::loadProperties(QObject *object)
                 else if (QVariant(metaProperty.typeName()) == QVariant("Texture*"))
                 {
                     obj = value.value<Texture*>();
-                    property = loadTextureProperties(obj);
+                    auto tex = dynamic_cast<Texture*>(obj);
+                    property = loadTextureProperties(tex);
                 }
                 else
                 {
