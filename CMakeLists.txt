@@ -40,7 +40,8 @@ add_definitions(${QtPropertyBrowser_DEFINITIONS})
 # Add the sources to the executable for linking
 add_executable(Engine main.cpp Core/Camera.cpp Core/Mesh.cpp Core/Model.cpp Core/Shader.cpp Core/Texture.cpp
                 Core/Transform.cpp Core/Window.cpp Editor/GUIWindow.cpp Editor/Editor.cpp Core/RenderEngine.cpp Core/GameObject.cpp
-                Editor/SideBarListItem.cpp Editor/SideBarList.cpp Editor/PropertyBrowser.cpp Core/Light.cpp Core/Vec3.h)
+                Editor/SideBarListItem.cpp Editor/SideBarList.cpp Editor/PropertyBrowser.cpp Core/Light.cpp Core/Vec3.h
+                Editor/ImageEditorFactory.cpp)
 
 # OSX only flags
 IF(APPLE)

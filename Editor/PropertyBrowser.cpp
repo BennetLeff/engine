@@ -5,7 +5,6 @@
 #include <QtWidgets/QLabel>
 #include <QtLineEditFactory>
 #include <Core/Model.h>
-#include <QtCore/QString>
 #include "PropertyBrowser.h"
 
 PropertyBrowser::PropertyBrowser()
@@ -22,19 +21,21 @@ PropertyBrowser::PropertyBrowser()
     intPropertyManager = new QtIntPropertyManager(this);
     doublePropertyManager = new QtDoublePropertyManager(this);
     stringPropertyManager = new QtStringPropertyManager(this);
+    stringPropertyManagerImage = new QtStringPropertyManager(this);
 
     groupPropertyManager = new QtGroupPropertyManager(this);
-
 
     propertyBrowser = new QtGroupBoxPropertyBrowser(this);
 
     QtDoubleSpinBoxFactory* doubleSpinBoxFactory = new QtDoubleSpinBoxFactory();
     QtLineEditFactory* lineEditFactory = new QtLineEditFactory();
     QtSpinBoxFactory* intSpinBoxFactory = new QtSpinBoxFactory();
+//    ImageEditorFactory* imageEditorFactory = new ImageEditorFactory();
 
     propertyBrowser->setFactoryForManager(intPropertyManager, intSpinBoxFactory);
     propertyBrowser->setFactoryForManager(doublePropertyManager, doubleSpinBoxFactory);
     propertyBrowser->setFactoryForManager(stringPropertyManager, lineEditFactory);
+//    propertyBrowser->setFactoryForManager(stringPropertyManagerImage, imageEditorFactory);
 
     vec3PropertyManger = new Vec3PropertyManger(this, doublePropertyManager);
 
@@ -48,6 +49,12 @@ PropertyBrowser::PropertyBrowser()
             this, SLOT(valueChanged(QtProperty *, double)));
     connect(stringPropertyManager, SIGNAL(valueChanged(QtProperty *, QString)),
             this, SLOT(valueChanged(QtProperty *, QString)));
+    // Registers changes to Image Viewing Widget
+//    connect(stringPropertyManagerImage, SIGNAL(valueChanged(QtProperty*, QString)),
+//            this, SLOT(valueChanged(QtProperty*, QString)));
+    // Allows updates to the current model's texture when the QLineEdit path is edited.
+//    connect(imageEditorFactory, SIGNAL(imagePathChanged(const QString&)),
+//            this, SLOT(updateImage(const QString&)));
 }
 
 QtProperty* PropertyBrowser::loadTransformProperties(QObject* object)
@@ -80,7 +87,7 @@ QtProperty* PropertyBrowser::loadVec3Properties(Vec3* object, std::string name =
 
 QtProperty* PropertyBrowser::loadTextureProperties(Texture* textureObject)
 {
-    auto mainPropery = groupPropertyManager->addProperty("Texture");
+    auto mainProperty = groupPropertyManager->addProperty("Texture");
 
     // Get the transform meta object.
     const QMetaObject* objMeta = textureObject->metaObject();
@@ -90,19 +97,17 @@ QtProperty* PropertyBrowser::loadTextureProperties(Texture* textureObject)
     {
         QMetaProperty objMetaProperty = objMeta->property(i);
 
-        auto fieldVariant = objMetaProperty.read(textureObject);
-        auto fieldObj = fieldVariant.value<QString>();
-
         auto propId = QString("Texture.") + QString(objMetaProperty.name());
 
-        auto subProp = stringPropertyManager->addProperty(objMetaProperty.name());
+        auto subProp = stringPropertyManagerImage->addProperty(objMetaProperty.name());
+
         subProp->setEnabled(true);
         subProp->setPropertyId(propId);
 
-        mainPropery->addSubProperty(subProp);
+        mainProperty->addSubProperty(subProp);
     }
 
-    return mainPropery;
+    return mainProperty;
 }
 
 void PropertyBrowser::loadProperties(QObject *object)
@@ -219,12 +224,35 @@ void PropertyBrowser::valueChanged(QtProperty *property, double value)
     {
         auto propertySubTypeList = property->propertyId().split(".");
 
-        if (propertySubTypeList[1].compare("Position") == 0)
-            light->position->setProperty(propertyName, value);
-        else if (propertySubTypeList[1].compare("Color") == 0)
-            light->color->setProperty(propertyName, value);
+        if (propertySubTypeList.size() > 1)
+        {
+            if (propertySubTypeList[1].compare("Position") == 0)
+                light->position->setProperty(propertyName, value);
+            else if (propertySubTypeList[1].compare("Color") == 0)
+                light->color->setProperty(propertyName, value);
+        }
+        else
+        {
+            if(propertySubTypeList.size() == 1)
+            {
+                light->setProperty(propertyName, value);
+            }
+        }
     }
 }
+
+void PropertyBrowser::updateImage(const QString& value)
+{
+    if (!currentItem)
+        return;
+
+    auto model = dynamic_cast<Model*>(currentItem);
+    if (model != nullptr)
+    {
+        model->bindTexture(new Texture(value.toStdString()));
+    }
+}
+
 
 void PropertyBrowser::valueChanged(QtProperty *property, QString value)
 {

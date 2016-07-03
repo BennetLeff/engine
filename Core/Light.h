@@ -8,6 +8,7 @@
 class Light : public GameObject
 {
     Q_OBJECT
+    Q_PROPERTY(double Intensity MEMBER intensity)
     Q_PROPERTY(Vec3* Position MEMBER position)
     Q_PROPERTY(Vec3* Color MEMBER color)
 
@@ -19,7 +20,6 @@ public:
     float intensity;
 	Vec3* position;
 	Vec3* color;
-
 };
 
 class PointLight : public Light
@@ -29,4 +29,8 @@ public:
 			   Vec3* position,
 			   Vec3* color)
 		: Light(intensity, position, color) {}
+
+private:
+	const short mMaxIntensity = 1;
+	const short mMaxColorValue = 256;
 };

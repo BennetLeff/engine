@@ -67,7 +67,6 @@ private slots:
     void addLightToScene();
 
 private:
-    void initialize();
     void setupWidgets();
     void setupLayout();
     void setupSideBarLayout();
@@ -121,5 +120,7 @@ private:
 
     SideBarList* sideBar;
     PropertyBrowser* propertyBrowser;
+    ImageEditorFactory* imageEditor;
+    QWidget* imageWidget;
     QAction *addLightAct;
 };

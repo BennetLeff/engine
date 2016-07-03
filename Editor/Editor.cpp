@@ -17,15 +17,11 @@ Editor::Editor(RenderEngine* renderEngine, int width, int height)
 
     mainWidget = new QWidget();
     propertyBrowser = new PropertyBrowser();
+
+    imageEditor = new ImageEditorFactory();
+    imageWidget = imageEditor->createEditor();
 }
 
-void Editor::initialize()
-{
-    // Set up the rendering context, load shaders and other resources, etc.:
-    // initializeOpenGLFunctions();
-    glViewport(0, 0, width, height);
-    setupWidgets();
-}
 
 // Set up slots.
 void Editor::newFile()
@@ -55,13 +51,6 @@ std::string Editor::createFileDialogPath(std::string caption, std::string direct
 
 void Editor::addModelToScene()
 {
-    srand (time(NULL));
-
-    auto trans = new Transform();
-    trans->position()->x = rand() % 10 + 1;
-    trans->position()->y = rand() % 10 + 1;
-    trans->position()->z = rand() % 10 + 1;
-
     /*
      * Need to make the context current so
      * OpenGL calls will work. Otherwise no mesh
@@ -72,7 +61,7 @@ void Editor::addModelToScene()
     if (meshPath != "")
     {
         window->makeCurrent();
-        addModel(new Model(meshPath, "", trans));
+        addModel(new Model(meshPath, ""));
     }
     else
     {
@@ -82,7 +71,7 @@ void Editor::addModelToScene()
 
 void Editor::addLightToScene()
 {
-    auto light = new Light(1, new Vec3(1, 1, 1), new Vec3(1, 1, 1));
+    auto light = new PointLight(1, new Vec3(1, 1, 1), new Vec3(1, 1, 1));
     attachLight(light);
 }
 
@@ -182,6 +171,8 @@ void Editor::setupLayout()
 
     // Adds the GUIWindow to the layout.
     layout->addWidget(window);
+
+    propertyBrowser->layout()->addWidget(imageWidget);
 
     layout->addWidget(propertyBrowser);
 

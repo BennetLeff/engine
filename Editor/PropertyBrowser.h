@@ -18,6 +18,7 @@
 #include <QtWidgets/QFileDialog>
 
 #include "Vec3PropertyManager.h"
+#include "ImageEditorFactory.h"
 
 class PropertyBrowser : public QWidget
 {
@@ -34,6 +35,7 @@ private:
     QtIntPropertyManager* intPropertyManager;
     QtDoublePropertyManager* doublePropertyManager;
     QtStringPropertyManager* stringPropertyManager;
+    QtStringPropertyManager* stringPropertyManagerImage;
 
     QtGroupPropertyManager* groupPropertyManager;
     Vec3PropertyManger* vec3PropertyManger;
@@ -51,5 +53,6 @@ private slots:
     {
         auto filepath = QFileDialog::getOpenFileName(this, tr("Open Image"), "/home/jana", tr("Image Files (*.png *.jpg *.bmp)"));
     }
+    void updateImage(const QString& value);
 };
 
